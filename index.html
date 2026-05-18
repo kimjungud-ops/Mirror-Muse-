@@ -28,7 +28,7 @@
     mix-blend-mode:overlay}
   .wrap{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:0 28px}
   header{position:relative;z-index:5;padding:30px 0 6px}
-  .nav{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
   .brand{font-family:'Cormorant Garamond',serif;font-size:25px;letter-spacing:.32em;font-weight:600;text-transform:uppercase}
   .brand b{color:var(--berry);font-style:italic;font-weight:500;letter-spacing:.04em}
   .tag{font-size:12px;letter-spacing:.22em;color:var(--ink-soft);text-transform:uppercase}
@@ -37,7 +37,7 @@
     font-style:italic;font-size:18px;color:var(--berry);margin-bottom:26px}
   .eyebrow::before{content:"";width:46px;height:1px;background:var(--gold)}
   .hero h1{font-family:'Gowun Batang',serif;font-weight:700;line-height:1.18;
-    font-size:clamp(2.6rem,6.6vw,5.3rem);letter-spacing:-.01em;max-width:14ch}
+    font-size:clamp(2.6rem,4.2vw,4.2rem);letter-spacing:-.01em}
   .hero h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;color:var(--berry)}
   .hero p.lede{margin-top:30px;max-width:48ch;font-size:clamp(1rem,1.6vw,1.18rem);color:var(--ink-soft);font-weight:300}
   .hero-cta{margin-top:42px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
@@ -54,18 +54,19 @@
   .scrollcue .ln{width:1px;height:46px;background:var(--gold);animation:drop 2.4s ease-in-out infinite}
   @keyframes drop{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
   section.block{padding:70px 0;position:relative}
-  .secnum{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.3em;color:var(--berry);margin-bottom:10px}
-  .sectitle{font-family:'Gowun Batang',serif;font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:700;line-height:1.3}
-  .secdesc{margin-top:14px;color:var(--ink-soft);max-width:52ch;font-weight:300}
-  .rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:24px 0 40px}
-  .studio-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:start}
+  .secnum{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.3em;color:var(--berry);margin-bottom:12px;display:block}
+  .sectitle{font-family:'Gowun Batang',serif;font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:700;line-height:1.3;margin-bottom:0}
+  .secdesc{margin-top:16px;color:var(--ink-soft);max-width:52ch;font-weight:300;line-height:1.8}
+  .rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:28px 0 44px}
+  .studio-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:stretch}
+  .studio-grid > .reveal{display:flex;flex-direction:column}
   .pickrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
   .chip{cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.4);
     padding:9px 18px;border-radius:999px;font-size:13px;font-weight:500;transition:.25s}
   .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg-2);border-color:var(--ink)}
   .chip:hover{border-color:var(--berry)}
   .stage{position:relative;border-radius:20px;overflow:hidden;background:#efe3da;
-    aspect-ratio:4/5;border:1px solid var(--line);box-shadow:var(--shadow)}
+    flex:1;height:auto;min-height:320px;border:1px solid var(--line);box-shadow:var(--shadow)}
   .stage video,.stage canvas,.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   #liveVideo{transform:scaleX(-1)}
   .stage .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
@@ -86,9 +87,50 @@
   .scan .lbl{position:absolute;bottom:18px;left:0;right:0;text-align:center;
     color:var(--bg-2);font-family:'Cormorant Garamond',serif;font-style:italic;
     font-size:16px;letter-spacing:.1em;text-shadow:0 1px 6px rgba(0,0,0,.4)}
-  .stage-tools{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .stage-tools{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .stage-tools .btn{justify-content:center;width:100%}
   .fileinput{display:none}
+  .studio-right{margin-top:0;display:flex;flex-direction:column;gap:20px}
+  /* Desktop action zone — glass card above stage */
+  .action-zone{
+    background:rgba(255,255,255,.66);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--line);border-radius:20px;
+    padding:22px 24px 26px;margin-bottom:18px;
+    position:relative;overflow:hidden;flex:none}
+  .action-zone::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--rose),var(--gold),transparent);
+    border-radius:20px 20px 0 0}
+  .action-label{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:12.5px;letter-spacing:.22em;color:var(--berry);
+    text-transform:uppercase;margin-bottom:15px;
+    display:flex;align-items:center;gap:10px}
+  .action-label::after{
+    content:'';flex:1;height:1px;
+    background:linear-gradient(90deg,var(--line),transparent)}
+  #analyzeBtn{width:100%;justify-content:center;font-size:15px!important;
+    letter-spacing:.06em;border-radius:16px;padding:18px!important;margin-top:16px!important}
   .howto{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px 30px}
+  /* face scan deco */
+  .studio-deco{display:flex;flex-direction:column;align-items:center;gap:18px;padding:28px 20px;
+    background:var(--card);border:1px solid var(--line);border-radius:18px;margin-top:auto}
+  .fsm-wrap{position:relative;width:90px;height:112px;border-radius:45px/56px;
+    border:1px solid var(--line);overflow:hidden;
+    background:radial-gradient(ellipse at center,rgba(200,127,115,.1) 0%,transparent 70%)}
+  .fsm-wrap::before,.fsm-wrap::after{content:'';position:absolute;width:12px;height:12px;border:1.5px solid var(--berry);opacity:.7}
+  .fsm-wrap::before{top:8px;left:8px;border-right:0;border-bottom:0}
+  .fsm-wrap::after{bottom:8px;right:8px;border-left:0;border-top:0}
+  .fsm-bar{position:absolute;left:0;right:0;height:70px;
+    background:linear-gradient(180deg,transparent,rgba(200,127,115,.45),transparent);
+    animation:fsmove 2.4s ease-in-out infinite;top:-70px}
+  @keyframes fsmove{0%{top:-70px}100%{top:112px}}
+  .fsm-dot{position:absolute;width:3px;height:3px;background:var(--berry);border-radius:50%;opacity:.55}
+  .fsm-lbl{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;
+    color:var(--ink-soft);letter-spacing:.12em;text-align:center}
+  .deco-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .deco-chip{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:11.5px;font-weight:500;color:var(--ink-soft);letter-spacing:.02em}
   .howto h3{font-family:'Gowun Batang',serif;font-size:1.25rem;margin-bottom:18px}
   .steps{list-style:none;counter-reset:s}
   .steps li{counter-increment:s;display:flex;gap:14px;padding:11px 0;font-size:14px;
@@ -131,14 +173,38 @@
   .runner{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:999px;
     padding:8px 15px;font-size:13px;display:flex;gap:8px;align-items:center}
   .runner em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry)}
-  .cos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
-  .cos-card{background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:24px 22px;transition:.3s;position:relative;overflow:hidden}
-  .cos-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--rose)}
-  .cos-card .area{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry);font-size:15px}
-  .cos-card .pname{font-family:'Gowun Batang',serif;font-size:1.12rem;font-weight:700;margin:6px 0 8px;line-height:1.35}
-  .cos-card .ptip{font-size:13px;font-weight:300;color:var(--ink-soft)}
-  .cos-card .idx{position:absolute;top:14px;right:18px;font-family:'Cormorant Garamond',serif;font-size:34px;color:var(--line)}
+  /* Kit tabs */
+  .kit-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+  .kit-tab{cursor:pointer;background:rgba(255,255,255,.45);border:1px solid var(--line);
+    border-radius:14px;padding:15px 16px;font-family:'Gothic A1',sans-serif;
+    transition:.22s;display:flex;flex-direction:column;gap:3px;flex:1;min-width:120px;text-align:left}
+  .kit-tab .tab-num{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry);font-size:13px;line-height:1}
+  .kit-tab .tab-area{font-weight:700;font-size:13px;color:var(--ink)}
+  .kit-tab .tab-pick{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.4;margin-top:2px}
+  .kit-tab:hover{border-color:var(--berry)}
+  .kit-tab.active{background:var(--ink);border-color:var(--ink)}
+  .kit-tab.active .tab-num{color:var(--rose)}
+  .kit-tab.active .tab-area{color:var(--bg-2)}
+  .kit-tab.active .tab-pick{color:rgba(251,246,241,.5)}
+  /* Product grid */
+  .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:15px}
+  .prod-card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;transition:.28s;text-decoration:none;color:inherit;display:block}
+  .prod-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--rose)}
+  .prod-img{height:120px;display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;
+    color:rgba(255,255,255,.9);position:relative}
+  .prod-rank{position:absolute;top:9px;left:10px;background:rgba(0,0,0,.2);
+    border-radius:6px;padding:2px 7px;font-size:10px;letter-spacing:.06em;
+    font-family:'Gothic A1',sans-serif;font-style:normal;color:#fff;font-weight:500}
+  .prod-body{padding:13px 14px 15px}
+  .prod-brand{font-size:9.5px;letter-spacing:.2em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:3px}
+  .prod-name{font-family:'Gowun Batang',serif;font-weight:700;font-size:.9rem;line-height:1.35;margin-bottom:5px}
+  .prod-desc{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.55;margin-bottom:9px}
+  .prod-foot{display:flex;align-items:center;justify-content:space-between}
+  .prod-price{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--berry);font-weight:600}
+  .prod-go{font-size:9.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase}
+  .prod-card:hover .prod-go{color:var(--berry)}
   .tut-list{display:flex;flex-direction:column;gap:14px}
   .tut-row{display:flex;align-items:center;gap:20px;background:var(--card);
     border:1px solid var(--line);border-radius:16px;padding:20px 24px;text-decoration:none;color:inherit;transition:.28s}
@@ -154,9 +220,10 @@
   .yt-note{margin-top:22px;font-size:12.5px;color:var(--ink-soft);font-weight:300}
   .restart{margin-top:46px;text-align:center}
   footer{position:relative;z-index:2;border-top:1px solid var(--line);margin-top:40px;padding:48px 0 60px}
-  .foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
-  .disclaimer{max-width:62ch;font-size:12px;font-weight:300;color:var(--ink-soft)}
-  .foot-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--berry)}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
+  .foot-line{font-size:11.5px;font-weight:300;color:var(--ink-soft);line-height:1.7;letter-spacing:.02em}
+  .foot-brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--berry)}
+  .fsep{color:var(--gold);margin:0 9px;font-family:'Cormorant Garamond',serif;font-style:italic}
   #loader{position:fixed;inset:0;z-index:50;background:var(--bg);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s}
   #loader.hide{opacity:0;pointer-events:none}
@@ -164,14 +231,274 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   #loader .lt{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink-soft);font-size:16px}
   #loader .lb{font-family:'Cormorant Garamond',serif;letter-spacing:.34em;text-transform:uppercase;font-size:14px}
+  .partner-btn{cursor:pointer;font-family:'Gothic A1',sans-serif;font-size:12px;font-weight:500;
+    letter-spacing:.08em;padding:8px 18px;border-radius:999px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-soft);transition:.25s;white-space:nowrap}
+  .partner-btn:hover{border-color:var(--berry);color:var(--berry)}
+  .modal-backdrop{display:none;position:fixed;inset:0;z-index:100;background:rgba(44,33,29,.45);
+    backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
+  .modal-backdrop.open{display:flex}
+  .modal-box{background:var(--bg-2);border:1px solid var(--line);border-radius:22px;
+    padding:40px 38px;width:100%;max-width:520px;position:relative;box-shadow:var(--shadow);
+    max-height:90vh;overflow-y:auto}
+  .modal-close{position:absolute;top:16px;right:18px;background:none;border:none;cursor:pointer;
+    font-size:16px;color:var(--ink-soft);line-height:1;padding:4px 8px;border-radius:6px}
+  .modal-close:hover{color:var(--berry)}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+  .form-group label{font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--ink-soft)}
+  .form-group input,.form-group textarea{font-family:'Gothic A1',sans-serif;font-size:14px;padding:12px 14px;
+    border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.7);color:var(--ink);
+    outline:none;resize:vertical;transition:.2s}
+  .form-group input:focus,.form-group textarea:focus{border-color:var(--berry);background:#fff}
+  .form-group input::placeholder,.form-group textarea::placeholder{color:#b0a098}
+  .form-done{display:none;margin-top:14px;font-size:14px;font-weight:500;color:#4f8a68;text-align:center}
+  @media(max-width:520px){.form-row{grid-template-columns:1fr}.modal-box{padding:28px 22px}}
   .reveal{opacity:0;transform:translateY(26px);transition:.9s cubic-bezier(.2,.8,.2,1)}
   .reveal.in{opacity:1;transform:none}
+  /* Hero two-column layout */
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .hero h1{max-width:none}
+  /* h1 muted prefix line */
+  .h1-pre{display:block;font-family:'Gothic A1',sans-serif;font-weight:300;font-size:.44em;
+    color:var(--ink-soft);letter-spacing:.14em;margin-bottom:.65em;line-height:1.6}
+  /* Right preview card */
+  .hero-preview{position:relative;margin-top:20px}
+  .prev-badge{position:absolute;top:-16px;left:50%;transform:translateX(-50%);white-space:nowrap;
+    background:var(--ink);color:var(--bg-2);font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-size:12.5px;letter-spacing:.14em;padding:8px 22px;
+    border-radius:999px;z-index:2;box-shadow:0 4px 14px -4px rgba(44,33,29,.3)}
+  .prev-card{background:var(--card);border:1px solid var(--line);border-radius:24px;
+    padding:34px 30px 28px;box-shadow:var(--shadow);backdrop-filter:blur(14px);
+    position:relative;overflow:hidden}
+  .prev-card::before{content:'';position:absolute;top:-50px;right:-50px;width:130px;height:130px;
+    border-radius:50%;background:radial-gradient(circle,rgba(200,127,115,.3),transparent 70%);pointer-events:none}
+  .prev-face{width:76px;height:76px;border-radius:50%;
+    background:linear-gradient(135deg,var(--rose),var(--berry));
+    display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:18px;
+    box-shadow:0 8px 22px -8px rgba(140,58,79,.45)}
+  .prev-muse-lbl{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry);font-size:14px;margin-bottom:3px}
+  .prev-muse-name{font-family:'Gowun Batang',serif;font-weight:700;font-size:2rem;line-height:1.2}
+  .prev-muse-grp{font-size:11px;letter-spacing:.18em;color:var(--ink-soft);text-transform:uppercase;margin:3px 0 18px}
+  .prev-pct-row{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .prev-pct{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--berry);line-height:1}
+  .prev-pct small{font-size:.9rem}
+  .prev-pct-lbl{font-size:11px;letter-spacing:.18em;color:var(--ink-soft);text-transform:uppercase}
+  .prev-bar{height:6px;background:#e7d8cc;border-radius:999px;overflow:hidden;margin-bottom:22px}
+  .prev-bar i{display:block;height:100%;width:91%;border-radius:999px;
+    background:linear-gradient(90deg,var(--rose),var(--berry))}
+  .prev-runners{display:flex;gap:8px;flex-wrap:wrap}
+  .prev-runner{background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:12.5px;display:flex;gap:7px;align-items:center}
+  .prev-runner em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry)}
+  .prev-disclaimer{margin-top:16px;font-size:11px;color:var(--ink-soft);text-align:center;letter-spacing:.04em}
   @media(max-width:880px){
+    .hero-grid{grid-template-columns:1fr;gap:44px}
+    .hero-right{order:1}
     .studio-grid{grid-template-columns:1fr}
+    .studio-grid > .reveal{display:block}
     .result-card{grid-template-columns:1fr}
-    .result-photo{min-height:340px}
+    .result-photo{min-height:300px}
     .foot-grid{flex-direction:column}
     .hero{padding:5vh 0 7vh}
+    .tag{display:none}
+    .result-body{padding:28px 22px}
+    .kit-tab{min-width:90px}
+    .prod-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  }
+  @media(max-width:520px){
+    .wrap{padding:0 14px}
+    .nav{gap:8px}
+    .brand{font-size:19px}
+    .tag{display:none}
+    .partner-btn{padding:6px 12px;font-size:11px}
+    .kit-tabs{gap:6px}
+    .kit-tab{min-width:76px;padding:11px 9px}
+    .prod-grid{grid-template-columns:1fr 1fr}
+    .tut-row{padding:14px;gap:12px}
+    .tut-icon{width:40px;height:40px;font-size:16px}
+    .shr{padding:8px 11px;font-size:11px}
+    footer{padding:32px 0 44px}
+    .foot-line{font-size:10.5px}
+  }
+  /* ══ 모바일 전용 레이아웃 (768px 이하) ══ */
+  @media(max-width:768px){
+    /* 히어로·데코 숨기기 */
+    section.wrap.hero{display:none !important}
+    .studio-deco{display:none !important}
+    #studio .secnum,#studio .secdesc,#studio .rule{display:none}
+
+    /* 스튜디오가 첫 화면 */
+    #studio{padding:32px 0 56px}
+    .studio-right{margin-top:20px}
+
+    /* 타이틀 영역 — 앱처럼 중앙 정렬 */
+    #studio .sectitle{
+      text-align:center;font-size:1.85rem;margin-bottom:6px}
+    #studio .sectitle::before{
+      content:"✦";display:block;
+      font-family:'Cormorant Garamond',serif;
+      color:var(--berry);font-size:1.1rem;margin-bottom:10px}
+
+    /* 성별 칩 — 중앙 정렬, 작게 */
+    .pickrow{justify-content:center;gap:7px;margin-bottom:14px}
+    .chip{padding:7px 14px;font-size:12px}
+
+    /* 액션존 카드 스타일 해제 */
+    .action-zone{background:transparent;border:none;padding:0;margin-bottom:0;
+      backdrop-filter:none;-webkit-backdrop-filter:none;overflow:visible;border-radius:0}
+    .action-zone::before{display:none}
+    .action-label{display:none}
+
+    /* 스테이지 — 고정 높이로 compact */
+    .stage{flex:none;height:250px;border-radius:20px}
+    .stage .placeholder .ic{font-size:32px}
+    .stage .placeholder p{font-size:12px;max-width:20ch}
+
+    /* 버튼 그룹 — 2열 그리드 */
+    .stage-tools{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:10px;margin-top:13px}
+    .stage-tools .btn{
+      justify-content:center;padding:13px 8px;
+      font-size:13px;border-radius:14px;width:100%}
+
+    /* 분석 버튼 — 풀 와이드, 눈에 띄게 */
+    #analyzeBtn{
+      width:100%;justify-content:center;
+      font-size:15px !important;
+      padding:18px !important;
+      border-radius:16px;letter-spacing:.05em;
+      margin-top:10px !important}
+
+    /* 상태 텍스트 */
+    .status{text-align:center;margin-top:10px;font-size:12.5px}
+    .privacy{margin-top:18px;font-size:11.5px;gap:10px}
+
+    /* 하우투 카드 */
+    .howto{padding:24px 18px;border-radius:20px}
+    .howto h3{font-size:1.1rem;text-align:center;margin-bottom:18px}
+
+    /* 스텝 — 2×2 카드 그리드 */
+    .steps{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:10px;padding:0;margin:0}
+    .steps li{
+      display:flex;flex-direction:column;gap:4px;
+      background:rgba(255,255,255,.6);border:1px solid var(--line);
+      border-radius:14px;padding:13px 11px 11px;
+      font-size:11.5px;line-height:1.55;color:var(--ink-soft);
+      border-bottom:1px solid var(--line) !important}
+    .steps li::before{
+      font-size:1.25rem;margin-bottom:4px;align-self:flex-start}
+
+    /* ── 결과 화면 전체 재설계 ── */
+    #resultSection .secnum,#resultSection .sectitle,#resultSection .rule{display:none}
+    #resultSection{padding:0 0 48px}
+
+    /* 카드 스타일 해제 — 풀블리드 레이아웃 */
+    .result-card{
+      background:transparent;border:none;box-shadow:none;
+      border-radius:0;overflow:visible;grid-template-columns:1fr;gap:0}
+
+    /* 사진: 화면 가득, 그라디언트 오버레이 */
+    .result-photo{
+      margin:0 -16px;border-radius:0;
+      min-height:unset;height:78vw;max-height:420px;
+      position:relative;overflow:hidden}
+    .result-photo::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to bottom,transparent 35%,rgba(44,33,29,.72) 100%);
+      pointer-events:none}
+    .result-photo .ribbon{
+      top:14px;left:14px;font-size:11px;padding:5px 12px;z-index:2}
+
+    /* 사진 위에 이름 띄우기 */
+    .result-photo-name{
+      position:absolute;bottom:0;left:0;right:0;
+      z-index:2;padding:0 18px 20px;pointer-events:none}
+    .result-photo-name .rpn-label{
+      font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:13px;color:rgba(251,246,241,.7);letter-spacing:.1em;margin-bottom:3px}
+    .result-photo-name .rpn-name{
+      font-family:'Gowun Batang',serif;font-weight:700;
+      font-size:clamp(2.2rem,10vw,3rem);color:#fff;line-height:1.1;letter-spacing:-.01em}
+    .result-photo-name .rpn-row{
+      display:flex;align-items:baseline;gap:12px;margin-top:4px}
+    .result-photo-name .rpn-group{
+      font-size:12px;letter-spacing:.16em;color:rgba(251,246,241,.65);text-transform:uppercase}
+    .result-photo-name .rpn-pct{
+      font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:1.6rem;color:var(--rose);line-height:1}
+
+    /* 바디: 이름·그룹·% 숨기기 (사진 위에 이미 표시) */
+    .matchwith,.starname,.stargroup,.simwrap{display:none}
+
+    /* 바디 콘텐츠 */
+    .result-body{padding:18px 2px 0}
+    .vibe{font-size:13.5px;padding-left:14px;margin:0 0 20px;line-height:1.65}
+
+    /* Traits: 가로 스크롤 스와이프 */
+    .traits{
+      display:flex;gap:7px;flex-wrap:nowrap;
+      overflow-x:auto;-webkit-overflow-scrolling:touch;
+      scrollbar-width:none;padding-bottom:4px;margin-bottom:20px}
+    .traits::-webkit-scrollbar{display:none}
+    .trait{flex:none;font-size:12px;padding:7px 12px}
+
+    /* Runners: 가로 스크롤 */
+    .runners{padding-top:14px}
+    .rlabel{font-size:11px;letter-spacing:.14em;margin-bottom:8px}
+    .runner-list{
+      display:flex;gap:8px;flex-wrap:nowrap;
+      overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .runner-list::-webkit-scrollbar{display:none}
+    .runner{flex:none;font-size:12px;padding:7px 12px}
+
+    /* 공유 버튼 */
+    .card-share{margin-top:18px;padding-top:14px}
+    .card-share-btns{gap:7px}
+
+    /* ── 코스메틱 섹션 ── */
+    #cosmeticSection{padding:32px 0}
+    #cosmeticSection .secnum,#cosmeticSection .rule{display:none}
+    #cosmeticSection h2{font-size:1.4rem;margin-bottom:6px}
+    #cosmeticSection .secdesc{font-size:13px;margin-top:6px}
+
+    /* ── 튜토리얼 섹션 ── */
+    #tutorialSection{padding:28px 0 40px}
+    #tutorialSection .secnum,#tutorialSection .rule{display:none}
+    #tutorialSection .sectitle{font-size:1.35rem}
+    #tutorialSection .secdesc{font-size:12.5px;margin-top:6px}
+    .yt-note{font-size:11.5px;margin-top:14px}
+    .restart{margin-top:24px}
+  }
+  /* Share inside result card */
+  .card-share{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}
+  .card-share-btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .shr{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;
+    font-size:12px;font-weight:600;font-family:'Gothic A1',sans-serif;cursor:pointer;
+    border:1px solid transparent;text-decoration:none;transition:.22s;white-space:nowrap;line-height:1}
+  .shr:hover{transform:translateY(-2px);box-shadow:0 6px 18px -8px rgba(44,33,29,.25)}
+  .shr .si{font-size:14px;line-height:1}
+  .shr-copy{background:rgba(255,255,255,.7);border-color:var(--line);color:var(--ink)}
+  .shr-x{background:#000;color:#fff}
+  .shr-fb{background:#1877f2;color:#fff}
+  .shr-ig{background:linear-gradient(45deg,#f58529,#dd2a7b,#515bd4);color:#fff}
+  .share-toast{font-size:12px;color:#4f8a68;font-weight:500;margin-top:10px;
+    display:none;padding-left:2px}
+  /* QR modal */
+  .qr-modal-box{background:var(--bg-2);border:1px solid var(--line);border-radius:22px;
+    padding:40px 36px 36px;width:100%;max-width:360px;position:relative;
+    box-shadow:var(--shadow);text-align:center}
+  .qr-code-wrap{display:inline-flex;padding:16px;background:#fff;border-radius:16px;
+    border:1px solid var(--line);margin:20px 0 14px}
+  .qr-code-wrap img{width:200px;height:200px;display:block;border-radius:4px}
+  .qr-url{font-size:11px;color:var(--ink-soft);word-break:break-all;
+    font-family:'Cormorant Garamond',serif;letter-spacing:.04em;margin-top:6px}
+  @media(max-width:420px){
+    .qr-code-wrap img{width:170px;height:170px}
+    .qr-modal-box{padding:32px 22px 28px}
   }
 </style>
 </head>
@@ -182,46 +509,88 @@
 
 <div id="loader">
   <div class="lspin"></div>
-  <div class="lt">뮤즈를 깨우는 중…</div>
+  <div class="lt" data-i18n="loaderText">뮤즈를 깨우는 중…</div>
   <div class="lb">Mirror&nbsp;Muse</div>
 </div>
 
 <header class="wrap">
   <div class="nav">
     <div class="brand">Mirror <b>Muse</b></div>
-    <div class="tag">K-Beauty Resemblance Studio</div>
+    <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap">
+      <div class="tag" data-i18n="tagline">K-Beauty Resemblance Studio</div>
+      <select id="langSelect" class="partner-btn" style="background:var(--bg-2);padding:6px 10px;cursor:pointer">
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
+      </select>
+      <button class="partner-btn" id="qrBtn" title="모바일로 열기">&#9641; QR</button>
+      <button class="partner-btn" id="partnerBtn" data-i18n="partnerBtn">제휴 문의</button>
+    </div>
   </div>
 </header>
 
 <main>
   <section class="wrap hero">
-    <div class="eyebrow reveal">Find your face muse</div>
-    <h1 class="reveal">거울 속의 당신,<br>가장 닮은 <em>K-pop 뮤즈</em>를<br>만나다.</h1>
-    <p class="lede reveal">얼굴의 비율과 이목구비를 분석해 현시점 인기 K-pop 스타 200명 중
-      당신과 가장 닮은 뮤즈를 찾아드려요. 그 무드에 닿는 화장품과 부위별 메이크업 영상까지 한 번에.</p>
-    <div class="hero-cta reveal">
-      <a href="#studio"><button class="btn btn-solid">분석 시작하기 →</button></a>
-      <a href="#tutorialSection" style="text-decoration:none"><button class="btn btn-ghost">어떻게 작동하나요</button></a>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="eyebrow reveal" data-i18n="heroEyebrow">Find your face muse</div>
+        <h1 class="reveal" data-i18n-html="heroTitle"><span class="h1-pre">거울 속 그 얼굴,</span>가장 닮은 <em>K-pop</em><br>뮤즈를 만나다.</h1>
+        <p class="lede reveal" data-i18n="heroLede">얼굴의 비율과 이목구비를 읽어 현시점 인기 K-pop 스타 중 당신과 가장 닮은 뮤즈를 찾고, 그 무드에 닿는 화장품과 부위별 튜토리얼까지 안내해요.</p>
+        <div class="hero-cta reveal">
+          <a href="#studio" style="text-decoration:none;display:inline-flex"><button class="btn btn-solid" data-i18n="cta1">분석 시작하기 →</button></a>
+          <a href="#tutorialSection" style="text-decoration:none;display:inline-flex"><button class="btn btn-ghost" data-i18n="cta2">어떻게 작동하나요</button></a>
+        </div>
+        <div class="scrollcue reveal"><span class="ln"></span> <span data-i18n="scroll">scroll to begin</span></div>
+      </div>
+      <div class="hero-right reveal">
+        <div class="hero-preview">
+          <div class="prev-badge" data-i18n="prevBadge">✦ 분석 결과 예시</div>
+          <div class="prev-card">
+            <div class="prev-face">✺</div>
+            <div class="prev-muse-lbl">your face muse is</div>
+            <div class="prev-muse-name">장원영</div>
+            <div class="prev-muse-grp" data-i18n="prevMuseGrp">IVE · 갸름한 V라인형</div>
+            <div class="prev-pct-row">
+              <span class="prev-pct">91<small>%</small></span>
+              <span class="prev-pct-lbl">resemblance</span>
+            </div>
+            <div class="prev-bar"><i></i></div>
+            <div class="prev-runners">
+              <span class="prev-runner">카리나 <em>89%</em></span>
+              <span class="prev-runner">아이린 <em>87%</em></span>
+              <span class="prev-runner">윈터 <em>85%</em></span>
+            </div>
+            <p class="prev-disclaimer" data-i18n="prevDisclaimer">* 실제 분석 결과는 개인마다 달라요</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="scrollcue reveal"><span class="ln"></span> scroll to begin</div>
   </section>
 
   <section class="wrap block" id="studio">
-    <div class="secnum reveal">01 — The Mirror</div>
-    <h2 class="sectitle reveal">거울 앞에 서기</h2>
-    <p class="secdesc reveal">정면을 바라보고 얼굴 전체가 보이게 촬영하거나 사진을 올려주세요. 밝은 곳일수록 정확해요.</p>
+    <div class="secnum reveal" data-i18n="s01num">01 — The Mirror</div>
+    <h2 class="sectitle reveal" data-i18n="s01title">거울 앞에 서기</h2>
+    <p class="secdesc reveal" data-i18n="s01desc">정면을 바라보고 얼굴 전체가 보이게 촬영하거나 사진을 올려주세요. 밝은 곳일수록 정확해요.</p>
     <div class="rule reveal"></div>
     <div class="studio-grid">
       <div class="reveal">
-        <div class="pickrow">
-          <button class="chip" data-gender="auto" aria-pressed="true">성별 자동 인식</button>
-          <button class="chip" data-gender="F" aria-pressed="false">여성 뮤즈 풀</button>
-          <button class="chip" data-gender="M" aria-pressed="false">남성 뮤즈 풀</button>
+        <div class="action-zone">
+          <div class="action-label">✦ prepare</div>
+          <div class="pickrow">
+            <button class="chip" data-gender="auto" aria-pressed="true" data-i18n="chipAuto">성별 자동 인식</button>
+            <button class="chip" data-gender="F" aria-pressed="false" data-i18n="chipF">여성 뮤즈 풀</button>
+            <button class="chip" data-gender="M" aria-pressed="false" data-i18n="chipM">남성 뮤즈 풀</button>
+          </div>
+          <div class="stage-tools">
+            <button class="btn btn-ghost" id="camBtn" data-i18n="camBtn">카메라 켜기</button>
+            <button class="btn btn-solid" id="shotBtn" style="display:none" data-i18n="shotBtn">📸 촬영하기</button>
+            <button class="btn btn-ghost" id="uploadBtn" data-i18n="uploadBtn">사진 업로드</button>
+            <input type="file" accept="image/*" class="fileinput" id="fileInput" />
+          </div>
         </div>
         <div class="stage" id="stage">
           <div class="placeholder" id="placeholder">
             <div class="ic">✺</div>
-            <p>카메라를 켜거나 얼굴 사진을 업로드하면 이 자리에서 분석돼요.</p>
+            <p data-i18n="placeholder">카메라를 켜거나 얼굴 사진을 업로드하면 이 자리에서 분석돼요.</p>
           </div>
           <video id="liveVideo" autoplay playsinline muted style="display:none"></video>
           <canvas id="previewCanvas" style="display:none"></canvas>
@@ -229,573 +598,177 @@
             <div class="bar"></div>
             <div class="corner tl"></div><div class="corner tr"></div>
             <div class="corner bl"></div><div class="corner br"></div>
-            <div class="lbl">analysing facial geometry…</div>
+            <div class="lbl" data-i18n="scanLabel">analysing facial geometry…</div>
           </div>
         </div>
-        <div class="stage-tools">
-          <button class="btn btn-ghost" id="camBtn">카메라 켜기</button>
-          <button class="btn btn-solid" id="shotBtn" style="display:none">📸 촬영하기</button>
-          <button class="btn btn-ghost" id="uploadBtn">사진 업로드</button>
-          <input type="file" accept="image/*" class="fileinput" id="fileInput" />
-        </div>
-        <button class="btn btn-solid" id="analyzeBtn" style="margin-top:14px;display:none">✦ 닮은 뮤즈 찾기</button>
+        <button class="btn btn-solid" id="analyzeBtn" style="display:none" data-i18n="analyzeBtn">✦ 닮은 뮤즈 찾기</button>
         <div class="status" id="status"></div>
       </div>
-      <div class="howto reveal">
-        <h3>분석은 이렇게 진행돼요</h3>
-        <ol class="steps">
-          <li>얼굴 68개 포인트를 찾아 윤곽·눈·코·입의 비율을 측정해요.</li>
-          <li>인기 K-pop 스타 200명의 얼굴형 데이터와 비교해 닮음 지수를 계산해요.</li>
-          <li>가장 닮은 뮤즈의 시그니처 무드에 맞춘 화장품을 추천해요.</li>
-          <li>부위별로 '조회수 순' 유튜브 튜토리얼로 바로 연결해 드려요.</li>
-        </ol>
-        <div class="privacy">
-          <span class="dot"></span>
-          <span><b style="color:var(--ink)">사진은 서버로 전송되지 않습니다.</b> 모든 얼굴 분석은
-          당신의 브라우저 안에서만 이루어지고, 결과 외에 어떤 이미지도 저장하지 않아요.</span>
+      <div class="studio-right reveal">
+        <div class="howto">
+          <h3 data-i18n="howtoTitle">분석은 이렇게 진행돼요</h3>
+          <ol class="steps">
+            <li data-i18n="step1">얼굴 68개 포인트를 찾아 윤곽·눈·코·입의 비율을 측정해요.</li>
+            <li data-i18n="step2">인기 K-pop 스타들의 얼굴형 데이터와 비교해 닮음 지수를 계산해요.</li>
+            <li data-i18n="step3">가장 닮은 뮤즈의 시그니처 무드에 맞춘 화장품을 추천해요.</li>
+            <li data-i18n="step4">부위별로 '조회수 순' 유튜브 튜토리얼로 바로 연결해 드려요.</li>
+          </ol>
+          <div class="privacy">
+            <span class="dot"></span>
+            <span data-i18n-html="privacy"><b style="color:var(--ink)">사진은 서버로 전송되지 않습니다.</b> 모든 얼굴 분석은
+            당신의 브라우저 안에서만 이루어지고, 결과 외에 어떤 이미지도 저장하지 않아요.</span>
+          </div>
+        </div>
+        <div class="studio-deco">
+          <div class="fsm-wrap">
+            <div class="fsm-bar"></div>
+            <span class="fsm-dot" style="top:20%;left:36%"></span>
+            <span class="fsm-dot" style="top:20%;left:60%"></span>
+            <span class="fsm-dot" style="top:33%;left:22%"></span>
+            <span class="fsm-dot" style="top:33%;left:74%"></span>
+            <span class="fsm-dot" style="top:48%;left:50%"></span>
+            <span class="fsm-dot" style="top:60%;left:34%"></span>
+            <span class="fsm-dot" style="top:60%;left:62%"></span>
+            <span class="fsm-dot" style="top:72%;left:50%"></span>
+            <span class="fsm-dot" style="top:52%;left:16%"></span>
+            <span class="fsm-dot" style="top:52%;left:80%"></span>
+          </div>
+          <div class="fsm-lbl">68 landmark points · analysing</div>
+          <div class="deco-chips">
+            <span class="deco-chip" data-i18n="decoChip1">✦ 즉시 분석</span>
+            <span class="deco-chip" data-i18n="decoChip2">◠ 서버 저장 없음</span>
+            <span class="deco-chip" data-i18n="decoChip3">❀ 화장품 추천</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <section class="wrap block" id="resultSection">
-    <div class="secnum">02 — Your Muse</div>
-    <h2 class="sectitle">당신과 가장 닮은 뮤즈</h2>
+    <div class="secnum" data-i18n="s02num">02 — Your Muse</div>
+    <h2 class="sectitle" data-i18n="s02title">당신과 가장 닮은 뮤즈</h2>
     <div class="rule"></div>
     <div class="result-card">
       <div class="result-photo">
-        <span class="ribbon">analysed</span>
+        <span class="ribbon" data-i18n="ribbon">analysed</span>
         <canvas id="resultCanvas"></canvas>
+        <div class="result-photo-name" id="rPhotoName" style="display:none">
+          <div class="rpn-label" data-i18n="matchwith">your face muse is</div>
+          <div class="rpn-name" id="rPhotoStarName"></div>
+          <div class="rpn-row">
+            <span class="rpn-group" id="rPhotoGroup"></span>
+            <span class="rpn-pct"><span id="rPhotoSim">0</span>%</span>
+          </div>
+        </div>
       </div>
       <div class="result-body">
-        <div class="matchwith">your face muse is</div>
+        <div class="matchwith" data-i18n="matchwith">your face muse is</div>
         <div class="starname" id="rStarName">—</div>
         <div class="stargroup" id="rStarGroup">—</div>
         <div class="simwrap">
           <div class="simtop">
             <div class="pct"><span id="rSim">0</span><small>%</small></div>
-            <div class="lab">resemblance</div>
+            <div class="lab" data-i18n="simLabel">resemblance</div>
           </div>
           <div class="simbar"><i id="rSimBar"></i></div>
         </div>
         <div class="vibe" id="rVibe">—</div>
         <div class="traits" id="rTraits"></div>
         <div class="runners">
-          <div class="rlabel">also resembling</div>
+          <div class="rlabel" data-i18n="alsoResembling">also resembling</div>
           <div class="runner-list" id="rRunners"></div>
+        </div>
+        <div class="card-share" id="cardShare">
+          <div class="card-share-row">
+            <div class="card-share-btns">
+              <button class="shr shr-copy" id="shrCopy"><span class="si">🔗</span><span data-i18n="shrCopyLbl">복사</span></button>
+              <a class="shr shr-x" id="shrX" href="#" target="_blank" rel="noopener"><span class="si">𝕏</span>X</a>
+              <a class="shr shr-fb" id="shrFb" href="#" target="_blank" rel="noopener"><span class="si">f</span>Facebook</a>
+              <button class="shr shr-ig" id="shrIg"><span class="si">📷</span>Instagram</button>
+            </div>
+          </div>
+          <div class="share-toast" id="shareToast"></div>
         </div>
       </div>
     </div>
   </section>
 
   <section class="wrap block" id="cosmeticSection">
-    <div class="secnum">03 — The Kit</div>
-    <h2 class="sectitle"><span id="cStarName">뮤즈</span>에게 닿는 화장품</h2>
-    <p class="secdesc">닮은 뮤즈의 얼굴형 무드를 만드는 핵심 아이템이에요. 부위별 제형과 컬러 무드를 참고해 보세요.</p>
+    <div class="secnum" data-i18n="s03num">03 — The Kit</div>
+    <h2 class="sectitle" id="s03title">뮤즈에게 닿는 화장품</h2>
+    <p class="secdesc" id="s03desc" data-i18n="s03desc">탭을 눌러 부위별 인기 화장품을 확인하세요.</p>
     <div class="rule"></div>
-    <div class="cos-grid" id="cosGrid"></div>
+    <div class="kit-tabs" id="kitTabs"></div>
+    <div id="kitProducts"></div>
   </section>
 
   <section class="wrap block" id="tutorialSection">
-    <div class="secnum">04 — Watch &amp; Learn</div>
-    <h2 class="sectitle">부위별 메이크업 튜토리얼</h2>
-    <p class="secdesc">각 버튼은 그 순간 유튜브에서 <b style="color:var(--berry)">조회수가 가장 높은 영상</b> 순으로 정렬된
+    <div class="secnum" data-i18n="s04num">04 — Watch &amp; Learn</div>
+    <h2 class="sectitle" data-i18n="s04title">부위별 메이크업 튜토리얼</h2>
+    <p class="secdesc" data-i18n-html="s04desc">각 버튼은 그 순간 유튜브에서 <b style="color:var(--berry)">조회수가 가장 높은 영상</b> 순으로 정렬된
       검색 결과로 연결돼요. 항상 '지금 가장 인기 있는' 튜토리얼을 볼 수 있어요.</p>
     <div class="rule"></div>
     <div class="tut-list" id="tutList"></div>
-    <p class="yt-note">※ 조회수 정렬 검색으로 연결되므로 항상 최신 인기 영상이 노출됩니다.</p>
+    <p class="yt-note" data-i18n="s04note">※ 조회수 정렬 검색으로 연결되므로 항상 최신 인기 영상이 노출됩니다.</p>
     <div class="restart">
-      <button class="btn btn-solid" id="restartBtn">↺ 다른 사진으로 다시 하기</button>
+      <button class="btn btn-solid" id="restartBtn" data-i18n="restart">↺ 다시 하기</button>
     </div>
   </section>
 </main>
 
-<footer class="wrap">
-  <div class="foot-grid">
-    <div class="disclaimer">
-      <span class="foot-brand">Mirror Muse</span><br><br>
-      닮음 분석은 얼굴 비율 데이터를 기반으로 한 <b>엔터테인먼트용 추정</b>이며 과학적·의학적 판단이 아닙니다.
-      뮤즈 명단은 2026년 기준 인기 K-pop 아티스트 200명으로 구성했으며, 각 인물의 얼굴형 수치는 실제 사진을 측정한 값이 아니라
-      얼굴형 아키타입을 바탕으로 생성된 추정값입니다. 본 서비스는 언급된 아티스트 및 소속사와 제휴 관계가 없습니다.
-      화장품 추천은 제형·컬러 무드 가이드이며 특정 브랜드를 보증하지 않습니다.
-      업로드한 사진은 브라우저에서만 처리되고 서버에 저장되지 않습니다.
+<div class="modal-backdrop" id="qrModal">
+  <div class="qr-modal-box">
+    <button class="modal-close" id="qrModalClose">✕</button>
+    <div class="secnum" style="margin-bottom:4px">Mobile</div>
+    <h2 class="sectitle" style="font-size:1.5rem;margin-bottom:8px" data-i18n="qrModalTitle">모바일로 열기</h2>
+    <p style="font-size:13px;font-weight:300;color:var(--ink-soft);line-height:1.7" data-i18n-html="qrModalDesc">
+      QR 코드를 스마트폰 카메라로 스캔하면<br>바로 분석을 시작할 수 있어요.
+    </p>
+    <div class="qr-code-wrap">
+      <img id="qrModalImg" src="" alt="QR Code" />
     </div>
-    <div class="tag" style="align-self:flex-end">© 2026 · Built for Firebase Hosting</div>
+    <div class="qr-url" id="qrModalUrl"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="partnerModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="secnum" style="margin-bottom:6px">Partnership</div>
+    <h2 class="sectitle" style="font-size:1.6rem;margin-bottom:6px" data-i18n="partnerTitle">제휴 문의</h2>
+    <p style="font-size:13px;font-weight:300;color:var(--ink-soft);margin-bottom:24px" data-i18n="partnerDesc">브랜드 협업·광고·콜라보 제안을 보내주시면 빠르게 답변드릴게요.</p>
+    <form action="https://formspree.io/f/xzdwpydr" method="POST" id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cf-name" data-i18n="cfName">이름 / 담당자</label>
+          <input type="text" id="cf-name" name="name" placeholder="홍길동" data-i18n-ph="cfNamePh" required />
+        </div>
+        <div class="form-group">
+          <label for="cf-email" data-i18n="cfEmail">이메일</label>
+          <input type="email" id="cf-email" name="email" placeholder="hello@brand.com" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cf-company" data-i18n="cfCompany">회사 / 브랜드명</label>
+        <input type="text" id="cf-company" name="company" placeholder="브랜드명을 입력해주세요" data-i18n-ph="cfCompanyPh" />
+      </div>
+      <div class="form-group">
+        <label for="cf-message" data-i18n="cfMessage">문의 내용</label>
+        <textarea id="cf-message" name="message" rows="4" placeholder="제안하실 내용을 자유롭게 작성해주세요." data-i18n-ph="cfMessagePh" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-solid" id="cfSubmit" style="width:100%" data-i18n="cfSubmit">문의 보내기 →</button>
+      <p class="form-done" id="cfDone" data-i18n="cfDone">감사합니다! 빠른 시일 내 연락드릴게요.</p>
+    </form>
+  </div>
+</div>
+
+<footer class="wrap">
+  <div class="foot-line" data-i18n-html="footerLine">
+    <span class="foot-brand">Mirror Muse</span> — 닮음 분석은 얼굴 비율 데이터를 기반으로 한 엔터테인먼트용 추정이며 과학적·의학적 판단이 아닙니다. 뮤즈 명단은 2026년 기준 인기 K-pop 아티스트 200명으로 구성했으며, 얼굴형 수치는 아키타입 기반 추정값입니다. 언급된 아티스트 및 소속사와 제휴 관계가 없습니다. 화장품 추천은 무드 가이드이며 특정 브랜드를 보증하지 않습니다. 업로드한 사진은 브라우저에서만 처리되고 서버에 저장되지 않습니다. © 2026
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/dist/face-api.js"></script>
-<script>
-/* ============================================================
-   MIRROR MUSE — face analysis & K-pop muse matching (200 roster)
-   ============================================================ */
-const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/model';
-
-/* ---- 12 face-shape archetypes : target ratios + look kits ---- */
-const ARCHETYPES = {
-  doll_long:{ label:'길고 갸름한 인형형',
-    t:{faceRatio:1.55,jawRatio:0.74,eyeSize:0.30,eyeSpacing:0.30,noseWidth:0.23,lipFull:0.17},
-    vibe:'맑고 투명한 물광 피부에 동그랗고 큰 눈, 사랑스러운 인형 같은 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'글로우 톤업 쿠션',tip:'한 톤 밝게, 촉촉한 물광 마무리.'},
-         {area:'아이 메이크업',product:'코랄·피치 펄 섀도우',tip:'애교살을 펄로 밝혀 눈을 동그랗고 크게.'},
-         {area:'눈썹',product:'옅은 갈색 아이브로우 펜슬',tip:'끝을 살짝 올린 자연스러운 아치형.'},
-         {area:'립',product:'코랄빛 글로시 틴트',tip:'안쪽부터 톡톡, 물기 가득 그라데이션.'},
-         {area:'블러셔 · 쉐딩',product:'복숭아빛 크림 블러셔',tip:'볼 안쪽 높게, 발그레한 홍조.'}],
-      M:[{area:'베이스 · 피부',product:'글로우 톤업 베이스',tip:'맑고 화사하게, 잡티만 가볍게 커버.'},
-         {area:'아이 메이크업',product:'라이트 브라운 음영 섀도우',tip:'큰 눈매를 부드럽게 살짝만.'},
-         {area:'눈썹',product:'옅은 브라운 브로우',tip:'자연스러운 곡선, 끝만 정리.'},
-         {area:'립',product:'코랄 핑크 립밤',tip:'촉촉한 혈색만 더하기.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 쉐딩',tip:'콧대만 가볍게 입체감.'}]}},
-  vline_cat:{ label:'갸름한 V라인 고양이형',
-    t:{faceRatio:1.48,jawRatio:0.71,eyeSize:0.27,eyeSpacing:0.33,noseWidth:0.24,lipFull:0.16},
-    vibe:'잡티 없는 도자기 피부에 길게 뺀 눈매, 시크하고 도도한 쿨톤 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'세미매트 파운데이션',tip:'쿨톤 호수로 매끈한 도자기 피부.'},
-         {area:'아이 메이크업',product:'모브·버건디 매트 섀도우',tip:'눈꼬리를 길게 빼는 스모키 라인.'},
-         {area:'눈썹',product:'진한 회갈색 아이브로우',tip:'각진 직선형으로 도도하게.'},
-         {area:'립',product:'쿨로즈·플럼 매트 립',tip:'선명한 입술 라인으로 시크하게.'},
-         {area:'블러셔 · 쉐딩',product:'쿨톤 컨투어 쉐딩',tip:'광대 아래·턱선 음영으로 갸름하게.'}],
-      M:[{area:'베이스 · 피부',product:'세미매트 베이스',tip:'매끈하고 깔끔한 피부.'},
-         {area:'아이 메이크업',product:'딥브라운 라인 섀도우',tip:'눈꼬리를 살린 날렵한 라인.'},
-         {area:'눈썹',product:'다크 직선 브로우',tip:'또렷하고 각진 일자 눈썹.'},
-         {area:'립',product:'뉴드 베이지 립',tip:'무심한 누드 톤.'},
-         {area:'블러셔 · 쉐딩',product:'컨투어 쉐딩',tip:'광대 아래 음영으로 갸름하게.'}]}},
-  soft_oval:{ label:'부드러운 타원형',
-    t:{faceRatio:1.40,jawRatio:0.78,eyeSize:0.27,eyeSpacing:0.29,noseWidth:0.24,lipFull:0.17},
-    vibe:'은은한 윤기의 청순한 피부에 자연스러운 음영, 따뜻한 데일리 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'내추럴 새틴 쿠션',tip:'본연의 피부톤에 윤기만 더해.'},
-         {area:'아이 메이크업',product:'웜브라운 데일리 섀도우',tip:'은은한 음영, 가는 갈색 라인.'},
-         {area:'눈썹',product:'내추럴 브라운 브로우',tip:'결을 살린 자연스러운 곡선형.'},
-         {area:'립',product:'로즈브라운 벨벳 틴트',tip:'살짝 매트한 그라데이션.'},
-         {area:'블러셔 · 쉐딩',product:'코랄피치 파우더 블러셔',tip:'볼 중앙에 은은한 혈색.'}],
-      M:[{area:'베이스 · 피부',product:'내추럴 새틴 베이스',tip:'은은한 윤기, 깨끗한 피부톤.'},
-         {area:'아이 메이크업',product:'웜브라운 음영 섀도우',tip:'따뜻한 음영으로 부드럽게.'},
-         {area:'눈썹',product:'내추럴 브라운 브로우',tip:'결을 살린 단정한 곡선형.'},
-         {area:'립',product:'핑크 누드 립밤',tip:'따뜻한 혈색만 더하기.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 쉐딩',tip:'가벼운 음영으로 입체감만.'}]}},
-  cat_defined:{ label:'또렷한 고양이형',
-    t:{faceRatio:1.34,jawRatio:0.80,eyeSize:0.28,eyeSpacing:0.32,noseWidth:0.26,lipFull:0.20},
-    vibe:'건강한 윤기 피부에 또렷한 캣아이, 입술색 같은 MLBB 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'새틴 글로우 파운데이션',tip:'건강한 윤기로 생기 있게.'},
-         {area:'아이 메이크업',product:'브론즈·웜브라운 섀도우',tip:'눈꼬리 또렷한 캣아이 라인.'},
-         {area:'눈썹',product:'내추럴 브라운 도톰 브로우',tip:'살짝 직선형으로 채워 시크하게.'},
-         {area:'립',product:'MLBB 누드로즈 매트',tip:'본연의 입술색 같은 누드 톤.'},
-         {area:'블러셔 · 쉐딩',product:'코랄 매트 블러셔',tip:'광대 옆으로 길게, 시크하게.'}],
-      M:[{area:'베이스 · 피부',product:'새틴 베이스',tip:'건강한 윤기의 깔끔한 피부.'},
-         {area:'아이 메이크업',product:'웜브라운 캣 라인 섀도우',tip:'눈매를 또렷하게 살리는 라인.'},
-         {area:'눈썹',product:'내추럴 도톰 브로우',tip:'살짝 직선형으로 또렷하게.'},
-         {area:'립',product:'누드 핑크 립밤',tip:'자연스러운 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 컨투어',tip:'광대 아래만 가벼운 음영.'}]}},
-  round_cute:{ label:'동그랗고 사랑스러운형',
-    t:{faceRatio:1.30,jawRatio:0.82,eyeSize:0.29,eyeSpacing:0.30,noseWidth:0.25,lipFull:0.18},
-    vibe:'발그레한 홍조와 동그란 눈매, 사랑스럽고 화사한 큐티 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'촉촉 글로우 쿠션',tip:'화사하게 한 톤 업, 생기 있게.'},
-         {area:'아이 메이크업',product:'핑크·피치 펄 섀도우',tip:'둥근 음영과 애교살 펄.'},
-         {area:'눈썹',product:'옅은 브라운 아치 브로우',tip:'부드러운 아치형으로 사랑스럽게.'},
-         {area:'립',product:'체리·핑크 글로시 틴트',tip:'촉촉한 풀립으로 발랄하게.'},
-         {area:'블러셔 · 쉐딩',product:'핑크 크림 블러셔',tip:'볼 중앙 동그랗게 큐티 홍조.'}],
-      M:[{area:'베이스 · 피부',product:'촉촉 글로우 베이스',tip:'화사한 한 톤 업.'},
-         {area:'아이 메이크업',product:'라이트 피치 음영 섀도우',tip:'동그란 눈매를 부드럽게.'},
-         {area:'눈썹',product:'옅은 브라운 부드러운 브로우',tip:'부드러운 곡선형.'},
-         {area:'립',product:'핑크 글로시 립밤',tip:'촉촉한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 쉐딩 + 옅은 블러셔',tip:'살짝의 음영과 혈색.'}]}},
-  clear_chic:{ label:'또렷한 청순+시크형',
-    t:{faceRatio:1.42,jawRatio:0.75,eyeSize:0.28,eyeSpacing:0.30,noseWidth:0.24,lipFull:0.17},
-    vibe:'맑은 피부에 또렷한 이목구비, 청순함과 시크함이 공존하는 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'내추럴 글로우 파운데이션',tip:'맑고 투명하게, 잡티만 커버.'},
-         {area:'아이 메이크업',product:'로즈브라운 섀도우',tip:'깔끔한 음영과 또렷한 라인.'},
-         {area:'눈썹',product:'내추럴 다크브라운 브로우',tip:'살짝 직선형으로 또렷하게.'},
-         {area:'립',product:'로즈 코랄 세미매트 틴트',tip:'선명하면서도 부드러운 입술.'},
-         {area:'블러셔 · 쉐딩',product:'로즈 파우더 블러셔',tip:'광대를 따라 은은하게.'}],
-      M:[{area:'베이스 · 피부',product:'내추럴 글로우 베이스',tip:'맑고 투명한 피부.'},
-         {area:'아이 메이크업',product:'로즈브라운 음영 섀도우',tip:'깔끔한 음영으로 또렷함만.'},
-         {area:'눈썹',product:'내추럴 다크 브로우',tip:'또렷하고 단정하게.'},
-         {area:'립',product:'로즈 누드 립밤',tip:'은은한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 쉐딩',tip:'가벼운 음영으로 입체감.'}]}},
-  petite_neat:{ label:'작고 단정한 타원형',
-    t:{faceRatio:1.38,jawRatio:0.77,eyeSize:0.27,eyeSpacing:0.28,noseWidth:0.23,lipFull:0.16},
-    vibe:'정돈된 작은 얼굴에 또렷한 눈매, 세련되고 단아한 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'세미매트 톤업 베이스',tip:'매끈하고 깔끔한 피부.'},
-         {area:'아이 메이크업',product:'뉴트럴 브라운 섀도우',tip:'또렷한 라인과 절제된 음영.'},
-         {area:'눈썹',product:'딥브라운 슬림 브로우',tip:'얇고 단정한 곡선형.'},
-         {area:'립',product:'로즈베이지 매트 립',tip:'차분하고 정돈된 입술 컬러.'},
-         {area:'블러셔 · 쉐딩',product:'뉴트럴 쉐딩 + 옅은 블러셔',tip:'작은 얼굴을 살리는 음영.'}],
-      M:[{area:'베이스 · 피부',product:'세미매트 톤업 베이스',tip:'매끈하고 깔끔한 피부.'},
-         {area:'아이 메이크업',product:'뉴트럴 브라운 음영 섀도우',tip:'절제된 음영으로 세련되게.'},
-         {area:'눈썹',product:'딥브라운 슬림 브로우',tip:'얇고 단정한 곡선형.'},
-         {area:'립',product:'베이지 누드 립밤',tip:'차분한 누드 톤.'},
-         {area:'블러셔 · 쉐딩',product:'뉴트럴 쉐딩',tip:'은은한 음영으로 정돈.'}]}},
-  heart_alluring:{ label:'하트형 고혹적 인상',
-    t:{faceRatio:1.36,jawRatio:0.76,eyeSize:0.28,eyeSpacing:0.31,noseWidth:0.25,lipFull:0.19},
-    vibe:'화사한 피부에 또렷하고 고혹적인 눈매, 우아하면서 강렬한 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'글로우 파운데이션',tip:'화사한 윤기로 우아하게.'},
-         {area:'아이 메이크업',product:'골드·버건디 섀도우',tip:'또렷한 음영과 길게 뺀 라인.'},
-         {area:'눈썹',product:'다크브라운 아치 브로우',tip:'또렷한 아치형으로 우아하게.'},
-         {area:'립',product:'레드로즈 벨벳 립',tip:'선명한 입술로 강렬한 포인트.'},
-         {area:'블러셔 · 쉐딩',product:'로즈 컨투어 블러셔',tip:'광대를 따라 우아한 음영.'}],
-      M:[{area:'베이스 · 피부',product:'글로우 베이스',tip:'화사한 윤기.'},
-         {area:'아이 메이크업',product:'골드브라운 음영 섀도우',tip:'또렷한 음영으로 고혹적인 눈매.'},
-         {area:'눈썹',product:'다크브라운 아치 브로우',tip:'또렷한 아치형.'},
-         {area:'립',product:'로즈 누드 립밤',tip:'은은한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'컨투어 쉐딩',tip:'광대를 따라 음영.'}]}},
-  golden_oval:{ label:'길고 균형잡힌 타원형',
-    t:{faceRatio:1.52,jawRatio:0.80,eyeSize:0.25,eyeSpacing:0.30,noseWidth:0.27,lipFull:0.16},
-    vibe:'균형 잡힌 황금비 윤곽에 깨끗한 피부, 단정하고 정제된 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'내추럴 톤업 베이스',tip:'깨끗하고 균일한 피부톤.'},
-         {area:'아이 메이크업',product:'옅은 브라운 섀도우',tip:'음영만 살짝 더해 또렷하게.'},
-         {area:'눈썹',product:'짙은 일자 브로우',tip:'숱을 채워 단정하고 또렷하게.'},
-         {area:'립',product:'내추럴 누드 틴트',tip:'혈색만 살린 자연 누드.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 컨투어',tip:'콧대·턱선에 가벼운 입체감.'}],
-      M:[{area:'베이스 · 피부',product:'내추럴 톤업 베이스',tip:'피부톤 보정 + 모공 커버.'},
-         {area:'아이 메이크업',product:'옅은 브라운 음영 섀도우',tip:'음영만 살짝 더하기.'},
-         {area:'눈썹',product:'짙은 일자 브로우',tip:'숱을 채워 또렷하게.'},
-         {area:'립',product:'내추럴 컬러 립밤',tip:'자연스러운 누드.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 컨투어',tip:'콧대·턱선만 가볍게.'}]}},
-  strong_jaw:{ label:'또렷한 턱선형',
-    t:{faceRatio:1.41,jawRatio:0.84,eyeSize:0.26,eyeSpacing:0.31,noseWidth:0.28,lipFull:0.19},
-    vibe:'또렷한 턱선과 도톰한 입술, 건강하고 또렷한 무대 메이크업 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'세미매트 베이스',tip:'번들거림 없이 깔끔한 피부.'},
-         {area:'아이 메이크업',product:'다크브라운 음영 섀도우',tip:'쌍꺼풀 라인을 따라 또렷한 음영.'},
-         {area:'눈썹',product:'내추럴 다크 브로우',tip:'또렷하고 살짝 직선형으로.'},
-         {area:'립',product:'코랄 핑크 벨벳 틴트',tip:'도톰한 입술에 화사한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'쉐딩 + 코랄 블러셔',tip:'턱선 음영, 광대 위 혈색.'}],
-      M:[{area:'베이스 · 피부',product:'세미매트 베이스',tip:'건강한 피부톤, 깔끔하게.'},
-         {area:'아이 메이크업',product:'다크브라운 음영 섀도우',tip:'쌍꺼풀 라인을 따라 또렷한 음영.'},
-         {area:'눈썹',product:'내추럴 다크 브로우',tip:'또렷하고 살짝 직선형으로.'},
-         {area:'립',product:'내추럴 핑크 립밤',tip:'도톰한 입술에 촉촉한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'쉐딩 + 옅은 코랄 블러셔',tip:'턱선 음영, 광대 위 살짝 혈색.'}]}},
-  long_sharp:{ label:'길고 시원한 윤곽형',
-    t:{faceRatio:1.56,jawRatio:0.83,eyeSize:0.24,eyeSpacing:0.31,noseWidth:0.28,lipFull:0.16},
-    vibe:'길고 시원한 얼굴형에 또렷한 이목구비, 깔끔하고 도시적인 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'내추럴 톤업 베이스',tip:'깨끗하고 균일한 피부톤.'},
-         {area:'아이 메이크업',product:'라이트 브라운 섀도우',tip:'은은한 음영으로 또렷함만.'},
-         {area:'눈썹',product:'다크브라운 슬림 일자 브로우',tip:'시원하고 깔끔한 일자형.'},
-         {area:'립',product:'누드 핑크 틴트',tip:'자연스러운 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 쉐딩',tip:'헤어라인·턱선만 가볍게.'}],
-      M:[{area:'베이스 · 피부',product:'내추럴 톤업 베이스',tip:'깨끗하고 균일한 피부톤.'},
-         {area:'아이 메이크업',product:'라이트 브라운 음영 섀도우',tip:'은은한 음영으로 또렷함만.'},
-         {area:'눈썹',product:'다크브라운 슬림 일자 브로우',tip:'시원하고 깔끔한 일자형.'},
-         {area:'립',product:'누드 핑크 립밤',tip:'자연스러운 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'라이트 쉐딩',tip:'헤어라인·턱선만 가볍게.'}]}},
-  broad_soft:{ label:'넓고 단정한 윤곽형',
-    t:{faceRatio:1.43,jawRatio:0.86,eyeSize:0.25,eyeSpacing:0.31,noseWidth:0.27,lipFull:0.19},
-    vibe:'넓고 단정한 윤곽에 도톰한 입술, 부드럽고 정제된 무드.',
-    looks:{
-      F:[{area:'베이스 · 피부',product:'글로우 톤업 베이스',tip:'화사하고 깨끗한 피부 표현.'},
-         {area:'아이 메이크업',product:'소프트 브라운 섀도우',tip:'부드러운 음영으로 또렷함만.'},
-         {area:'눈썹',product:'내추럴 브라운 곡선 브로우',tip:'부드러운 곡선형으로 단정하게.'},
-         {area:'립',product:'코랄 핑크 글로시 틴트',tip:'도톰한 입술에 화사한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'쉐딩으로 윤곽 정리',tip:'넓은 부분만 음영으로 슬림하게.'}],
-      M:[{area:'베이스 · 피부',product:'글로우 톤업 베이스',tip:'화사하고 깨끗한 피부.'},
-         {area:'아이 메이크업',product:'소프트 브라운 음영 섀도우',tip:'부드러운 음영으로 또렷함만.'},
-         {area:'눈썹',product:'내추럴 브라운 곡선 브로우',tip:'부드러운 곡선형으로 단정하게.'},
-         {area:'립',product:'코랄 핑크 립밤',tip:'도톰한 입술에 화사한 혈색.'},
-         {area:'블러셔 · 쉐딩',product:'쉐딩으로 윤곽 정리',tip:'넓은 부분만 음영으로 슬림하게.'}]}},
-};
-const ARCH_KEYS = Object.keys(ARCHETYPES);
-
-/* ---- roster : 2026 기준 인기 K-pop 아티스트 200명 ---- */
-const ROSTER = [];
-function add(group, gender){ for(let i=2;i<arguments.length;i++) ROSTER.push([arguments[i],group,gender]); }
-/* 걸그룹 / 여성 */
-add('BLACKPINK','F','지수','제니','로제','리사');
-add('TWICE','F','나연','정연','모모','사나','지효','미나','다현','채영','쯔위');
-add('aespa','F','카리나','지젤','윈터','닝닝');
-add('IVE','F','안유진','가을','레이','장원영','리즈','이서');
-add('NewJeans','F','민지','하니','다니엘','해린','혜인');
-add('LE SSERAFIM','F','사쿠라','김채원','허윤진','카즈하','홍은채');
-add('(G)I-DLE','F','미연','민니','소연','우기','슈화');
-add('ITZY','F','예지','리아','류진','채령','유나');
-add('Red Velvet','F','아이린','슬기','웬디','조이','예리');
-add('NMIXX','F','릴리','해원','설윤','지우','배이','규진');
-add('STAYC','F','수민','시은','아이사','세은','윤','재이');
-add('BABYMONSTER','F','루카','파리타','아사','아현','라미','로라','치키타');
-add('ILLIT','F','윤아','민주','모카','원희','이로하');
-add('Kep1er','F','최유진','김채현','김다연','휴닝바히예','서영은','마시로','히카루','샤오팅','강예서');
-add('fromis_9','F','이새롬','송하영','이나경','박지원','노지선','이서연','이채영','백지헌');
-add('소녀시대','F','태연','써니','티파니','효연','유리','수영','윤아','서현');
-add('MAMAMOO','F','솔라','문별','휘인','화사');
-add('SOLO','F','아이유','보아','선미','청하');
-/* 보이그룹 / 남성 */
-add('BTS','M','RM','진','슈가','제이홉','지민','뷔','정국');
-add('SEVENTEEN','M','에스쿱스','정한','조슈아','준','호시','원우','우지','도겸','민규','디에잇','승관','버논','디노');
-add('Stray Kids','M','방찬','리노','창빈','현진','한','필릭스','승민','아이엔');
-add('TXT','M','연준','수빈','범규','태현','휴닝카이');
-add('ENHYPEN','M','희승','제이','제이크','성훈','선우','정원','니키');
-add('NCT','M','태용','태일','쟈니','유타','도영','재현','정우','마크','해찬','제노','재민','런쥔','천러','지성');
-add('EXO','M','시우민','수호','레이','백현','첸','찬열','디오','카이','세훈');
-add('RIIZE','M','쇼타로','은석','성찬','원빈','승한','소희','앤톤');
-add('ZEROBASEONE','M','김지웅','장하오','성한빈','석매튜','김태래','리키','김규빈','박건욱','한유진');
-add('SHINee','M','온유','키','민호','태민');
-add('ASTRO','M','차은우');
-add('BIGBANG','M','지드래곤','태양','대성','탑');
-add('THE BOYZ','M','영훈','현재','주연','케빈','뉴','에릭');
-add('SOLO','M','박지훈');
-
-/* ---- deterministic build : roster -> muse profiles ---- */
-function hashStr(s){ let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
-const JIT={faceRatio:.05,jawRatio:.03,eyeSize:.018,eyeSpacing:.022,noseWidth:.018,lipFull:.018};
-function buildMuses(){
-  return ROSTER.map(([name,group,g])=>{
-    const seed = hashStr(name+'@'+group);
-    const a = ARCHETYPES[ARCH_KEYS[seed % ARCH_KEYS.length]];
-    const t = {};
-    let h = seed;
-    for(const k in a.t){
-      h = (Math.imul(h,1664525)+1013904223)>>>0;
-      t[k] = +(a.t[k] + ((h/4294967295)-0.5)*2*JIT[k]).toFixed(4);
-    }
-    return { name, group, g, shape:a.label, vibe:a.vibe, t, looks:a.looks[g] };
-  });
-}
-const MUSES = buildMuses();
-
-const AREAS = [
-  { label:'베이스 · 피부', q:'베이스 메이크업 피부 표현', icon:'✦' },
-  { label:'아이 메이크업', q:'아이 메이크업', icon:'◠' },
-  { label:'눈썹',          q:'눈썹 그리는 법', icon:'⌒' },
-  { label:'립',            q:'립 메이크업', icon:'❀' },
-  { label:'블러셔 · 쉐딩', q:'블러셔 쉐딩 메이크업', icon:'❍' },
-];
-const ytSearch = (q) => 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q) + '&sp=CAMSAhAB';
-
-let modelsReady = false, stream = null, analysisImage = null, genderMode = 'auto';
-const $ = (id) => document.getElementById(id);
-const statusEl = $('status');
-
-async function loadModels(){
-  try{
-    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-    await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-    await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-    await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
-    await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
-    modelsReady = true;
-  }catch(e){
-    console.error(e);
-    setStatus('얼굴 인식 모델을 불러오지 못했어요. 네트워크 상태를 확인하고 새로고침 해주세요.', 'err');
-  }finally{
-    $('loader').classList.add('hide');
-  }
-}
-function setStatus(msg, type=''){ statusEl.textContent = msg; statusEl.className = 'status' + (type?' '+type:''); }
-const dist = (a,b) => Math.hypot(a.x-b.x, a.y-b.y);
-const mid  = (a,b) => ({x:(a.x+b.x)/2, y:(a.y+b.y)/2});
-
-function extractFeatures(landmarks){
-  const p = landmarks.positions;
-  const faceWidth = dist(p[1], p[15]) || 1;
-  const faceHeight = dist(mid(p[19],p[24]), p[8]) * 1.35;
-  const eyeW = (dist(p[36],p[39]) + dist(p[42],p[45])) / 2;
-  return {
-    faceRatio:faceHeight/faceWidth, jawRatio:dist(p[4],p[12])/faceWidth,
-    eyeSize:eyeW/faceWidth, eyeSpacing:dist(p[39],p[42])/faceWidth,
-    noseWidth:dist(p[31],p[35])/faceWidth, lipFull:dist(p[51],p[57])/faceWidth,
-  };
-}
-function resemblance(user, muse){
-  const spread = {faceRatio:.16,jawRatio:.085,eyeSize:.045,eyeSpacing:.055,noseWidth:.05,lipFull:.045};
-  const weight = {faceRatio:1.0,jawRatio:1.1,eyeSize:1.2,eyeSpacing:.9,noseWidth:.8,lipFull:1.0};
-  let s=0,w=0;
-  for(const k in spread){ const d=(user[k]-muse.t[k])/spread[k]; s+=d*d*weight[k]; w+=weight[k]; }
-  return Math.max(79, Math.min(98, Math.round(97 - Math.sqrt(s/w)*8.5)));
-}
-function traitLabels(f){
-  return [
-    ['얼굴형', f.faceRatio>1.50?'길고 갸름한 편':f.faceRatio<1.36?'동그란 편':'균형잡힌 타원형'],
-    ['턱선', f.jawRatio<0.77?'갸름한 V라인':f.jawRatio>0.84?'또렷하고 각진 편':'부드러운 곡선'],
-    ['눈', f.eyeSize>0.275?'큼직하고 또렷한 편':f.eyeSize<0.245?'시원하고 길쭉한 편':'균형잡힌 눈매'],
-    ['입술', f.lipFull>0.185?'도톰한 편':f.lipFull<0.155?'얇고 단정한 편':'적당히 균형잡힌 편'],
-    ['이목구비 간격', f.eyeSpacing>0.31?'시원하게 떨어진 편':'또렷하게 모인 편'],
-  ];
-}
-function vibeLine(det, muse){
-  const exp = det.expressions;
-  const top = Object.keys(exp).reduce((a,b)=>exp[a]>exp[b]?a:b);
-  const moodMap = {happy:'환하게 웃는 표정에서',neutral:'담담하고 정제된 표정에서',
-    surprised:'생기 있는 표정에서',sad:'잔잔한 표정에서',angry:'또렷한 눈빛에서',
-    fearful:'섬세한 표정에서',disgusted:'개성 있는 표정에서'};
-  return (moodMap[top]||'지금 이 표정에서') + ' ' + muse.name + '의 ' +
-    muse.shape.replace(/형$/,'') + ' 무드가 묻어나요. ' + muse.vibe;
-}
-function paintResult(canvas, img, det, dispW){
-  const ratio = img.naturalHeight/img.naturalWidth;
-  canvas.width = dispW; canvas.height = Math.round(dispW*ratio);
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img,0,0,canvas.width,canvas.height);
-  const sx = canvas.width/img.naturalWidth, sy = canvas.height/img.naturalHeight;
-  ctx.fillStyle = 'rgba(255,247,242,.9)';
-  det.landmarks.positions.forEach(pt=>{
-    ctx.beginPath(); ctx.arc(pt.x*sx, pt.y*sy, 1.7, 0, Math.PI*2); ctx.fill();
-  });
-}
-async function runAnalysis(){
-  if(!modelsReady){ setStatus('모델이 아직 준비 중이에요. 잠시만요…','err'); return; }
-  if(!analysisImage){ setStatus('먼저 사진을 촬영하거나 업로드해주세요.','err'); return; }
-  $('analyzeBtn').disabled = true;
-  $('scan').classList.add('on');
-  setStatus('얼굴 비율을 분석하는 중…');
-  const opts = new faceapi.TinyFaceDetectorOptions({ inputSize:416, scoreThreshold:0.3 });
-  const [det] = await Promise.all([
-    faceapi.detectSingleFace(analysisImage, opts).withFaceLandmarks().withFaceExpressions().withAgeAndGender(),
-    new Promise(r=>setTimeout(r,1800)),
-  ]);
-  $('scan').classList.remove('on');
-  $('analyzeBtn').disabled = false;
-  if(!det){ setStatus('얼굴을 찾지 못했어요. 정면을 바라보고 얼굴 전체가 보이게 다시 시도해주세요.','err'); return; }
-  const feats = extractFeatures(det.landmarks);
-  let pool = MUSES;
-  if(genderMode==='F') pool = MUSES.filter(m=>m.g==='F');
-  else if(genderMode==='M') pool = MUSES.filter(m=>m.g==='M');
-  else if(det.genderProbability>0.6) pool = MUSES.filter(m=>m.g===(det.gender==='male'?'M':'F'));
-  if(!pool.length) pool = MUSES;
-  const ranked = pool.map(m=>({muse:m,sim:resemblance(feats,m)})).sort((a,b)=>b.sim-a.sim);
-  renderResult(det, feats, ranked);
-  setStatus('분석 완료! 결과를 확인해보세요 ↓','ok');
-}
-function renderResult(det, feats, ranked){
-  const best = ranked[0], muse = best.muse;
-  $('rStarName').textContent  = muse.name;
-  $('rStarGroup').textContent = muse.group + ' · ' + muse.shape;
-  $('rSim').textContent       = best.sim;
-  $('rVibe').textContent      = vibeLine(det, muse);
-  const traitsEl = $('rTraits'); traitsEl.innerHTML = '';
-  traitLabels(feats).forEach(([k,v])=>{
-    const d = document.createElement('div');
-    d.className = 'trait'; d.innerHTML = k + ' · <b>' + v + '</b>';
-    traitsEl.appendChild(d);
-  });
-  const runnersEl = $('rRunners'); runnersEl.innerHTML = '';
-  ranked.slice(1,5).forEach(r=>{
-    const d = document.createElement('div');
-    d.className = 'runner';
-    d.innerHTML = r.muse.name + ' <em>' + r.sim + '%</em>';
-    runnersEl.appendChild(d);
-  });
-  paintResult($('resultCanvas'), analysisImage, det, 560);
-  $('cStarName').textContent = muse.name;
-  const cosGrid = $('cosGrid'); cosGrid.innerHTML = '';
-  muse.looks.forEach((l,i)=>{
-    const c = document.createElement('div');
-    c.className = 'cos-card';
-    c.innerHTML = '<div class="idx">'+String(i+1).padStart(2,'0')+'</div>'+
-      '<div class="area">'+l.area+'</div><div class="pname">'+l.product+'</div>'+
-      '<div class="ptip">'+l.tip+'</div>';
-    cosGrid.appendChild(c);
-  });
-  const tutList = $('tutList'); tutList.innerHTML = '';
-  AREAS.forEach(a=>{
-    const query = muse.name + ' ' + a.q;
-    const row = document.createElement('a');
-    row.className = 'tut-row'; row.href = ytSearch(query);
-    row.target = '_blank'; row.rel = 'noopener';
-    row.innerHTML = '<div class="tut-icon">'+a.icon+'</div>'+
-      '<div class="tut-main"><div class="t1">'+a.label+'</div>'+
-      '<div class="t2">"'+query+'" · 조회수 높은 순</div></div>'+
-      '<div class="tut-go">YouTube에서 보기 ↗</div>';
-    tutList.appendChild(row);
-  });
-  const full = document.createElement('a');
-  full.className = 'tut-row';
-  full.href = ytSearch(muse.name + ' 커버 메이크업 따라하기');
-  full.target = '_blank'; full.rel = 'noopener';
-  full.innerHTML = '<div class="tut-icon" style="background:var(--berry)">✺</div>'+
-    '<div class="tut-main"><div class="t1">'+muse.name+' 풀 커버 메이크업</div>'+
-    '<div class="t2">"'+muse.name+' 커버 메이크업 따라하기" · 조회수 높은 순</div></div>'+
-    '<div class="tut-go">YouTube에서 보기 ↗</div>';
-  tutList.appendChild(full);
-  ['resultSection','cosmeticSection','tutorialSection'].forEach(id=>$(id).style.display='block');
-  requestAnimationFrame(()=>{ $('rSimBar').style.width = best.sim + '%'; });
-  $('resultSection').scrollIntoView({behavior:'smooth'});
-}
-function setAnalysisImage(src){
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = ()=>{
-    analysisImage = img;
-    const cv = $('previewCanvas');
-    const ratio = img.naturalHeight/img.naturalWidth;
-    cv.width = 800; cv.height = Math.round(800*ratio);
-    cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
-    cv.style.display = 'block';
-    $('liveVideo').style.display='none'; $('placeholder').style.display='none';
-    $('shotBtn').style.display='none'; $('analyzeBtn').style.display='inline-flex';
-    setStatus('사진이 준비됐어요. "닮은 뮤즈 찾기"를 눌러주세요.','ok');
-  };
-  img.onerror = ()=> setStatus('이미지를 불러오지 못했어요. 다른 사진을 사용해주세요.','err');
-  img.src = src;
-}
-async function openCamera(){
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({
-      video:{ facingMode:'user', width:{ideal:720}, height:{ideal:900} }, audio:false });
-    const v = $('liveVideo'); v.srcObject = stream; await v.play();
-    v.style.display='block';
-    $('previewCanvas').style.display='none'; $('placeholder').style.display='none';
-    $('camBtn').style.display='none'; $('shotBtn').style.display='inline-flex';
-    $('analyzeBtn').style.display='none';
-    setStatus('카메라가 켜졌어요. 정면을 보고 촬영해주세요.');
-  }catch(e){
-    setStatus('카메라를 사용할 수 없어요. 권한을 허용했는지 확인하거나 사진 업로드를 이용해주세요.','err');
-  }
-}
-function takeShot(){
-  const v = $('liveVideo');
-  if(!v.videoWidth){ setStatus('카메라가 아직 준비되지 않았어요.','err'); return; }
-  const c = document.createElement('canvas');
-  c.width = v.videoWidth; c.height = v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
-  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-  v.style.display='none'; $('camBtn').style.display='inline-flex';
-  setAnalysisImage(c.toDataURL('image/jpeg',0.92));
-}
-function restart(){
-  ['resultSection','cosmeticSection','tutorialSection'].forEach(id=>$(id).style.display='none');
-  analysisImage = null;
-  $('previewCanvas').style.display='none'; $('liveVideo').style.display='none';
-  $('placeholder').style.display='flex'; $('shotBtn').style.display='none';
-  $('camBtn').style.display='inline-flex'; $('analyzeBtn').style.display='none';
-  $('rSimBar').style.width='0'; setStatus('');
-  $('studio').scrollIntoView({behavior:'smooth'});
-}
-$('camBtn').addEventListener('click', openCamera);
-$('shotBtn').addEventListener('click', takeShot);
-$('uploadBtn').addEventListener('click', ()=>$('fileInput').click());
-$('fileInput').addEventListener('change', e=>{
-  const f = e.target.files[0]; if(!f) return;
-  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-  $('camBtn').style.display='inline-flex';
-  const reader = new FileReader();
-  reader.onload = ()=> setAnalysisImage(reader.result);
-  reader.readAsDataURL(f);
-});
-$('analyzeBtn').addEventListener('click', runAnalysis);
-$('restartBtn').addEventListener('click', restart);
-document.querySelectorAll('.chip').forEach(chip=>{
-  chip.addEventListener('click', ()=>{
-    document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
-    chip.setAttribute('aria-pressed','true');
-    genderMode = chip.dataset.gender;
-  });
-});
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-},{threshold:.15});
-document.querySelectorAll('.reveal').forEach((el,i)=>{
-  el.style.transitionDelay = (i%6)*0.08 + 's';
-  io.observe(el);
-});
-loadModels();
-</script>
+<script src="main.js"></script>
 </body>
 </html>
