@@ -255,6 +255,20 @@
   .form-group input:focus,.form-group textarea:focus{border-color:var(--berry);background:#fff}
   .form-group input::placeholder,.form-group textarea::placeholder{color:#b0a098}
   .form-done{display:none;margin-top:14px;font-size:14px;font-weight:500;color:#4f8a68;text-align:center}
+  .foot-links{margin-top:16px;display:flex;gap:10px;align-items:center}
+  .foot-link-btn{background:none;border:none;cursor:pointer;font-size:11px;color:var(--ink-soft);font-family:'Gothic A1',sans-serif;padding:0;text-decoration:underline;text-underline-offset:3px}
+  .foot-link-btn:hover{color:var(--berry)}
+  .foot-sep{color:var(--ink-soft);font-size:11px}
+  .policy-box{max-width:620px}
+  .policy-body{font-size:13px;font-weight:300;line-height:1.8;color:var(--ink-soft)}
+  .policy-body p{margin-bottom:10px}
+  .policy-h3{font-family:'Gowun Batang',serif;font-size:1rem;font-weight:700;color:var(--ink);margin:20px 0 6px}
+  .cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(44,33,29,.93);color:#f4ebe3;padding:14px 24px;backdrop-filter:blur(8px)}
+  .cookie-inner{max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .cookie-inner p{flex:1;font-size:12.5px;line-height:1.7;min-width:200px;margin:0}
+  .cookie-btns{display:flex;gap:10px;align-items:center;flex-shrink:0}
+  .cookie-btns .foot-link-btn{color:rgba(244,235,227,.7)}
+  .cookie-btns .foot-link-btn:hover{color:#f4ebe3}
   @media(max-width:520px){.form-row{grid-template-columns:1fr}.modal-box{padding:28px 22px}}
   .reveal{opacity:0;transform:translateY(26px);transition:.9s cubic-bezier(.2,.8,.2,1)}
   .reveal.in{opacity:1;transform:none}
@@ -768,7 +782,43 @@
   <div class="foot-line" data-i18n-html="footerLine">
     <span class="foot-brand">Mirror Muse</span> — 닮음 분석은 얼굴 비율 데이터를 기반으로 한 엔터테인먼트용 추정이며 과학적·의학적 판단이 아닙니다. 뮤즈 명단은 2026년 기준 인기 K-pop 아티스트 200명으로 구성했으며, 얼굴형 수치는 아키타입 기반 추정값입니다. 언급된 아티스트 및 소속사와 제휴 관계가 없습니다. 화장품 추천은 무드 가이드이며 특정 브랜드를 보증하지 않습니다. 업로드한 사진은 브라우저에서만 처리되고 서버에 저장되지 않습니다. © 2026
   </div>
+  <div class="foot-links">
+    <button class="foot-link-btn" id="privacyBtn" data-i18n="privacyTitle">개인정보처리방침</button>
+    <span class="foot-sep">·</span>
+    <button class="foot-link-btn" id="termsBtn" data-i18n="termsTitle">이용약관</button>
+  </div>
 </footer>
+
+<!-- Privacy Modal -->
+<div class="modal-backdrop" id="privacyModal">
+  <div class="modal-box policy-box">
+    <button class="modal-close" id="privacyModalClose">✕</button>
+    <div class="secnum" style="margin-bottom:4px">Privacy</div>
+    <h2 class="sectitle" style="font-size:1.5rem;margin-bottom:20px" data-i18n="privacyTitle">개인정보처리방침</h2>
+    <div class="policy-body" data-i18n-html="privacyBody"></div>
+  </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal-backdrop" id="termsModal">
+  <div class="modal-box policy-box">
+    <button class="modal-close" id="termsModalClose">✕</button>
+    <div class="secnum" style="margin-bottom:4px">Terms</div>
+    <h2 class="sectitle" style="font-size:1.5rem;margin-bottom:20px" data-i18n="termsTitle">이용약관</h2>
+    <div class="policy-body" data-i18n-html="termsBody"></div>
+  </div>
+</div>
+
+<!-- Cookie Banner -->
+<div id="cookieConsent" class="cookie-banner" style="display:none">
+  <div class="cookie-inner">
+    <p data-i18n="cookieTxt">이 사이트는 서비스 운영 및 Google AdSense 광고를 위해 쿠키를 사용합니다. 계속 이용하시면 쿠키 사용에 동의하신 것으로 간주됩니다.</p>
+    <div class="cookie-btns">
+      <button class="foot-link-btn" id="cookiePrivacyBtn" data-i18n="cookiePrivacyLbl">개인정보처리방침</button>
+      <button class="btn btn-solid" id="cookieOk" data-i18n="cookieOkBtn">확인</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/dist/face-api.js"></script>
 <script src="main.js"></script>
