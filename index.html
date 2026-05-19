@@ -3,8 +3,46 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MIRROR MUSE — 당신과 닮은 K-pop 뮤즈</title>
-<meta name="description" content="얼굴을 분석해 가장 닮은 K-pop 스타를 찾고, 그 무드에 닿는 화장품과 부위별 메이크업 튜토리얼을 추천하는 K-뷰티 스튜디오." />
+<title>MIRROR MUSE — 당신과 닮은 K-pop 뮤즈 찾기 | K-뷰티 화장품 추천</title>
+<meta name="description" content="얼굴을 분석해 가장 닮은 K-pop 스타를 찾고, 그 무드에 닿는 화장품과 부위별 메이크업 튜토리얼을 추천하는 K-뷰티 스튜디오. 무료 AI 얼굴형 분석 서비스." />
+<meta name="keywords" content="K-pop 닮은꼴, 얼굴형 분석, K-뷰티, 화장품 추천, 메이크업 튜토리얼, 아이돌 닮은꼴, Mirror Muse" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Mirror Muse" />
+<link rel="canonical" href="https://mirror-muse.web.app/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://mirror-muse.web.app/" />
+<meta property="og:title" content="MIRROR MUSE — 당신과 닮은 K-pop 뮤즈 찾기" />
+<meta property="og:description" content="AI로 얼굴을 분석해 가장 닮은 K-pop 스타를 찾고, 맞춤 K-뷰티 화장품을 추천받으세요. 무료 · 서버 저장 없음." />
+<meta property="og:site_name" content="Mirror Muse" />
+<meta property="og:locale" content="ko_KR" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="MIRROR MUSE — 당신과 닮은 K-pop 뮤즈 찾기" />
+<meta name="twitter:description" content="AI로 얼굴을 분석해 가장 닮은 K-pop 스타를 찾고, 맞춤 K-뷰티 화장품을 추천받으세요." />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Mirror Muse",
+  "url": "https://mirror-muse.web.app/",
+  "description": "AI 기반 K-pop 얼굴형 닮은꼴 분석 및 K-뷰티 화장품 추천 서비스",
+  "applicationCategory": "EntertainmentApplication",
+  "operatingSystem": "Web Browser",
+  "inLanguage": ["ko", "en"],
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "creator": { "@type": "Organization", "name": "Mirror Muse" }
+}
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Gothic+A1:wght@300;400;500;700;900&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
@@ -516,6 +554,43 @@
     .qr-code-wrap img{width:170px;height:170px}
     .qr-modal-box{padding:32px 22px 28px}
   }
+  /* ── About / Guide / FAQ / Ad sections ── */
+  .ad-wrap{padding:0 28px 10px}
+  .ad-unit{display:block;width:100%;min-height:90px;background:rgba(255,255,255,.25);border-radius:12px;overflow:hidden;text-align:center}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+  .about-h3{font-family:'Gowun Batang',serif;font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 7px}
+  .about-h3:first-child{margin-top:0}
+  .about-p{font-size:14px;font-weight:300;line-height:1.8;color:var(--ink-soft)}
+  .about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+  .about-stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 18px;text-align:center}
+  .astat-val{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--berry);line-height:1;margin-bottom:6px}
+  .astat-label{font-family:'Gowun Batang',serif;font-size:.88rem;font-weight:700;margin-bottom:4px}
+  .astat-sub{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.5}
+  .guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+  .guide-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 22px;transition:.25s}
+  .guide-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--rose)}
+  .guide-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--berry);margin-bottom:6px}
+  .guide-title{font-family:'Gowun Batang',serif;font-size:1rem;font-weight:700;margin-bottom:9px}
+  .guide-desc{font-size:13px;font-weight:300;line-height:1.72;color:var(--ink-soft);margin-bottom:13px}
+  .guide-tips{display:flex;flex-wrap:wrap;gap:6px}
+  .guide-tip{background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:11.5px;color:var(--ink-soft)}
+  .faq-list{display:flex;flex-direction:column;gap:10px}
+  .faq-item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Gothic A1',sans-serif;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5}
+  .faq-arrow{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry);transition:transform .3s;flex:none;font-size:18px;line-height:1}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .faq-a{display:none;padding:0 22px 18px;font-size:13.5px;font-weight:300;line-height:1.8;color:var(--ink-soft)}
+  .faq-item.open .faq-a{display:block}
+  @media(max-width:880px){
+    .about-grid{grid-template-columns:1fr}
+    .about-stats{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:520px){
+    .about-stats{grid-template-columns:repeat(2,1fr);gap:10px}
+    .guide-grid{grid-template-columns:1fr}
+    .faq-q{font-size:13px;padding:15px 16px}
+    .faq-a{padding:0 16px 14px;font-size:13px}
+  }
 </style>
 </head>
 <body>
@@ -538,6 +613,9 @@
         <option value="ko">한국어</option>
         <option value="en">English</option>
       </select>
+      <a href="#about" class="partner-btn" data-i18n="footAbout">소개</a>
+      <a href="#kbeautyGuide" class="partner-btn" data-i18n="navGuide">K-뷰티 가이드</a>
+      <a href="#faq" class="partner-btn" data-i18n="faqTitle">FAQ</a>
       <button class="partner-btn" id="qrBtn" title="모바일로 열기">&#9641; QR</button>
       <button class="partner-btn" id="partnerBtn" data-i18n="partnerBtn">제휴 문의</button>
     </div>
@@ -730,6 +808,143 @@
       <button class="btn btn-solid" id="restartBtn" data-i18n="restart">↺ 다시 하기</button>
     </div>
   </section>
+
+  <!-- Ad unit after tutorials -->
+  <div class="wrap ad-wrap">
+    <ins class="adsbygoogle ad-unit" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="AD_SLOT_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+  </div>
+
+  <!-- 05 — About -->
+  <section class="wrap block" id="about">
+    <span class="secnum reveal" data-i18n="aboutNum">05 — 소개</span>
+    <h2 class="sectitle reveal" data-i18n="aboutTitle">Mirror Muse 소개</h2>
+    <p class="secdesc reveal" data-i18n="aboutSub">브라우저 기반 AI 얼굴 분석으로 당신과 가장 닮은 K-pop 뮤즈를 찾아드립니다.</p>
+    <div class="rule reveal"></div>
+    <div class="about-grid">
+      <div class="reveal">
+        <h3 class="about-h3" data-i18n="aboutH1">서비스 소개</h3>
+        <p class="about-p" data-i18n="aboutP1">Mirror Muse는 최신 브라우저 AI 기술을 활용해 당신의 얼굴 비율을 분석합니다.</p>
+        <h3 class="about-h3" data-i18n="aboutH2">분석 기술</h3>
+        <p class="about-p" data-i18n="aboutP2">오픈소스 얼굴 인식 라이브러리를 기반으로 얼굴의 68개 랜드마크 포인트를 감지합니다.</p>
+      </div>
+      <div class="reveal">
+        <h3 class="about-h3" data-i18n="aboutH3">K-뷰티 큐레이션</h3>
+        <p class="about-p" data-i18n="aboutP3">닮은 뮤즈가 결정되면 그 뮤즈의 얼굴형 무드에 맞는 K-뷰티 화장품을 부위별로 큐레이션해 드립니다.</p>
+        <h3 class="about-h3" data-i18n="aboutH4">유튜브 튜토리얼 연결</h3>
+        <p class="about-p" data-i18n="aboutP4">화장품 추천에 그치지 않고, 부위별 메이크업 방법을 배울 수 있는 유튜브 튜토리얼로 바로 연결해 드립니다.</p>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat reveal">
+        <div class="astat-val">200<small style="font-size:1.2rem">+</small></div>
+        <div class="astat-label" data-i18n="stat1Label">K-pop 뮤즈 데이터베이스</div>
+        <div class="astat-sub" data-i18n="stat1Sub">BTS·BLACKPINK·aespa 등 최신 인기 그룹 총망라</div>
+      </div>
+      <div class="about-stat reveal">
+        <div class="astat-val">68</div>
+        <div class="astat-label" data-i18n="stat2Label">얼굴 랜드마크 포인트</div>
+        <div class="astat-sub" data-i18n="stat2Sub">눈·코·입·턱·윤곽 정밀 비율 측정</div>
+      </div>
+      <div class="about-stat reveal">
+        <div class="astat-val">50<small style="font-size:1.2rem">+</small></div>
+        <div class="astat-label" data-i18n="stat3Label">큐레이션 K-뷰티 제품</div>
+        <div class="astat-sub" data-i18n="stat3Sub">5개 부위, 카테고리별 Top 10 엄선</div>
+      </div>
+      <div class="about-stat reveal">
+        <div class="astat-val">0</div>
+        <div class="astat-label" data-i18n="stat4Label">서버 전송 데이터</div>
+        <div class="astat-sub" data-i18n="stat4Sub">100% 브라우저 내 처리, 완전한 프라이버시 보호</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — K-Beauty Guide -->
+  <section class="wrap block" id="kbeautyGuide">
+    <span class="secnum reveal" data-i18n="guideNum">06 — K-뷰티 가이드</span>
+    <h2 class="sectitle reveal" data-i18n="guideTitle">얼굴형별 K-뷰티 메이크업 가이드</h2>
+    <p class="secdesc reveal" data-i18n="guideSub">K-pop 스타들의 메이크업 비밀은 얼굴형에 맞는 맞춤 테크닉에 있습니다. 당신의 얼굴형에 맞는 K-뷰티 포인트를 알아보세요.</p>
+    <div class="rule reveal"></div>
+    <div class="guide-grid">
+      <div class="guide-card reveal">
+        <div class="guide-num">01</div>
+        <h3 class="guide-title" data-i18n="guide1Title">V라인형 (갸름한 턱선)</h3>
+        <p class="guide-desc" data-i18n="guide1Desc">장원영·카리나처럼 갸름하고 작은 느낌이 특징입니다.</p>
+        <div class="guide-tips" data-i18n-html="guide1Tips"></div>
+      </div>
+      <div class="guide-card reveal">
+        <div class="guide-num">02</div>
+        <h3 class="guide-title" data-i18n="guide2Title">타원형 (골든 오벌)</h3>
+        <p class="guide-desc" data-i18n="guide2Desc">K-뷰티에서 가장 이상적으로 꼽히는 얼굴형입니다.</p>
+        <div class="guide-tips" data-i18n-html="guide2Tips"></div>
+      </div>
+      <div class="guide-card reveal">
+        <div class="guide-num">03</div>
+        <h3 class="guide-title" data-i18n="guide3Title">동글형 (귀여운 라운드)</h3>
+        <p class="guide-desc" data-i18n="guide3Desc">뉴진스·ILLIT 멤버들처럼 사랑스럽고 발랄한 분위기가 매력입니다.</p>
+        <div class="guide-tips" data-i18n-html="guide3Tips"></div>
+      </div>
+      <div class="guide-card reveal">
+        <div class="guide-num">04</div>
+        <h3 class="guide-title" data-i18n="guide4Title">고양이형 (캣 페이스)</h3>
+        <p class="guide-desc" data-i18n="guide4Desc">제니·예지처럼 이목구비가 뚜렷하고 시크한 분위기입니다.</p>
+        <div class="guide-tips" data-i18n-html="guide4Tips"></div>
+      </div>
+      <div class="guide-card reveal">
+        <div class="guide-num">05</div>
+        <h3 class="guide-title" data-i18n="guide5Title">하트형 (이마 넓은 하트)</h3>
+        <p class="guide-desc" data-i18n="guide5Desc">이마가 넓고 턱이 갸름한 하트형은 강렬하고 매력적인 무드입니다.</p>
+        <div class="guide-tips" data-i18n-html="guide5Tips"></div>
+      </div>
+      <div class="guide-card reveal">
+        <div class="guide-num">06</div>
+        <h3 class="guide-title" data-i18n="guide6Title">K-뷰티 피부 표현의 핵심</h3>
+        <p class="guide-desc" data-i18n="guide6Desc">얼굴형과 무관하게 K-뷰티의 공통 핵심은 피부 표현입니다.</p>
+        <div class="guide-tips" data-i18n-html="guide6Tips"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad unit between Guide and FAQ -->
+  <div class="wrap ad-wrap">
+    <ins class="adsbygoogle ad-unit" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="AD_SLOT_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+  </div>
+
+  <!-- 07 — FAQ -->
+  <section class="wrap block" id="faq">
+    <span class="secnum reveal" data-i18n="faqNum">07 — FAQ</span>
+    <h2 class="sectitle reveal" data-i18n="faqTitle">자주 묻는 질문</h2>
+    <p class="secdesc reveal" data-i18n="faqSub">Mirror Muse 이용에 대해 궁금한 점을 모았습니다.</p>
+    <div class="rule reveal"></div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span data-i18n="faq1Q">사진이 서버에 저장되나요?</span><span class="faq-arrow">▾</span></button>
+        <div class="faq-a" data-i18n="faq1A">아니요. 모든 얼굴 분석은 당신의 브라우저 안에서만 이루어집니다.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span data-i18n="faq2Q">분석 결과가 실제 닮은꼴을 정확히 반영하나요?</span><span class="faq-arrow">▾</span></button>
+        <div class="faq-a" data-i18n="faq2A">엔터테인먼트용 추정으로 재미있는 가이드로 즐겨주세요.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span data-i18n="faq3Q">어떤 사진이 가장 잘 분석되나요?</span><span class="faq-arrow">▾</span></button>
+        <div class="faq-a" data-i18n="faq3A">정면을 바라보는 사진, 밝은 조명, 얼굴 전체가 화면에 보이는 사진이 좋습니다.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span data-i18n="faq4Q">화장품 추천은 어떤 기준으로 이루어지나요?</span><span class="faq-arrow">▾</span></button>
+        <div class="faq-a" data-i18n="faq4A">닮은 뮤즈의 얼굴형 아키타입에 따라 어울리는 K-뷰티 제품을 큐레이션해 드립니다.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span data-i18n="faq5Q">영어로도 이용 가능한가요?</span><span class="faq-arrow">▾</span></button>
+        <div class="faq-a" data-i18n="faq5A">네! 페이지 상단의 언어 선택으로 영어로 전환하실 수 있습니다.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false"><span data-i18n="faq6Q">제휴·광고 문의는 어떻게 하나요?</span><span class="faq-arrow">▾</span></button>
+        <div class="faq-a" data-i18n="faq6A">상단 제휴 문의 버튼을 통해 문의하시면 빠르게 회신 드립니다.</div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <div class="modal-backdrop" id="qrModal">
@@ -783,6 +998,12 @@
     <span class="foot-brand">Mirror Muse</span> — 닮음 분석은 얼굴 비율 데이터를 기반으로 한 엔터테인먼트용 추정이며 과학적·의학적 판단이 아닙니다. 뮤즈 명단은 2026년 기준 인기 K-pop 아티스트 200명으로 구성했으며, 얼굴형 수치는 아키타입 기반 추정값입니다. 언급된 아티스트 및 소속사와 제휴 관계가 없습니다. 화장품 추천은 무드 가이드이며 특정 브랜드를 보증하지 않습니다. 업로드한 사진은 브라우저에서만 처리되고 서버에 저장되지 않습니다. © 2026
   </div>
   <div class="foot-links">
+    <a href="#about" class="foot-link-btn" data-i18n="footAbout">서비스 소개</a>
+    <span class="foot-sep">·</span>
+    <a href="#kbeautyGuide" class="foot-link-btn" data-i18n="navGuide">K-뷰티 가이드</a>
+    <span class="foot-sep">·</span>
+    <a href="#faq" class="foot-link-btn" data-i18n="faqTitle">자주 묻는 질문</a>
+    <span class="foot-sep">·</span>
     <button class="foot-link-btn" id="privacyBtn" data-i18n="privacyTitle">개인정보처리방침</button>
     <span class="foot-sep">·</span>
     <button class="foot-link-btn" id="termsBtn" data-i18n="termsTitle">이용약관</button>

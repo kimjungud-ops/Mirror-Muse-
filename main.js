@@ -440,6 +440,7 @@ const I18N = {
       cookieTxt:"This site uses cookies for service operation and Google AdSense advertising. By continuing to use this site, you agree to the use of cookies.",
       cookiePrivacyLbl:"Privacy Policy", cookieOkBtn:"Got it",
       navGuide:"K-Beauty Guide",
+      aboutNum:"05 — About", guideNum:"06 — K-Beauty Guide", faqNum:"07 — FAQ",
       prevMuseName:"Wonyoung",
       prevRunner1:"Karina <em>89%</em>", prevRunner2:"Irene <em>87%</em>", prevRunner3:"Winter <em>85%</em>",
       aboutTitle:"About Mirror Muse", aboutSub:"Browser-based AI facial analysis to find your closest K-pop muse.",
@@ -525,6 +526,7 @@ const I18N = {
       cookieTxt:"이 사이트는 서비스 운영 및 Google AdSense 광고를 위해 쿠키를 사용합니다. 계속 이용하시면 쿠키 사용에 동의하신 것으로 간주됩니다.",
       cookiePrivacyLbl:"개인정보처리방침", cookieOkBtn:"확인",
       navGuide:"K-뷰티 가이드",
+      aboutNum:"05 — 소개", guideNum:"06 — K-뷰티 가이드", faqNum:"07 — FAQ",
       prevMuseName:"장원영",
       prevRunner1:"카리나 <em>89%</em>", prevRunner2:"아이린 <em>87%</em>", prevRunner3:"윈터 <em>85%</em>",
       aboutTitle:"Mirror Muse 소개", aboutSub:"브라우저 기반 AI 얼굴 분석으로 당신과 가장 닮은 K-pop 뮤즈를 찾아드립니다.",
@@ -916,6 +918,14 @@ $('contactForm').addEventListener('submit', async e => {
     btn.disabled = false; btn.textContent = I18N[lang].t.cfErrRetry;
     alert(I18N[lang].t.cfNetAlert);
   }
+});
+
+/* ── FAQ accordion ── */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const open = item.classList.toggle('open');
+    item.querySelector('.faq-q').setAttribute('aria-expanded', open);
+  });
 });
 
 const userLang = navigator.language.split('-')[0];
