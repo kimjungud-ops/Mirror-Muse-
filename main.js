@@ -170,7 +170,10 @@ function buildMuses(){
 }
 const MUSES = buildMuses();
 
-const OY = 'https://global.oliveyoung.com/display/search?query=';
+const OY_KO = 'https://www.oliveyoung.co.kr/store/search/getSearchMain.do?query=';
+const OY_EN = 'https://global.oliveyoung.com/display/search?query=';
+const getOY = () => lang === 'ko' ? OY_KO : OY_EN;
+const getOYLabel = () => lang === 'ko' ? '올리브영 ↗' : 'Olive Young Global ↗';
 const PRODUCT_DB = [
   { grad:'linear-gradient(135deg,#e8c4b8,#c87f73)', icon:'✦', items:[
     {rank:1,brand:'CLIO',name:'킬 커버 파운웨어 쿠션',nameEn:'Kill Cover Founwear Cushion',price:'₩35,000',desc:'완벽 커버력 + 24시간 지속. K-pop 무대 메이크업에도 자주 쓰이는 스테디셀러.',descEn:'Perfect coverage + 24hr wear. A bestseller used in K-pop stage makeup.',q:'CLIO Kill Cover'},
@@ -235,12 +238,15 @@ const PRODUCT_DB = [
 ];
 
 let _activeTab = 0;
+let _kitPicks = null;
 
 function renderKitProducts(areaIdx) {
   const db = PRODUCT_DB[areaIdx];
+  const colorRec = _kitPicks?.[areaIdx]?.[1];
+  const colorLabel = lang === 'en' ? 'Rec. colour' : '어울리는 색';
   $('kitProducts').innerHTML = `<div class="prod-grid">${
     db.items.map(p => `
-      <a class="prod-card" href="${OY}${encodeURIComponent(p.q)}" target="_blank" rel="noopener">
+      <a class="prod-card" href="${getOY()}${encodeURIComponent(p.q)}" target="_blank" rel="noopener">
         <div class="prod-img" style="background:${db.grad}">
           <span class="prod-rank"># ${p.rank}</span>${db.icon}
         </div>
@@ -248,9 +254,10 @@ function renderKitProducts(areaIdx) {
           <div class="prod-brand">${p.brand}</div>
           <div class="prod-name">${lang === 'en' && p.nameEn ? p.nameEn : p.name}</div>
           <div class="prod-desc">${lang === 'en' && p.descEn ? p.descEn : p.desc}</div>
+          ${colorRec ? `<div class="prod-color"><span class="prod-color-label">${colorLabel}</span>${colorRec}</div>` : ''}
           <div class="prod-foot">
             <span class="prod-price">${p.price}</span>
-            <span class="prod-go">Olive Young Global ↗</span>
+            <span class="prod-go">${getOYLabel()}</span>
           </div>
         </div>
       </a>`).join('')
@@ -411,7 +418,6 @@ const I18N = {
       privacy:"<b>Your photo is never sent to a server.</b> All face analysis runs inside your own browser, and no image is kept beyond the result.",
       s02num:"02 — Your Muse", s02title:"The muse you resemble most", matchwith:"your face muse is", simLabel:"resemblance", alsoResembling:"also resembling",
       s03num:"03 — The Kit", cosTitle:"Cosmetics to channel {name}", cosTitleMuse:"your muse",
-      s03desc:"The key items that build your muse's face-shape mood. Follow the textures and color moods, area by area.",
       s04num:"04 — Watch & Learn", s04title:"Area-by-area makeup tutorials",
       s04desc:"Each button opens YouTube results sorted by <b>most views</b> right now — so you always get the most popular tutorials of the moment.",
       s04note:"※ Links open view-sorted search results, so the latest popular videos always appear.",
@@ -423,7 +429,7 @@ const I18N = {
       partnerBtn:"Partnership",
       prevBadge:"✦ Sample Result", prevMuseGrp:"IVE · slim V-line", prevDisclaimer:"* Results vary for each person",
       shrCopyLbl:"Copy",
-      s03desc:"The key items that build your muse's face-shape mood. Follow the textures and colour moods, area by area.",
+      s03desc:"The key items that build your muse's face-shape mood.<br>Follow the textures and colour moods, area by area.",
       decoChip1:"✦ Instant", decoChip2:"◠ No server storage", decoChip3:"❀ Product picks",
       qrModalTitle:"Open on mobile", qrModalDesc:"Scan the QR code with your phone camera<br>to start analysing right away.",
       partnerTitle:"Partnership Enquiry", partnerDesc:"Send us your brand collab, ad or sponsorship proposal and we'll reply promptly.",
@@ -431,6 +437,39 @@ const I18N = {
       cfMessage:"Message", cfMessagePh:"Tell us your idea or proposal.", cfSubmit:"Send enquiry →", cfDone:"Thank you! We'll be in touch soon.",
       cfSending:"Sending…", cfErrRetry:"Send enquiry →", cfErrAlert:"Failed to send. Please try again.", cfNetAlert:"Network error. Please try again.",
       footerLine:"<span class='foot-brand'>Mirror Muse</span> — Resemblance analysis is an entertainment estimate based on facial proportion data and is not a scientific or medical judgement. The muse roster consists of 200 popular K-pop artists as of 2026; facial measurements are archetype-based estimates, not values from real photos. This service has no affiliation with the artists or agencies mentioned. Cosmetic recommendations are texture and colour-mood guides and do not endorse specific brands. Uploaded photos are processed only in the browser and are not stored on any server. © 2026",
+      cookieTxt:"This site uses cookies for service operation and Google AdSense advertising. By continuing to use this site, you agree to the use of cookies.",
+      cookiePrivacyLbl:"Privacy Policy", cookieOkBtn:"Got it",
+      navGuide:"K-Beauty Guide",
+      prevMuseName:"Wonyoung",
+      prevRunner1:"Karina <em>89%</em>", prevRunner2:"Irene <em>87%</em>", prevRunner3:"Winter <em>85%</em>",
+      aboutTitle:"About Mirror Muse", aboutSub:"Browser-based AI facial analysis to find your closest K-pop muse.",
+      aboutH1:"About the Service", aboutP1:"Mirror Muse is a free service that uses cutting-edge browser AI technology to analyse your facial proportions and compare them against face-shape data from over 200 popular K-pop stars to find your closest muse. No sign-up or app installation required — just your browser. Photos are never sent to any server, so your privacy is fully protected.",
+      aboutH2:"Analysis Technology", aboutP2:"Based on an open-source face recognition library, we detect 68 landmark points on your face. We measure six key proportion metrics — eye spacing, nose width, lip fullness, height-to-width ratio, and jawline angle — then mathematically compare them against K-pop star face-shape archetype data. All processing happens in real time on your device; no image is ever stored on a server.",
+      aboutH3:"K-Beauty Curation", aboutP3:"Once your muse is identified, we curate K-beauty products matched to that muse's face-shape mood, area by area. Five categories — base, eye, brow, lip, and blush — each feature top-ranked products selected from Korea's most popular K-beauty lineup, all linked to the Olive Young Global store for international purchase.",
+      aboutH4:"YouTube Tutorial Links", aboutP4:"Beyond product recommendations, we link you directly to YouTube tutorials for each makeup area. Results are sorted by view count, so you always land on the most popular tutorials of the moment.",
+      stat1Label:"K-pop Muse Database", stat1Sub:"BTS · BLACKPINK · aespa and more top groups",
+      stat2Label:"Facial Landmark Points", stat2Sub:"Precision ratio analysis of eyes, nose, lips & jawline",
+      stat3Label:"Curated K-Beauty Products", stat3Sub:"Top 10 picks per category across 5 areas",
+      stat4Label:"Data Sent to Server", stat4Sub:"100% in-browser processing — complete privacy",
+      guideTitle:"K-Beauty Makeup Guide by Face Shape", guideSub:"The secret behind K-pop stars' makeup lies in techniques tailored to their face shape. Discover the K-beauty tips that suit yours.",
+      guide1Title:"V-Line (Slim Jawline)", guide1Desc:"Characteristic of Wonyoung and Karina — slim and delicate. Since the face already looks small, focus on eye makeup rather than shading. Define the eyes sharply, add blush above the cheekbones for a lively touch, and finish with a glossy tint for vivid lips to complete the muse look.", guide1Tips:"<span class='guide-tip'>💡 Under-eye shading</span><span class='guide-tip'>💡 Glossy lip</span><span class='guide-tip'>💡 Nose highlighter</span>",
+      guide2Title:"Oval (Golden Oval)", guide2Desc:"Considered the most ideal face shape in K-beauty — like Yoona and Taeyeon. Almost any makeup style suits this shape. Try a natural glow base for everyday wear, and switch to smoky or colour makeup for special occasions. Even changing the position of your blush creates a completely different mood.", guide2Tips:"<span class='guide-tip'>💡 Any style works</span><span class='guide-tip'>💡 Shift blush position for mood</span><span class='guide-tip'>💡 Glow skin as base</span>",
+      guide3Title:"Round (Cute & Lovable)", guide3Desc:"Adorable and lively — the charm of NewJeans and ILLIT members. Subtle shading along the lower lash line and pink blush swept up toward the nose for a doll-like look work beautifully. Finish lips with a clear, dewy glossy tint to capture that girlish vibe.", guide3Tips:"<span class='guide-tip'>💡 Lower lash line shading</span><span class='guide-tip'>💡 Pink over-blush</span><span class='guide-tip'>💡 Glossy lip essential</span>",
+      guide4Title:"Cat (Cat Face)", guide4Desc:"Striking and chic — like Jennie and Yeji. The key is a cat-eye liner extended toward the outer corners. A deep red or burgundy matte lip as the focal point completes an intense, confident K-pop mood. Keep brows straight to further sharpen the look.", guide4Tips:"<span class='guide-tip'>💡 Cat-eye liner</span><span class='guide-tip'>💡 Matte lip accent</span><span class='guide-tip'>💡 Straight brows</span>",
+      guide5Title:"Heart (Wide Forehead)", guide5Desc:"A wide forehead and slim chin like Hwasa and Wendy radiate strong, alluring energy. Light hairline shading visually narrows the forehead, while eye-enlarging techniques work well. Fuller lip expression accentuates the charming proportions typical of the heart shape.", guide5Tips:"<span class='guide-tip'>💡 Hairline shading</span><span class='guide-tip'>💡 Under-liner to enlarge eyes</span><span class='guide-tip'>💡 Lip overline</span>",
+      guide6Title:"The Core of K-Beauty Skin", guide6Desc:"Regardless of face shape, the universal key to K-beauty is skin expression. Apply cushion foundation in thin, even layers to create a 'second skin' base. Let a hydrating serum absorb fully before makeup, and your skin will stay dewy and natural all day. The secret to K-pop stars' flawless complexions lies in a solid skincare routine.", guide6Tips:"<span class='guide-tip'>💡 Cushion layering</span><span class='guide-tip'>💡 Skincare is the base</span><span class='guide-tip'>💡 Finish with setting spray</span>",
+      faqTitle:"Frequently Asked Questions", faqSub:"Questions about using Mirror Muse, answered.",
+      faq1Q:"Are my photos stored on a server?", faq1A:"No. All facial analysis on Mirror Muse happens entirely inside your browser (device). Photo data is never sent to any server, and no image remains after analysis — only the result. The service is designed with privacy as the top priority.",
+      faq2Q:"Do the results accurately reflect who I actually look like?", faq2A:"Mirror Muse's analysis is an entertainment-based estimate of facial geometry (face shape, eye size, spacing, nose, lip ratios, etc.) — not a scientific or medical judgement. Actual resemblance may differ. Think of it as a fun guide to enjoy!",
+      faq3Q:"What kind of photo gives the best results?", faq3A:"A front-facing photo with bright lighting and your full face visible gives the best accuracy. Masks, sunglasses, or extreme side angles may make face detection difficult. Selfie mode (front camera) typically gives the best results.",
+      faq4Q:"How are cosmetic recommendations made?", faq4A:"Products are curated based on the makeup texture and colour mood that suits your muse's face-shape archetype (doll, chic, natural, etc.). Popular K-beauty products are selected area by area — no specific brand endorsement is implied.",
+      faq5Q:"Is the service available in English?", faq5A:"Yes! Switch to English using the language selector at the top of the page. All analysis results, product descriptions, and tutorial search queries will be displayed in English — perfect for international K-beauty fans.",
+      faq6Q:"How do I enquire about partnership or advertising?", faq6A:"Click the 'Partnership' button at the top of the page to send a brand collaboration, advertising, or sponsorship proposal. We'll get back to you promptly.",
+      footPrivacy:"Privacy Policy", footTerms:"Terms of Service", footAbout:"About", footGuide:"K-Beauty Guide",
+      privacyTitle:"Privacy Policy",
+      privacyBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>Last updated: January 1, 2026</strong></p><h3 class='policy-h3'>1. Information We Collect</h3><p>Mirror Muse does not collect personal information in principle. Photos used for facial analysis are not sent to any server and are processed only within the browser. If you fill out the partnership enquiry form, your name, email, and message will be transmitted via Formspree.</p><h3 class='policy-h3'>2. Facial Data Processing</h3><p>Photos uploaded or captured by camera, and facial analysis data (landmark coordinates, ratio values), are processed only within the browser and are not transmitted to or stored on any external server. All data is immediately deleted when the page is refreshed or closed.</p><h3 class='policy-h3'>3. Third-Party Services Used</h3><ul><li><strong>face-api.js (jsDelivr CDN)</strong>: Used to load the open-source face recognition AI model.</li><li><strong>Google Fonts</strong>: Used to serve web fonts.</li><li><strong>Formspree</strong>: Used to submit the partnership enquiry form.</li><li><strong>QR Server API</strong>: Used to generate QR codes.</li><li><strong>Olive Young Global</strong>: Used to link to product pages.</li><li><strong>Google AdSense</strong>: Used to display ads for service operation. Google's advertising cookies may be used.</li></ul><h3 class='policy-h3'>4. Cookies &amp; Local Storage</h3><p>Mirror Muse does not use its own tracking cookies. Cookie consent status is stored only in browser local storage. When using ad services (Google AdSense), the relevant service's cookie policy may apply.</p><h3 class='policy-h3'>5. Children's Privacy</h3><p>This service is not intended for children under the age of 13. If you are under 13, please use this service with parental consent.</p><h3 class='policy-h3'>6. Contact</h3><p>For privacy-related enquiries, please use the 'Partnership' enquiry form at the top of the page.</p>",
+      termsTitle:"Terms of Service",
+      termsBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>Last updated: January 1, 2026</strong></p><h3 class='policy-h3'>1. Agreement to Terms</h3><p>By using Mirror Muse, you agree to these Terms of Service.</p><h3 class='policy-h3'>2. Purpose of Service</h3><p>Mirror Muse's facial analysis and K-pop resemblance results are entertainment-based estimates and are not scientific or medical judgements. We do not guarantee the accuracy of results.</p><h3 class='policy-h3'>3. Intellectual Property</h3><p>The design, content, and software of this service belong to Mirror Muse. K-pop artist names and group names mentioned are the property of their respective rights holders. Mirror Muse has no affiliation with those artists or agencies.</p><h3 class='policy-h3'>4. Disclaimer</h3><p>Mirror Muse is not liable for any direct or indirect damages arising from use of this service. Cosmetic recommendations are mood guides and do not guarantee the effectiveness of any specific product.</p><h3 class='policy-h3'>5. Advertising</h3><p>This service may display advertisements through Google AdSense. Ad content is displayed in accordance with Google's policies.</p><h3 class='policy-h3'>6. Changes to Terms</h3><p>These terms may be updated as the service evolves. Continued use after changes constitutes acceptance of the updated terms.</p>",
     },
     mood:{happy:"bright, smiling expression",neutral:"calm expression",surprised:"lively expression",sad:"quiet expression",angry:"sharp gaze",fearful:"delicate expression",disgusted:"distinctive expression"},
     vtpl:"Your {mood} carries a hint of {name}'s {shape}. {vibe}",
@@ -440,12 +479,12 @@ const I18N = {
     ar:[["Base & Skin","base makeup skin"],["Eye Makeup","eye makeup"],["Brows","eyebrow tutorial"],["Lips","lip makeup"],["Blush & Contour","blush contour"]],
     fk:"full cover makeup tutorial",
     kits:{
-      doll:{v:"Clear dewy glow and big round eyes.",F:[["Glow cushion","One shade up."],["Pearl shadow","For big eyes."],["Brow pencil","Soft arch."],["Glossy tint","Juicy."],["Cream blush","Rosy flush."]],M:[["Glow base","Clear."],["Shading","Define eyes."],["Brow","Natural."],["Lip balm","Pink."],["Shading","Bridge."]]},
-      chic:{v:"Porcelain finish and long eye line.",F:[["Matte foundation","Cool tone."],["Matte shadow","Smoky."],["Brow","Angular."],["Matte lip","Defined."],["Contour","Cool tone."]],M:[["Matte base","Clean."],["Line shadow","Sharp."],["Straight brow","Bold."],["Nude lip","Beige."],["Contour","Slim."]]},
-      natural:{v:"Subtle sheen and soft shading.",F:[["Satin cushion","Natural."],["Daily shadow","Warm."],["Natural brow","Curve."],["Velvet tint","Rose."],["Powder blush","Soft."]],M:[["Satin base","Even."],["Warm shading","Warm."],["Natural brow","Neat."],["Lip balm","Warm."],["Light shading","Dimension."]]},
-      defined:{v:"Healthy sheen and defined cat-eye.",F:[["Satin foundation","Healthy."],["Warm shadow","Cat-eye."],["Full brow","Straight."],["MLBB matte","Nude."],["Matte blush","Long."]],M:[["Satin base","Clean."],["Cat-line","Sharp."],["Full brow","Defined."],["Lip balm","Natural."],["Contour","Soft."]]},
-      elegant:{v:"Radiant sheen and striking eye.",F:[["Glow foundation","Radiant."],["Gold shadow","Defined."],["Arched brow","Elegant."],["Velvet lip","Vivid."],["Contour blush","Elegant."]],M:[["Glow base","Radiant."],["Gold shading","Alluring."],["Arched brow","Clear."],["Lip balm","Subtle."],["Contour","Along cheek."]]},
-      clean:{v:"Crisp finish and restrained shading.",F:[["Matte base","Crisp."],["Neutral shadow","Clean."],["Slim brow","Thin."],["Matte lip","Calm."],["Neutral shading","Subtle."]],M:[["Matte base","Crisp."],["Neutral shading","Refined."],["Slim brow","Thin."],["Lip balm","Calm."],["Neutral shading","Tidy."]]},
+      doll:{v:"Clear dewy glow and big round eyes.",F:[["Glow cushion","Warm Peach · Ivory"],["Pearl shadow","Pale Pink · Champagne"],["Brow pencil","Soft Brown"],["Glossy tint","Coral Pink · Baby Pink"],["Cream blush","Baby Pink · Peach"]],M:[["Glow base","Warm Peach · Ivory"],["Shading","Soft Pink · Brown"],["Brow","Ash Brown"],["Lip balm","Coral Pink"],["Shading","Soft Gray · Beige"]]},
+      chic:{v:"Porcelain finish and long eye line.",F:[["Matte foundation","Cool Ivory · Porcelain"],["Matte shadow","Cool Brown · Smoky Gray"],["Brow","Cool Gray Brown"],["Matte lip","Deep Maroon · Mauve"],["Contour","Cool Gray · Ash Brown"]],M:[["Matte base","Cool Ivory · Porcelain"],["Line shadow","Deep Brown · Smoky Gray"],["Straight brow","Cool Gray Brown"],["Nude lip","Mauve · Nude Beige"],["Contour","Cool Gray · Deep Gray"]]},
+      natural:{v:"Subtle sheen and soft shading.",F:[["Satin cushion","Warm Beige · Peach"],["Daily shadow","Terracotta · Warm Brown"],["Natural brow","Olive Brown"],["Velvet tint","Rose · Coral Pink"],["Powder blush","Peach · Coral"]],M:[["Satin base","Natural Beige · Warm Ivory"],["Warm shading","Warm Brown · Terracotta"],["Natural brow","Olive Brown"],["Lip balm","Coral · Rose Beige"],["Light shading","Soft Brown · Warm Beige"]]},
+      defined:{v:"Healthy sheen and defined cat-eye.",F:[["Satin foundation","Warm Beige · Peach"],["Warm shadow","Terracotta · Bronze"],["Full brow","Dark Brown · Khaki"],["MLBB matte","Rosewood · Nude Pink"],["Matte blush","Coral · Terracotta"]],M:[["Satin base","Warm Beige · Peach Beige"],["Cat-line","Bronze · Deep Khaki"],["Full brow","Dark Brown · Khaki"],["Lip balm","Rosewood · MLBB Pink"],["Contour","Warm Taupe · Soft Gray"]]},
+      elegant:{v:"Radiant sheen and striking eye.",F:[["Glow foundation","Peach Gold · Warm Beige"],["Gold shadow","Champagne Gold · Burgundy"],["Arched brow","Dark Brown · Soft Black"],["Velvet lip","Deep Red · Burgundy"],["Contour blush","Rose Gold · Deep Coral"]],M:[["Glow base","Peach Gold · Warm Beige"],["Gold shading","Champagne Gold · Burgundy"],["Arched brow","Dark Brown · Soft Black"],["Lip balm","Rose Pink · Nude Peach"],["Contour","Rose Gray · Mauve"]]},
+      clean:{v:"Crisp finish and restrained shading.",F:[["Matte base","Cool Ivory · Porcelain"],["Neutral shadow","Neutral Beige · Greige"],["Slim brow","Ash Brown · Gray"],["Matte lip","Nude · Rose Nude"],["Neutral shading","Cool Beige · Gray Taupe"]],M:[["Matte base","Cool Ivory · Porcelain"],["Neutral shading","Neutral Beige · Gray"],["Slim brow","Ash Gray · Cool Brown"],["Lip balm","Nude Beige · Cool Pink"],["Neutral shading","Cool Beige · Gray"]]},
     }
   },
   ko:{
@@ -464,7 +503,6 @@ const I18N = {
       privacy:"<b>사진은 서버로 전송되지 않습니다.</b> 모든 얼굴 분석은 브라우저 안에서만 이루어집니다.",
       s02num:"02 — Your Muse", s02title:"당신과 가장 닮은 뮤즈", matchwith:"your face muse is", simLabel:"resemblance", alsoResembling:"also resembling",
       s03num:"03 — The Kit", cosTitle:"{name}에게 닿는 화장품", cosTitleMuse:"뮤즈",
-      s03desc:"닮은 뮤즈의 얼굴형 무드를 만드는 핵심 아이템이에요.",
       s04num:"04 — Watch & Learn", s04title:"부위별 메이크업 튜토리얼",
       s04desc:"조회수가 가장 높은 영상 순으로 연결됩니다.",
       s04note:"※ 조회수 정렬 검색으로 연결됩니다.",
@@ -476,7 +514,7 @@ const I18N = {
       partnerBtn:"제휴 문의",
       prevBadge:"✦ 분석 결과 예시", prevMuseGrp:"IVE · 갸름한 V라인형", prevDisclaimer:"* 실제 분석 결과는 개인마다 달라요",
       shrCopyLbl:"복사",
-      s03desc:"닮은 뮤즈의 얼굴형 무드를 만드는 핵심 아이템이에요. 부위별로 텍스처와 컬러 무드를 따라가 보세요.",
+      s03desc:"닮은 뮤즈의 얼굴형 무드를 만드는 핵심 아이템이에요.<br>부위별로 텍스처와 컬러 무드를 따라가 보세요.",
       decoChip1:"✦ 즉시 분석", decoChip2:"◠ 서버 저장 없음", decoChip3:"❀ 화장품 추천",
       qrModalTitle:"모바일로 열기", qrModalDesc:"QR 코드를 스마트폰 카메라로 스캔하면<br>바로 분석을 시작할 수 있어요.",
       partnerTitle:"제휴 문의", partnerDesc:"브랜드 협업·광고·콜라보 제안을 보내주시면 빠르게 답변드릴게요.",
@@ -484,6 +522,39 @@ const I18N = {
       cfMessage:"문의 내용", cfMessagePh:"제안하실 내용을 자유롭게 작성해주세요.", cfSubmit:"문의 보내기 →", cfDone:"감사합니다! 빠른 시일 내 연락드릴게요.",
       cfSending:"전송 중…", cfErrRetry:"문의 보내기 →", cfErrAlert:"전송에 실패했어요. 다시 시도해주세요.", cfNetAlert:"네트워크 오류가 발생했어요. 다시 시도해주세요.",
       footerLine:"<span class='foot-brand'>Mirror Muse</span> — 닮음 분석은 얼굴 비율 데이터를 기반으로 한 엔터테인먼트용 추정이며 과학적·의학적 판단이 아닙니다. 뮤즈 명단은 2026년 기준 인기 K-pop 아티스트 200명으로 구성했으며, 얼굴형 수치는 아키타입 기반 추정값입니다. 언급된 아티스트 및 소속사와 제휴 관계가 없습니다. 화장품 추천은 무드 가이드이며 특정 브랜드를 보증하지 않습니다. 업로드한 사진은 브라우저에서만 처리되고 서버에 저장되지 않습니다. © 2026",
+      cookieTxt:"이 사이트는 서비스 운영 및 Google AdSense 광고를 위해 쿠키를 사용합니다. 계속 이용하시면 쿠키 사용에 동의하신 것으로 간주됩니다.",
+      cookiePrivacyLbl:"개인정보처리방침", cookieOkBtn:"확인",
+      navGuide:"K-뷰티 가이드",
+      prevMuseName:"장원영",
+      prevRunner1:"카리나 <em>89%</em>", prevRunner2:"아이린 <em>87%</em>", prevRunner3:"윈터 <em>85%</em>",
+      aboutTitle:"Mirror Muse 소개", aboutSub:"브라우저 기반 AI 얼굴 분석으로 당신과 가장 닮은 K-pop 뮤즈를 찾아드립니다.",
+      aboutH1:"서비스 소개", aboutP1:"Mirror Muse는 최신 브라우저 AI 기술을 활용해 당신의 얼굴 비율을 분석하고, 현시점 인기 K-pop 스타 200명 이상의 얼굴형 데이터와 비교해 가장 닮은 뮤즈를 찾아드리는 무료 서비스입니다. 별도의 회원가입이나 앱 설치 없이 브라우저 하나로 이용 가능하며, 사진은 서버로 전송되지 않아 개인 프라이버시가 완전히 보호됩니다.",
+      aboutH2:"분석 기술", aboutP2:"오픈소스 얼굴 인식 라이브러리를 기반으로 얼굴의 68개 랜드마크 포인트를 감지합니다. 눈 간격, 코 너비, 입술 두께, 얼굴 너비 대비 높이 비율, 턱선의 각도 등 6가지 핵심 비율 지표를 측정해 K-pop 스타들의 얼굴형 아키타입 데이터와 수학적으로 비교합니다. 모든 연산은 당신의 기기에서 실시간으로 처리되어 서버에 어떤 이미지도 남지 않습니다.",
+      aboutH3:"K-뷰티 큐레이션", aboutP3:"닮은 뮤즈가 결정되면 그 뮤즈의 얼굴형 무드에 맞는 K-뷰티 화장품을 부위별로 큐레이션해 드립니다. 베이스·아이·눈썹·립·블러셔 총 5개 카테고리에서 국내 최고 인기 제품들을 선별했으며, 각 제품은 올리브영 글로벌 스토어와 연결돼 해외에서도 바로 구매하실 수 있습니다.",
+      aboutH4:"유튜브 튜토리얼 연결", aboutP4:"화장품 추천에 그치지 않고, 부위별 메이크업 방법을 배울 수 있는 유튜브 튜토리얼로 바로 연결해 드립니다. 조회수 순으로 정렬된 검색 결과로 연결되기 때문에 항상 가장 인기 있는 최신 튜토리얼을 확인할 수 있습니다.",
+      stat1Label:"K-pop 뮤즈 데이터베이스", stat1Sub:"BTS·BLACKPINK·aespa 등 최신 인기 그룹 총망라",
+      stat2Label:"얼굴 랜드마크 포인트", stat2Sub:"눈·코·입·턱·윤곽 정밀 비율 측정",
+      stat3Label:"큐레이션 K-뷰티 제품", stat3Sub:"5개 부위, 카테고리별 Top 10 엄선",
+      stat4Label:"서버 전송 데이터", stat4Sub:"100% 브라우저 내 처리, 완전한 프라이버시 보호",
+      guideTitle:"얼굴형별 K-뷰티 메이크업 가이드", guideSub:"K-pop 스타들의 메이크업 비밀은 얼굴형에 맞는 맞춤 테크닉에 있습니다. 당신의 얼굴형에 맞는 K-뷰티 포인트를 알아보세요.",
+      guide1Title:"V라인형 (갸름한 턱선)", guide1Desc:"장원영·카리나처럼 갸름하고 작은 느낌이 특징입니다. 이미 얼굴이 작아 보이므로 쉐딩보다 아이 메이크업에 집중합니다. 눈을 또렷하게 강조하고, 블러셔는 광대 위쪽에 살짝 올려 발랄함을 더합니다. 입술은 글로시 틴트로 선명하게 표현하면 뮤즈 무드를 완성할 수 있습니다.", guide1Tips:"<span class='guide-tip'>💡 눈 아래 애교살 음영</span><span class='guide-tip'>💡 글로시 립</span><span class='guide-tip'>💡 코 하이라이터 포인트</span>",
+      guide2Title:"타원형 (골든 오벌)", guide2Desc:"K-뷰티에서 가장 이상적으로 꼽히는 얼굴형입니다. 윤아·태연처럼 어떤 메이크업 스타일도 잘 어울립니다. 데일리에는 내추럴 글로우 피부 표현을, 특별한 날에는 스모키나 컬러 메이크업으로 다양한 분위기를 연출해 보세요. 블러셔 위치만 바꿔도 전혀 다른 무드가 만들어집니다.", guide2Tips:"<span class='guide-tip'>💡 어떤 스타일도 OK</span><span class='guide-tip'>💡 블러셔 위치로 무드 변환</span><span class='guide-tip'>💡 글로우 스킨 기본</span>",
+      guide3Title:"동글형 (귀여운 라운드)", guide3Desc:"뉴진스·ILLIT 멤버들처럼 사랑스럽고 발랄한 분위기가 매력입니다. 눈 아래 쌍꺼풀 라인에 살짝 음영을 주는 '애교살 메이크업'과 핑크 블러셔를 코 위까지 올리는 '인형 메이크업'이 잘 어울립니다. 립은 투명하고 촉촉한 글로시 틴트로 소녀감을 살려보세요.", guide3Tips:"<span class='guide-tip'>💡 애교살 음영 포인트</span><span class='guide-tip'>💡 핑크 오버블러셔</span><span class='guide-tip'>💡 글로시 립 필수</span>",
+      guide4Title:"고양이형 (캣 페이스)", guide4Desc:"제니·예지처럼 이목구비가 뚜렷하고 시크한 분위기입니다. 아이라이너를 눈꼬리 쪽으로 길게 빼는 캣아이 기법이 핵심입니다. 매트한 질감의 딥 레드나 버건디 립을 포인트로 주면 강렬하고 자신감 넘치는 K-pop 무드가 완성됩니다. 눈썹은 일자로 정돈해 더욱 또렷한 느낌을 줍니다.", guide4Tips:"<span class='guide-tip'>💡 캣아이 라이너</span><span class='guide-tip'>💡 매트 립 포인트</span><span class='guide-tip'>💡 일자 눈썹</span>",
+      guide5Title:"하트형 (이마 넓은 하트)", guide5Desc:"이마가 넓고 턱이 갸름한 하트형은 화사·웬디처럼 강렬하고 매력적인 무드를 자아냅니다. 헤어라인 쪽에 가벼운 쉐딩으로 이마를 좁혀 보이게 하고, 눈을 크게 키우는 메이크업이 효과적입니다. 입술은 도톰하게 표현해 하트형 특유의 매력적인 비율을 살려보세요.", guide5Tips:"<span class='guide-tip'>💡 헤어라인 쉐딩</span><span class='guide-tip'>💡 언더라이너로 눈 확대</span><span class='guide-tip'>💡 입술 오버라인</span>",
+      guide6Title:"K-뷰티 피부 표현의 핵심", guide6Desc:"얼굴형과 무관하게 K-뷰티의 공통 핵심은 '피부 표현'입니다. 쿠션 파운데이션을 얇고 고르게 펴 발라 '두 번째 피부' 같은 자연스러운 베이스를 만드세요. 메이크업 전 보습 세럼을 충분히 흡수시키면 하루 종일 촉촉하고 자연스러운 피부 표현이 유지됩니다. K-pop 스타들의 무결점 피부의 비밀은 탄탄한 스킨케어 루틴에 있습니다.", guide6Tips:"<span class='guide-tip'>💡 쿠션으로 얇게 레이어링</span><span class='guide-tip'>💡 스킨케어가 베이스</span><span class='guide-tip'>💡 세팅 스프레이로 마무리</span>",
+      faqTitle:"자주 묻는 질문", faqSub:"Mirror Muse 이용에 대해 궁금한 점을 모았습니다.",
+      faq1Q:"사진이 서버에 저장되나요?", faq1A:"아니요. Mirror Muse의 모든 얼굴 분석은 당신의 브라우저(기기) 안에서만 이루어집니다. 사진 데이터는 어떤 서버로도 전송되지 않으며, 분석이 끝난 후 결과 외에는 어떤 이미지도 남지 않습니다. 개인정보 보호를 최우선으로 설계된 서비스입니다.",
+      faq2Q:"분석 결과가 실제 닮은꼴을 정확히 반영하나요?", faq2A:"Mirror Muse의 분석은 얼굴의 기하학적 비율(얼굴형·눈 크기·간격·코·입술 비율 등)을 기반으로 한 엔터테인먼트용 추정입니다. 과학적·의학적 판단이 아니며 실제 닮음의 정도와 다를 수 있습니다. 재미있는 경험을 위한 가이드로 즐겨주세요.",
+      faq3Q:"어떤 사진이 가장 잘 분석되나요?", faq3A:"정면을 바라보는 사진, 밝은 조명, 얼굴 전체가 화면에 보이는 사진일수록 정확도가 높습니다. 마스크·선글라스 착용이나 극단적인 측면 각도의 사진은 얼굴 감지가 어려울 수 있습니다. 셀카 모드(전면 카메라)가 가장 좋은 결과를 줍니다.",
+      faq4Q:"화장품 추천은 어떤 기준으로 이루어지나요?", faq4A:"닮은 뮤즈의 얼굴형 아키타입(인형형·시크형·내추럴형 등)에 따라 어울리는 메이크업 텍스처와 컬러 무드를 분류했습니다. 각 무드에 맞는 국내 인기 K-뷰티 제품들을 부위별로 큐레이션해 드리며, 특정 브랜드를 보증하는 것은 아닙니다.",
+      faq5Q:"영어로도 이용 가능한가요?", faq5A:"네! 페이지 상단의 언어 선택(한국어 / English)으로 전환하면 모든 분석 결과, 제품 설명, 튜토리얼 검색어가 영어로 제공됩니다. 해외에서 K-뷰티에 관심 있는 분들도 편리하게 이용하실 수 있습니다.",
+      faq6Q:"제휴·광고 문의는 어떻게 하나요?", faq6A:"상단 '제휴 문의' 버튼을 클릭하시면 양식을 통해 브랜드 협업, 광고, 콜라보 제안을 보내실 수 있습니다. 내용 확인 후 빠르게 회신 드립니다.",
+      footPrivacy:"개인정보처리방침", footTerms:"이용약관", footAbout:"서비스 소개", footGuide:"K-뷰티 가이드",
+      privacyTitle:"개인정보처리방침",
+      privacyBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>최종 업데이트: 2026년 1월 1일</strong></p><h3 class='policy-h3'>1. 수집하는 정보</h3><p>Mirror Muse는 원칙적으로 개인정보를 수집하지 않습니다. 얼굴 분석에 사용되는 사진은 서버로 전송되지 않으며 브라우저 내에서만 처리됩니다. 제휴 문의 양식을 작성하실 경우 이름, 이메일, 메시지가 Formspree를 통해 전송됩니다.</p><h3 class='policy-h3'>2. 얼굴 데이터 처리</h3><p>업로드하거나 카메라로 촬영한 사진 및 얼굴 분석 데이터(랜드마크 좌표, 비율값)는 브라우저 내에서만 처리되며 외부 서버로 전송되거나 저장되지 않습니다. 페이지를 새로고침하거나 닫으면 모든 데이터가 즉시 삭제됩니다.</p><h3 class='policy-h3'>3. 이용하는 외부 서비스</h3><ul><li><strong>face-api.js (jsDelivr CDN)</strong>: 오픈소스 얼굴 인식 AI 모델 로드에 이용됩니다.</li><li><strong>Google Fonts</strong>: 웹폰트 제공에 이용됩니다.</li><li><strong>Formspree</strong>: 제휴 문의 양식 전송 시 이용됩니다.</li><li><strong>QR Server API</strong>: QR 코드 생성에 이용됩니다.</li><li><strong>Olive Young Global</strong>: 제품 링크 연결에 이용됩니다.</li><li><strong>Google AdSense</strong>: 서비스 운영을 위한 광고 표시에 이용되며, Google의 광고 쿠키가 사용될 수 있습니다.</li></ul><h3 class='policy-h3'>4. 쿠키 및 로컬 스토리지</h3><p>Mirror Muse는 자체적인 트래킹 쿠키를 사용하지 않습니다. 쿠키 동의 여부는 브라우저 로컬 스토리지에만 저장됩니다. 광고 서비스(Google AdSense) 이용 시 해당 서비스의 쿠키 정책이 적용될 수 있습니다.</p><h3 class='policy-h3'>5. 어린이 개인정보보호</h3><p>본 서비스는 만 14세 미만 어린이를 대상으로 하지 않습니다. 만 14세 미만의 경우 보호자의 동의 하에 이용해 주세요.</p><h3 class='policy-h3'>6. 문의</h3><p>개인정보 관련 문의는 페이지 상단 '제휴 문의' 양식을 통해 보내주세요.</p>",
+      termsTitle:"이용약관",
+      termsBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>최종 업데이트: 2026년 1월 1일</strong></p><h3 class='policy-h3'>1. 서비스 이용 동의</h3><p>Mirror Muse를 이용하시면 본 약관에 동의하시는 것으로 간주됩니다.</p><h3 class='policy-h3'>2. 서비스 목적</h3><p>Mirror Muse의 얼굴형 분석 및 K-pop 닮은꼴 결과는 엔터테인먼트 목적의 추정값이며 과학적·의학적 판단이 아닙니다. 결과의 정확성을 보증하지 않습니다.</p><h3 class='policy-h3'>3. 지식재산권</h3><p>본 서비스의 디자인, 콘텐츠, 소프트웨어는 Mirror Muse에 귀속됩니다. 언급된 K-pop 아티스트 이름·그룹명은 각 권리자에게 귀속되며, Mirror Muse는 해당 아티스트 또는 소속사와 제휴 관계가 없습니다.</p><h3 class='policy-h3'>4. 면책조항</h3><p>서비스 이용으로 인한 직·간접적 손해에 대해 Mirror Muse는 책임을 지지 않습니다. 화장품 추천은 무드 가이드이며 특정 제품의 효과를 보증하지 않습니다.</p><h3 class='policy-h3'>5. 광고</h3><p>본 서비스는 Google AdSense를 통해 광고를 게재할 수 있습니다. 광고 콘텐츠는 Google의 정책에 따라 표시됩니다.</p><h3 class='policy-h3'>6. 약관 변경</h3><p>서비스 운영에 따라 본 약관은 변경될 수 있으며, 변경 후 계속 이용 시 변경된 약관에 동의하는 것으로 간주됩니다.</p>",
     },
     mood:{happy:"웃는 표정에서",neutral:"정제된 표정에서",surprised:"생기 있는 표정에서",sad:"잔잔한 표정에서",angry:"또렷한 눈빛에서",fearful:"섬세한 표정에서",disgusted:"개성 있는 표정에서"},
     vtpl:"{mood} {name}의 {shape} 무드가 묻어나요. {vibe}",
@@ -493,12 +564,12 @@ const I18N = {
     ar:[["베이스","베이스 메이크업"],["아이","아이 메이크업"],["눈썹","눈썹 그리는 법"],["립","립 메이크업"],["블러셔","블러셔 쉐딩"]],
     fk:"커버 메이크업",
     kits:{
-      doll:{v:"물광 피부와 동그랗고 큰 눈.",F:[["쿠션","촉촉."],["펄 섀도우","눈 크게."],["브로우","아치형."],["틴트","글로시."],["블러셔","핑크."]],M:[["베이스","화사."],["섀도우","부드럽게."],["브로우","곡선."],["립밤","핑크."],["쉐딩","콧대."]]},
-      chic:{v:"도자기 피부와 시크한 무드.",F:[["파운데이션","매끈."],["섀도우","스모키."],["브로우","직선."],["립","매트."],["쉐딩","음영."]],M:[["베이스","깔끔."],["섀도우","날렵."],["브로우","일자."],["립","누드."],["쉐딩","갸름."]]},
-      natural:{v:"은은한 윤기와 따뜻한 무드.",F:[["쿠션","자연."],["섀도우","음영."],["브로우","곡선."],["틴트","벨벳."],["블러셔","은은."]],M:[["베이스","윤기."],["섀도우","따뜻."],["브로우","단정."],["립밤","혈색."],["쉐딩","가볍게."]]},
-      defined:{v:"건강한 윤기와 또렷한 무드.",F:[["파운데이션","생기."],["섀도우","캣아이."],["브로우","채워."],["립","누드."],["블러셔","시크."]],M:[["베이스","깔끔."],["섀도우","라인."],["브로우","또렷."],["립밤","혈색."],["컨투어","음영."]]},
-      elegant:{v:"화사한 윤기와 우아한 무드.",F:[["파운데이션","우아."],["섀도우","음영."],["브로우","아치."],["립","강렬."],["블러셔","우아."]],M:[["베이스","윤기."],["섀도우","고혹."],["브로우","아치."],["립밤","혈색."],["쉐딩","음영."]]},
-      clean:{v:"매끈한 피부와 단아한 무드.",F:[["베이스","깔끔."],["섀도우","단정."],["브로우","슬림."],["립","차분."],["쉐딩","음영."]],M:[["베이스","깔끔."],["섀도우","세련."],["브로우","슬림."],["립밤","차분."],["쉐딩","정돈."]]},
+      doll:{v:"물광 피부와 동그랗고 큰 눈.",F:[["쿠션","웜 피치 · 아이보리"],["펄 섀도우","페일 핑크 · 샴페인"],["브로우","소프트 브라운"],["틴트","코랄 핑크 · 베이비 핑크"],["블러셔","베이비 핑크 · 피치"]],M:[["베이스","웜 피치 · 아이보리"],["섀도우","소프트 핑크 · 브라운"],["브로우","애쉬 브라운"],["립밤","코랄 핑크"],["쉐딩","소프트 그레이 · 베이지"]]},
+      chic:{v:"도자기 피부와 시크한 무드.",F:[["파운데이션","쿨 아이보리 · 포슬린"],["섀도우","쿨 브라운 · 스모키 그레이"],["브로우","쿨 그레이 브라운"],["립","딥 마룬 · 뮤브"],["쉐딩","쿨 그레이 · 애쉬 브라운"]],M:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","딥 브라운 · 스모키 그레이"],["브로우","쿨 그레이 브라운"],["립","뮤브 · 누드 베이지"],["쉐딩","쿨 그레이 · 딥 그레이"]]},
+      natural:{v:"은은한 윤기와 따뜻한 무드.",F:[["쿠션","웜 베이지 · 피치"],["섀도우","테라코타 · 웜 브라운"],["브로우","올리브 브라운"],["틴트","로즈 · 코랄 핑크"],["블러셔","피치 · 코랄"]],M:[["베이스","내추럴 베이지 · 웜 아이보리"],["섀도우","웜 브라운 · 테라코타"],["브로우","올리브 브라운"],["립밤","코랄 · 로즈 베이지"],["쉐딩","소프트 브라운 · 웜 베이지"]]},
+      defined:{v:"건강한 윤기와 또렷한 무드.",F:[["파운데이션","웜 베이지 · 피치"],["섀도우","테라코타 · 브론즈"],["브로우","다크 브라운 · 카키"],["립","로즈우드 · 누드 핑크"],["블러셔","코랄 · 테라코타"]],M:[["베이스","웜 베이지 · 피치 베이지"],["섀도우","브론즈 · 딥 카키"],["브로우","다크 브라운 · 카키"],["립밤","로즈우드 · MLBB 핑크"],["컨투어","웜 타우프 · 소프트 그레이"]]},
+      elegant:{v:"화사한 윤기와 우아한 무드.",F:[["파운데이션","피치 골드 · 웜 베이지"],["섀도우","샴페인 골드 · 버건디"],["브로우","다크 브라운 · 소프트 블랙"],["립","딥 레드 · 버건디"],["블러셔","로즈 골드 · 딥 코랄"]],M:[["베이스","피치 골드 · 웜 베이지"],["섀도우","샴페인 골드 · 버건디"],["브로우","다크 브라운 · 소프트 블랙"],["립밤","로즈 핑크 · 누드 피치"],["쉐딩","로즈 그레이 · 뮤브"]]},
+      clean:{v:"매끈한 피부와 단아한 무드.",F:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","뉴트럴 베이지 · 그레이지"],["브로우","애쉬 브라운 · 그레이"],["립","누드 · 로즈 누드"],["쉐딩","쿨 베이지 · 그레이 타우프"]],M:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","뉴트럴 베이지 · 그레이"],["브로우","애쉬 그레이 · 쿨 브라운"],["립밤","누드 베이지 · 쿨 핑크"],["쉐딩","쿨 베이지 · 그레이"]]},
     }
   }
 };
@@ -621,6 +692,7 @@ function updateResultUI(){
 
   $('s03title').textContent = d.t.cosTitle.replace('{name}', displayMuseName(muse.name, muse.group));
   const kitPicks = d.kits[muse.kit][muse.g];
+  _kitPicks = kitPicks;
   _activeTab = 0;
   $('kitTabs').innerHTML = PRODUCT_DB.map((db, i) => `
     <button class="kit-tab ${i === 0 ? 'active' : ''}" onclick="selectKitTab(${i})">
@@ -793,7 +865,35 @@ $('partnerBtn').addEventListener('click', () => modal.classList.add('open'));
 $('modalClose').addEventListener('click', () => modal.classList.remove('open'));
 modal.addEventListener('click', e => { if(e.target === modal) modal.classList.remove('open'); });
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') { modal.classList.remove('open'); qrModal.classList.remove('open'); }
+  if(e.key === 'Escape') {
+    modal.classList.remove('open');
+    qrModal.classList.remove('open');
+    privacyModal.classList.remove('open');
+    termsModal.classList.remove('open');
+  }
+});
+
+/* ── Privacy modal ── */
+const privacyModal = $('privacyModal');
+$('privacyBtn').addEventListener('click', () => privacyModal.classList.add('open'));
+$('privacyModalClose').addEventListener('click', () => privacyModal.classList.remove('open'));
+privacyModal.addEventListener('click', e => { if(e.target === privacyModal) privacyModal.classList.remove('open'); });
+
+/* ── Terms modal ── */
+const termsModal = $('termsModal');
+$('termsBtn').addEventListener('click', () => termsModal.classList.add('open'));
+$('termsModalClose').addEventListener('click', () => termsModal.classList.remove('open'));
+termsModal.addEventListener('click', e => { if(e.target === termsModal) termsModal.classList.remove('open'); });
+
+/* ── Cookie consent ── */
+const cookieBanner = $('cookieConsent');
+if(!localStorage.getItem('mm_cookie_ok')) cookieBanner.style.display = 'block';
+$('cookieOk').addEventListener('click', () => {
+  localStorage.setItem('mm_cookie_ok', '1');
+  cookieBanner.style.display = 'none';
+});
+$('cookiePrivacyBtn').addEventListener('click', () => {
+  privacyModal.classList.add('open');
 });
 $('contactForm').addEventListener('submit', async e => {
   e.preventDefault();

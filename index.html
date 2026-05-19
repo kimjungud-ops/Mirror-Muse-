@@ -56,7 +56,7 @@
   section.block{padding:70px 0;position:relative}
   .secnum{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.3em;color:var(--berry);margin-bottom:12px;display:block}
   .sectitle{font-family:'Gowun Batang',serif;font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:700;line-height:1.3;margin-bottom:0}
-  .secdesc{margin-top:16px;color:var(--ink-soft);max-width:52ch;font-weight:300;line-height:1.8}
+  .secdesc{margin-top:16px;color:var(--ink-soft);font-weight:300;line-height:1.8}
   .rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:28px 0 44px}
   .studio-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:stretch}
   .studio-grid > .reveal{display:flex;flex-direction:column}
@@ -180,12 +180,12 @@
     transition:.22s;display:flex;flex-direction:column;gap:3px;flex:1;min-width:120px;text-align:left}
   .kit-tab .tab-num{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--berry);font-size:13px;line-height:1}
   .kit-tab .tab-area{font-weight:700;font-size:13px;color:var(--ink)}
-  .kit-tab .tab-pick{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.4;margin-top:2px}
+  .kit-tab .tab-pick{font-size:11px;color:var(--berry);font-weight:600;line-height:1.4;margin-top:3px}
   .kit-tab:hover{border-color:var(--berry)}
   .kit-tab.active{background:var(--ink);border-color:var(--ink)}
   .kit-tab.active .tab-num{color:var(--rose)}
   .kit-tab.active .tab-area{color:var(--bg-2)}
-  .kit-tab.active .tab-pick{color:rgba(251,246,241,.5)}
+  .kit-tab.active .tab-pick{color:var(--rose)}
   /* Product grid */
   .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:15px}
   .prod-card{background:var(--card);border:1px solid var(--line);border-radius:16px;
@@ -200,7 +200,9 @@
   .prod-body{padding:13px 14px 15px}
   .prod-brand{font-size:9.5px;letter-spacing:.2em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:3px}
   .prod-name{font-family:'Gowun Batang',serif;font-weight:700;font-size:.9rem;line-height:1.35;margin-bottom:5px}
-  .prod-desc{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.55;margin-bottom:9px}
+  .prod-desc{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.55;margin-bottom:8px}
+  .prod-color{font-size:11px;color:var(--berry);font-weight:600;margin-bottom:9px;padding-top:7px;border-top:1px solid var(--line);line-height:1.4}
+  .prod-color-label{font-size:9.5px;color:var(--ink-soft);font-weight:400;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
   .prod-foot{display:flex;align-items:center;justify-content:space-between}
   .prod-price{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--berry);font-weight:600}
   .prod-go{font-size:9.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase}
@@ -696,7 +698,7 @@
   <section class="wrap block" id="cosmeticSection">
     <div class="secnum" data-i18n="s03num">03 — The Kit</div>
     <h2 class="sectitle" id="s03title">뮤즈에게 닿는 화장품</h2>
-    <p class="secdesc" id="s03desc" data-i18n="s03desc">탭을 눌러 부위별 인기 화장품을 확인하세요.</p>
+    <p class="secdesc" id="s03desc" data-i18n-html="s03desc">탭을 눌러 부위별 인기 화장품을 확인하세요.</p>
     <div class="rule"></div>
     <div class="kit-tabs" id="kitTabs"></div>
     <div id="kitProducts"></div>
