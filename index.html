@@ -307,10 +307,13 @@
   .cookie-btns{display:flex;gap:10px;align-items:center;flex-shrink:0}
   .cookie-btns .foot-link-btn{color:rgba(244,235,227,.7)}
   .cookie-btns .foot-link-btn:hover{color:#f4ebe3}
+  @media(max-width:768px){
+    .wrap{padding:0 20px}
+    .guide-grid{margin:0 -20px;padding-left:20px;padding-right:20px}
+  }
   @media(max-width:520px){
     .form-row{grid-template-columns:1fr}
     .modal-box{padding:28px 22px}
-    .wrap{padding:0 14px}
     .stage{height:260px}
     .prod-grid{grid-template-columns:1fr 1fr;gap:8px}
     .guide-card{width:82vw}
