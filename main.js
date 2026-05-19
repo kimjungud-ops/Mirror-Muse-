@@ -599,6 +599,8 @@ function setLanguage(l){
 }
 
 async function loadModels(){
+  const ldr = $('loader');
+  setTimeout(() => { if(ldr) ldr.classList.add('hide'); }, 1500);
   try {
     await Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -611,7 +613,6 @@ async function loadModels(){
     console.error(e);
     setStatus(I18N[lang].t.stModelFail, 'err');
   } finally {
-    const ldr = $('loader');
     if(ldr) ldr.classList.add('hide');
   }
 }
