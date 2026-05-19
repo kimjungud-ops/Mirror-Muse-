@@ -1093,6 +1093,942 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/dist/face-api.js"></script>
-<script src="app.js"></script>
+<script>
+
+const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/model';
+
+const ARCH_T = {
+  doll_long:     {faceRatio:1.55,jawRatio:0.74,eyeSize:0.30,eyeSpacing:0.30,noseWidth:0.23,lipFull:0.17},
+  vline_cat:     {faceRatio:1.48,jawRatio:0.71,eyeSize:0.27,eyeSpacing:0.33,noseWidth:0.24,lipFull:0.16},
+  soft_oval:     {faceRatio:1.40,jawRatio:0.78,eyeSize:0.27,eyeSpacing:0.29,noseWidth:0.24,lipFull:0.17},
+  cat_defined:   {faceRatio:1.34,jawRatio:0.80,eyeSize:0.28,eyeSpacing:0.32,noseWidth:0.26,lipFull:0.20},
+  round_cute:    {faceRatio:1.30,jawRatio:0.82,eyeSize:0.29,eyeSpacing:0.30,noseWidth:0.25,lipFull:0.18},
+  clear_chic:    {faceRatio:1.42,jawRatio:0.75,eyeSize:0.28,eyeSpacing:0.30,noseWidth:0.24,lipFull:0.17},
+  petite_neat:   {faceRatio:1.38,jawRatio:0.77,eyeSize:0.27,eyeSpacing:0.28,noseWidth:0.23,lipFull:0.16},
+  heart_alluring:{faceRatio:1.36,jawRatio:0.76,eyeSize:0.28,eyeSpacing:0.31,noseWidth:0.25,lipFull:0.19},
+  golden_oval:   {faceRatio:1.52,jawRatio:0.80,eyeSize:0.25,eyeSpacing:0.30,noseWidth:0.27,lipFull:0.16},
+  strong_jaw:    {faceRatio:1.41,jawRatio:0.84,eyeSize:0.26,eyeSpacing:0.31,noseWidth:0.28,lipFull:0.19},
+  long_sharp:    {faceRatio:1.56,jawRatio:0.83,eyeSize:0.24,eyeSpacing:0.31,noseWidth:0.28,lipFull:0.16},
+  broad_soft:    {faceRatio:1.43,jawRatio:0.86,eyeSize:0.25,eyeSpacing:0.31,noseWidth:0.27,lipFull:0.19},
+};
+const ARCH_KEYS = Object.keys(ARCH_T);
+const ARCH_KIT = {
+  doll_long:'doll', round_cute:'doll',
+  vline_cat:'chic', long_sharp:'chic',
+  soft_oval:'natural', golden_oval:'natural',
+  cat_defined:'defined', strong_jaw:'defined',
+  heart_alluring:'elegant', broad_soft:'elegant',
+  clear_chic:'clean', petite_neat:'clean',
+};
+
+const ROSTER = [];
+function add(group, gender){ for(let i=2;i<arguments.length;i++) ROSTER.push([arguments[i],group,gender]); }
+add('BLACKPINK','F','지수','제니','로제','리사');
+add('TWICE','F','나연','정연','모모','사나','지효','미나','다현','채영','쯔위');
+add('aespa','F','카리나','지젤','윈터','닝닝');
+add('IVE','F','안유진','가을','레이','장원영','리즈','이서');
+add('NewJeans','F','민지','하니','다니엘','해린','혜인');
+add('LE SSERAFIM','F','사쿠라','김채원','허윤진','카즈하','홍은채');
+add('(G)I-DLE','F','미연','민니','소연','우기','슈화');
+add('ITZY','F','예지','리아','류진','채령','유나');
+add('Red Velvet','F','아이린','슬기','웬디','조이','예리');
+add('NMIXX','F','릴리','해원','설윤','지우','배이','규진');
+add('STAYC','F','수민','시은','아이사','세은','윤','재이');
+add('BABYMONSTER','F','루카','파리타','아사','아현','라미','로라','치키타');
+add('ILLIT','F','윤아','민주','모카','원희','이로하');
+add('Kep1er','F','최유진','김채현','김다연','휴닝바히예','서영은','마시로','히카루','샤오팅','강예서');
+add('fromis_9','F','이새롬','송하영','이나경','박지원','노지선','이서연','이채영','백지헌');
+add('소녀시대','F','태연','써니','티파니','효연','유리','수영','윤아','서현');
+add('MAMAMOO','F','솔라','문별','휘인','화사');
+add('SOLO','F','아이유','보아','선미','청하');
+add('BTS','M','RM','진','슈가','제이홉','지민','뷔','정국');
+add('SEVENTEEN','M','에스쿱스','정한','조슈아','준','호시','원우','우지','도겸','민규','디에잇','승관','버논','디노');
+add('Stray Kids','M','방찬','리노','창빈','현진','한','필릭스','승민','아이엔');
+add('TXT','M','연준','수빈','범규','태현','휴닝카이');
+add('ENHYPEN','M','희승','제이','제이크','성훈','선우','정원','니키');
+add('NCT','M','태용','태일','쟈니','유타','도영','재현','정우','마크','해찬','제노','재민','런쥔','천러','지성');
+add('EXO','M','시우민','수호','레이','백현','첸','찬열','디오','카이','세훈');
+add('RIIZE','M','쇼타로','은석','성찬','원빈','승한','소희','앤톤');
+add('ZEROBASEONE','M','김지웅','장하오','성한빈','석매튜','김태래','리키','김규빈','박건욱','한유진');
+add('SHINee','M','온유','키','민호','태민');
+add('ASTRO','M','차은우');
+add('BIGBANG','M','지드래곤','태양','대성','탑');
+add('THE BOYZ','M','영훈','현재','주연','케빈','뉴','에릭');
+add('SOLO','M','박지훈');
+
+const NAME_EN = {
+  // BLACKPINK
+  '지수':'Jisoo','제니':'Jennie','로제':'Rosé','리사':'Lisa',
+  // TWICE
+  '나연':'Nayeon','정연':'Jeongyeon','모모':'Momo','사나':'Sana','지효':'Jihyo',
+  '미나':'Mina','다현':'Dahyun','채영':'Chaeyoung','쯔위':'Tzuyu',
+  // aespa
+  '카리나':'Karina','지젤':'Giselle','윈터':'Winter','닝닝':'Ningning',
+  // IVE (레이 conflicts with EXO's 레이)
+  '안유진':'Yujin','가을':'Gaeul','레이@IVE':'Rei','장원영':'Wonyoung','리즈':'Liz','이서':'Leeseo',
+  // NewJeans
+  '민지':'Minji','하니':'Hanni','다니엘':'Danielle','해린':'Haerin','혜인':'Hyein',
+  // LE SSERAFIM
+  '사쿠라':'Sakura','김채원':'Chaewon','허윤진':'Yunjin','카즈하':'Kazuha','홍은채':'Eunchae',
+  // (G)I-DLE
+  '미연':'Miyeon','민니':'Minnie','소연':'Soyeon','우기':'Yuqi','슈화':'Shuhua',
+  // ITZY
+  '예지':'Yeji','리아':'Lia','류진':'Ryujin','채령':'Chaeryeong','유나':'Yuna',
+  // Red Velvet
+  '아이린':'Irene','슬기':'Seulgi','웬디':'Wendy','조이':'Joy','예리':'Yeri',
+  // NMIXX
+  '릴리':'Lily','해원':'Haewon','설윤':'Sullyoon','지우':'Jiwoo','배이':'BAE','규진':'Kyujin',
+  // STAYC
+  '수민':'Sumin','시은':'Sieun','아이사':'Isa','세은':'Seeun','윤':'Yoon','재이':'J',
+  // BABYMONSTER
+  '루카':'Ruka','파리타':'Pharita','아사':'Asa','아현':'Ahyeon','라미':'Rami','로라':'Rora','치키타':'Chiquita',
+  // ILLIT (윤아 conflicts with 소녀시대's 윤아)
+  '윤아@ILLIT':'Yunah','민주':'Minju','모카':'Moka','원희':'Wonhee','이로하':'Iroha',
+  // Kep1er
+  '최유진':'Yujin','김채현':'Chaehyun','김다연':'Dayeon','휴닝바히예':'Bahiyyih',
+  '서영은':'Youngeun','마시로':'Mashiro','히카루':'Hikaru','샤오팅':'Xiaoting','강예서':'Yeseo',
+  // fromis_9
+  '이새롬':'Saerom','송하영':'Hayoung','이나경':'Nagyung','박지원':'Jiwon',
+  '노지선':'Jisun','이서연':'Seoyeon','이채영':'Chaeyoung','백지헌':'Jiheon',
+  // 소녀시대
+  '태연':'Taeyeon','써니':'Sunny','티파니':'Tiffany','효연':'Hyoyeon',
+  '유리':'Yuri','수영':'Sooyoung','윤아@소녀시대':'Yoona','서현':'Seohyun',
+  // MAMAMOO
+  '솔라':'Solar','문별':'Moonbyul','휘인':'Wheein','화사':'Hwasa',
+  // SOLO F
+  '아이유':'IU','보아':'BoA','선미':'Sunmi','청하':'Chungha',
+  // BTS
+  'RM':'RM','진':'Jin','슈가':'Suga','제이홉':'J-Hope','지민':'Jimin','뷔':'V','정국':'Jungkook',
+  // SEVENTEEN
+  '에스쿱스':'S.Coups','정한':'Jeonghan','조슈아':'Joshua','준':'Jun','호시':'Hoshi',
+  '원우':'Wonwoo','우지':'Woozi','도겸':'DK','민규':'Mingyu','디에잇':'The8',
+  '승관':'Seungkwan','버논':'Vernon','디노':'Dino',
+  // Stray Kids
+  '방찬':'Bang Chan','리노':'Lee Know','창빈':'Changbin','현진':'Hyunjin',
+  '한':'Han','필릭스':'Felix','승민':'Seungmin','아이엔':'I.N',
+  // TXT
+  '연준':'Yeonjun','수빈':'Soobin','범규':'Beomgyu','태현':'Taehyun','휴닝카이':'Huening Kai',
+  // ENHYPEN
+  '희승':'Heeseung','제이':'Jay','제이크':'Jake','성훈':'Sunghoon','선우':'Sunoo','정원':'Jungwon','니키':'Ni-ki',
+  // NCT
+  '태용':'Taeyong','태일':'Taeil','쟈니':'Johnny','유타':'Yuta','도영':'Doyoung',
+  '재현':'Jaehyun','정우':'Jungwoo','마크':'Mark','해찬':'Haechan','제노':'Jeno',
+  '재민':'Jaemin','런쥔':'Renjun','천러':'Chenle','지성':'Jisung',
+  // EXO
+  '시우민':'Xiumin','수호':'Suho','레이@EXO':'Lay','백현':'Baekhyun','첸':'Chen',
+  '찬열':'Chanyeol','디오':'D.O.','카이':'Kai','세훈':'Sehun',
+  // RIIZE
+  '쇼타로':'Shotaro','은석':'Eunseok','성찬':'Seungchan','원빈':'Wonbin',
+  '승한':'Sunghan','소희':'Sohee','앤톤':'Anton',
+  // ZEROBASEONE
+  '김지웅':'Jiwoong','장하오':'Zhang Hao','성한빈':'Hanbin','석매튜':'Matthew',
+  '김태래':'Taerae','리키':'Ricky','김규빈':'Gyuvin','박건욱':'Gunwook','한유진':'Yujin',
+  // SHINee
+  '온유':'Onew','키':'Key','민호':'Minho','태민':'Taemin',
+  // ASTRO
+  '차은우':'Cha Eun-woo',
+  // BIGBANG
+  '지드래곤':'G-Dragon','태양':'Taeyang','대성':'Daesung','탑':'T.O.P',
+  // THE BOYZ
+  '영훈':'Younghoon','현재':'Hyunjae','주연':'Juyeon','케빈':'Kevin','뉴':'New','에릭':'Eric',
+  // SOLO M
+  '박지훈':'Park Jihoon',
+};
+const GROUP_EN = { '소녀시대':"Girls' Generation" };
+
+function nameEn(name, group) {
+  return NAME_EN[name + '@' + group] || NAME_EN[name] || name;
+}
+function displayMuseName(name, group) {
+  if (lang !== 'en') return name;
+  const en = nameEn(name, group);
+  return en === name ? name : `${en} (${name})`;
+}
+function displayGroup(group) {
+  if (lang !== 'en') return group;
+  return GROUP_EN[group] || group;
+}
+
+function hashStr(s){ let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+const JIT={faceRatio:.05,jawRatio:.03,eyeSize:.018,eyeSpacing:.022,noseWidth:.018,lipFull:.018};
+function buildMuses(){
+  return ROSTER.map(([name,group,g])=>{
+    const seed = hashStr(name+'@'+group);
+    const archKey = ARCH_KEYS[seed % ARCH_KEYS.length];
+    const base = ARCH_T[archKey];
+    const t = {}; let h = seed;
+    for(const k in base){
+      h = (Math.imul(h,1664525)+1013904223)>>>0;
+      t[k] = +(base[k] + ((h/4294967295)-0.5)*2*JIT[k]).toFixed(4);
+    }
+    return { name, group, g, arch:archKey, kit:ARCH_KIT[archKey], t };
+  });
+}
+const MUSES = buildMuses();
+
+const OY_KO = 'https://www.oliveyoung.co.kr/store/search/getSearchMain.do?query=';
+const OY_EN = 'https://global.oliveyoung.com/display/search?query=';
+const getOY = () => lang === 'ko' ? OY_KO : OY_EN;
+const getOYLabel = () => lang === 'ko' ? '올리브영 ↗' : 'Olive Young Global ↗';
+const PRODUCT_DB = [
+  { grad:'linear-gradient(135deg,#e8c4b8,#c87f73)', icon:'✦', items:[
+    {rank:1,brand:'CLIO',name:'킬 커버 파운웨어 쿠션',nameEn:'Kill Cover Founwear Cushion',price:'₩35,000',desc:'완벽 커버력 + 24시간 지속. K-pop 무대 메이크업에도 자주 쓰이는 스테디셀러.',descEn:'Perfect coverage + 24hr wear. A bestseller used in K-pop stage makeup.',q:'CLIO Kill Cover'},
+    {rank:2,brand:'LANEIGE',name:'네오 쿠션 매트',nameEn:'Neo Cushion Matte',price:'₩34,000',desc:'피부 밀착 세미매트 마무리. 들뜸 없이 하루 종일 유지.',descEn:'Semi-matte skin-melting finish. Stays put all day without lifting.',q:'LANEIGE Neo Cushion'},
+    {rank:3,brand:'ETUDE',name:'순정 쿠션 글로우',nameEn:'Sunjung Cushion Glow',price:'₩21,000',desc:'촉촉한 수분 글로우. 가성비 대표 쿠션.',descEn:'Dewy hydrating glow. The budget-friendly cushion staple.',q:'ETUDE cushion'},
+    {rank:4,brand:'VT',name:'리들샷 프로 쿠션',nameEn:'REEDLE SHOT Pro Cushion',price:'₩21,000',desc:'리들샷 성분 탄력 케어 + 자연스러운 커버.',descEn:'REEDLE SHOT firming care + natural coverage.',q:'VT REEDLE SHOT'},
+    {rank:5,brand:'ROM&ND',name:'누 지글로우 쿠션',nameEn:'Nu Zea-Glow Cushion',price:'₩26,000',desc:'물광 자연 마무리. 얇고 가볍게 피부에 밀착.',descEn:'Natural water-glow finish. Thin, lightweight skin melt.',q:'ROMAND cushion'},
+    {rank:6,brand:'HERA',name:'UV 미스트 쿠션',nameEn:'UV Mist Cushion',price:'₩58,000',desc:'SPF50+ 선케어 + 도시적 고급 마무리.',descEn:'SPF50+ sun care + urban luxe finish.',q:'HERA UV Mist Cushion'},
+    {rank:7,brand:'CLIO',name:'킬 커버 더 뉴 파운데이션',nameEn:'Kill Cover The New Foundation',price:'₩37,000',desc:'세미매트 리퀴드. 고커버 + 자연스러운 마무리.',descEn:'Semi-matte liquid. High coverage with a natural finish.',q:'CLIO foundation'},
+    {rank:8,brand:'INNISFREE',name:'포어블러 쿠션',nameEn:'Pore Blur Cushion',price:'₩25,000',desc:'모공 블러 효과. 산뜻한 마무리로 지성 피부에 추천.',descEn:'Pore-blurring effect. Fresh finish ideal for oily skin.',q:'INNISFREE cushion'},
+    {rank:9,brand:'AMUSE',name:'듀이 틴트 쿠션',nameEn:'Dew Tint Cushion',price:'₩24,000',desc:'세럼 타입 스킨 틴트. 얇고 자연스러운 피부 표현.',descEn:'Serum-type skin tint. Thin, natural-looking coverage.',q:'AMUSE Dew Tint'},
+    {rank:10,brand:'MISSHA',name:'M 퍼펙트 커버 BB크림',nameEn:'M Perfect Cover BB Cream',price:'₩9,900',desc:'보습+커버+자외선 차단 올인원. 가성비 국민 BB.',descEn:"Moisture + coverage + SPF all-in-one. Korea's best-value BB.",q:'MISSHA BB Cream'},
+  ]},
+  { grad:'linear-gradient(135deg,#c9a8b8,#8c3a4f)', icon:'◠', items:[
+    {rank:1,brand:'CLIO',name:'프로 아이 팔레트',nameEn:'Pro Eye Palette',price:'₩28,000',desc:'데일리~파티 모두 가능. 발색력과 지속력 탁월.',descEn:'From daily to party. Outstanding pigment and lasting wear.',q:'CLIO eye palette'},
+    {rank:2,brand:'ROM&ND',name:'베터 댄 팔레트',nameEn:'Better Than Palette',price:'₩23,000',desc:'웜톤 뉴트럴 컬러 위주. 자연스러운 데일리 음영.',descEn:'Warm neutral shades. Natural everyday shadow.',q:'ROMAND Better Than Palette'},
+    {rank:3,brand:'ETUDE',name:'플레이 컬러 아이즈',nameEn:'Play Color Eyes',price:'₩21,000',desc:'따뜻한 브라운 톤. 베이직 눈 화장의 정석.',descEn:'Warm brown tones. The classic basic eye look.',q:'ETUDE Play Color Eyes'},
+    {rank:4,brand:'TOOCOOLFORSCHOOL',name:'아트클래스 바이 로댕',nameEn:'Art Class by Rodin',price:'₩32,000',desc:'음영 팔레트 레전드. 자연스러운 윤곽 표현.',descEn:'The legendary shading palette. Natural contouring.',q:'toocoolforschool Art Class'},
+    {rank:5,brand:'3CE',name:'멀티 아이 컬러 팔레트',nameEn:'Multi Eye Color Palette',price:'₩36,000',desc:'트렌디한 색상 구성. 매트·글리터 다양하게.',descEn:'Trendy shades. Matte to glitter variety.',q:'3CE eye palette'},
+    {rank:6,brand:'ESPOIR',name:'아이 섀도우 팔레트',nameEn:'Eye Shadow Palette',price:'₩27,000',desc:'발색 선명하고 지속력 우수. 세미매트~글리터 구성.',descEn:'Vivid pigment, great wear. Semi-matte to glitter selection.',q:'ESPOIR eye shadow'},
+    {rank:7,brand:'AMUSE',name:'아이 섀도우 팔레트',nameEn:'Eye Shadow Palette',price:'₩22,000',desc:'피부 밀착 발색. 선명하고 가루 날림 없어요.',descEn:'Skin-melting pigment. Vivid, no fallout.',q:'AMUSE eye shadow'},
+    {rank:8,brand:'PERIPERA',name:'잉크 섀도우 팔레트',nameEn:'Ink Shadow Palette',price:'₩18,000',desc:'눈 주변 자연스러운 음영 전용 팔레트.',descEn:'Dedicated shading palette for the eye area.',q:'PERIPERA shadow'},
+    {rank:9,brand:'HINCE',name:'아이 섀도우 팔레트',nameEn:'Eye Shadow Palette',price:'₩32,000',desc:'고급스러운 발색. 데일리~특별한 날까지.',descEn:'Luxe pigment. Daily to special occasion.',q:'HINCE eye shadow'},
+    {rank:10,brand:'BLACK ROUGE',name:'아이 팔레트',nameEn:'Eye Palette',price:'₩19,000',desc:'발색력 좋은 신흥 강자. 일상·데이트 모두 OK.',descEn:'Great pigment from a rising brand. Daily and date looks.',q:'BLACK ROUGE eye'},
+  ]},
+  { grad:'linear-gradient(135deg,#d4b896,#b08a5e)', icon:'⌒', items:[
+    {rank:1,brand:'CLIO',name:'샤프 소 심플 아이브로우',nameEn:'Sharp So Simple Eyebrow',price:'₩13,000',desc:'얇은 팁으로 결 하나하나 살리는 표현. 롱래스팅.',descEn:'Fine tip draws each hair stroke. Long-lasting.',q:'CLIO brow pencil'},
+    {rank:2,brand:'ETUDE',name:'드로잉 아이브로우',nameEn:'Drawing Eye Brow',price:'₩8,000',desc:'국민 눈썹 펜슬. 가성비 1위. 초보자도 쉽게.',descEn:"Korea's #1 brow pencil. Best value, beginner-friendly.",q:'ETUDE Drawing Eye Brow'},
+    {rank:3,brand:'INNISFREE',name:'오토 아이브로우 펜슬',nameEn:'Auto Eyebrow Pencil',price:'₩12,000',desc:'자동 심 타입. 편리하고 자연스러운 발색.',descEn:'Auto-advance tip. Convenient, natural pigment.',q:'INNISFREE eyebrow'},
+    {rank:4,brand:'ROM&ND',name:'루키 아이브로우',nameEn:'Rookie Eyebrow',price:'₩16,000',desc:'뭉침 없는 깔끔한 발색. 트렌디한 눈썹 연출.',descEn:'Clean pigment, no smearing. Trendy brow looks.',q:'ROMAND brow'},
+    {rank:5,brand:'AMUSE',name:'아이브로우 펜슬',nameEn:'Eyebrow Pencil',price:'₩15,000',desc:'세심한 발색으로 자연스러운 눈썹 결 연출.',descEn:'Precise pigment for natural hair-stroke brows.',q:'AMUSE eyebrow'},
+    {rank:6,brand:'PERIPERA',name:'잉크 더 아이브로우',nameEn:'Ink The Eyebrow',price:'₩10,000',desc:'방수 포뮬러. 땀·습기에 강한 지속력.',descEn:'Waterproof formula. Resists sweat and humidity.',q:'PERIPERA eyebrow'},
+    {rank:7,brand:'ESPOIR',name:'프로 테일러 아이브로우',nameEn:'Pro Tailor Eyebrow',price:'₩14,000',desc:'정교한 테일링으로 선명하고 또렷한 눈썹.',descEn:'Precise tailing for sharp, defined brows.',q:'ESPOIR eyebrow'},
+    {rank:8,brand:'3CE',name:'브로우 포마드',nameEn:'Brow Pomade',price:'₩15,000',desc:'포마드 타입. 자연스럽고 오래가는 눈썹.',descEn:'Pomade type. Natural, long-lasting brow definition.',q:'3CE brow'},
+    {rank:9,brand:'HINCE',name:'아이브로우 펜슬',nameEn:'Eyebrow Pencil',price:'₩14,000',desc:'리퀴드 타입. 피부에 자연스럽게 밀착.',descEn:'Liquid type. Melts naturally into skin.',q:'HINCE eyebrow'},
+    {rank:10,brand:'BLACK ROUGE',name:'아이브로우',nameEn:'Eyebrow Pencil',price:'₩11,000',desc:'깔끔한 발색으로 선명하고 또렷하게.',descEn:'Clean pigment for sharp, defined brows.',q:'BLACK ROUGE eyebrow'},
+  ]},
+  { grad:'linear-gradient(135deg,#e8a5a5,#c87f73)', icon:'❀', items:[
+    {rank:1,brand:'ROM&ND',name:'제로 매트 립스틱',nameEn:'Zero Matte Lipstick',price:'₩17,000',desc:'국내 최고 인기 매트 립. 발색 선명하고 입술 안 타요.',descEn:"Korea's top matte lip. Vivid pigment without drying out.",q:'ROMAND Zero Matte Lipstick'},
+    {rank:2,brand:'PERIPERA',name:'잉크 더 벨벳',nameEn:'Ink The Velvet',price:'₩12,000',desc:'촉촉한 벨벳 질감. 시간이 지나도 촉촉함 유지.',descEn:'Moisturising velvet texture. Stays comfortable over time.',q:'PERIPERA Ink Velvet'},
+    {rank:3,brand:'ETUDE',name:'픽싱 틴트',nameEn:'Fixing Tint',price:'₩9,500',desc:'가성비 틴트 1위. 선명 발색으로 오래오래.',descEn:'Best-value tint. Vivid pigment that lasts.',q:'ETUDE tint'},
+    {rank:4,brand:'CLIO',name:'버짓 매트 립',nameEn:'Budge-Proof Matte Lip',price:'₩14,000',desc:'번들거림 없이 선명한 컬러. 꽉 채워주는 느낌.',descEn:'Non-glossy vivid colour. Fully saturated feel.',q:'CLIO lip'},
+    {rank:5,brand:'3CE',name:'매트 립 컬러',nameEn:'Matte Lip Color',price:'₩16,000',desc:'3CE 시그니처 매트 립. 트렌디한 컬러 라인업.',descEn:'3CE signature matte. Trendy colour lineup.',q:'3CE Matte Lip Color'},
+    {rank:6,brand:'BLACK ROUGE',name:'씨씨 립 블러 틴트',nameEn:'CC Lip Blur Tint',price:'₩14,000',desc:'블러 효과로 흐릿하고 촉촉한 입술. 그라데이션 최적.',descEn:'Blurred, dewy effect. Perfect for gradient lips.',q:'BLACK ROUGE lip tint'},
+    {rank:7,brand:'AMUSE',name:'듀이 글라스 틴트',nameEn:'Dew Glass Tint',price:'₩16,000',desc:'글로시 유리알 입술 연출. 수분감 가득.',descEn:'Glossy glass-ball effect. Packed with moisture.',q:'AMUSE Dew Glass Tint'},
+    {rank:8,brand:'HINCE',name:'세컨드 스킨 샤인 립',nameEn:'Second Skin Shine Lip',price:'₩24,000',desc:'얇게 밀착되는 세컨드 스킨 발림. 고급스러운 광택.',descEn:'Second-skin finish. Luxe glossy sheen.',q:'HINCE lip'},
+    {rank:9,brand:'ESPOIR',name:'노 필터 립스틱',nameEn:'No Filter Lipstick',price:'₩16,000',desc:'강한 지속력과 선명 발색. 지우기 전까지 유지.',descEn:'Strong wear, vivid pigment. Stays until removed.',q:'ESPOIR lipstick'},
+    {rank:10,brand:'INNISFREE',name:'비비드 코튼 틴트',nameEn:'Vivid Cotton Tint',price:'₩12,000',desc:'맑고 촉촉한 발색. 건조한 입술에도 편하게.',descEn:'Clear, moisturising pigment. Comfortable even on dry lips.',q:'INNISFREE tint'},
+  ]},
+  { grad:'linear-gradient(135deg,#f0c9bb,#d4918a)', icon:'❍', items:[
+    {rank:1,brand:'ROM&ND',name:'더 쉐이딩 팔레트',nameEn:'The Shading Palette',price:'₩19,000',desc:'블러셔+쉐딩+하이라이터 올인원. 국민 팔레트.',descEn:'Blush + shading + highlighter all-in-one. The ultimate palette.',q:'ROMAND shading'},
+    {rank:2,brand:'CLIO',name:'프로 블러쉬 팔레트',nameEn:'Pro Blush Palette',price:'₩16,000',desc:'자연스러운 혈색 표현에 최적. 발색 오래가요.',descEn:'Natural flush. Pigment lasts all day.',q:'CLIO blush'},
+    {rank:3,brand:'ETUDE',name:'루킹포레스트 블러쉬',nameEn:'Lookingforest Blusher',price:'₩9,000',desc:'자연스러운 혈색 표현. 가성비 블러셔 대표.',descEn:'Natural flush. The budget blusher staple.',q:'ETUDE blusher'},
+    {rank:4,brand:'TOOCOOLFORSCHOOL',name:'아트클래스 블러쉬',nameEn:'Art Class Blush',price:'₩22,000',desc:'피부 타입 불문 자연스러운 혈색. 음영 표현까지.',descEn:'Works for all skin types. Flush and shading in one.',q:'toocoolforschool blush'},
+    {rank:5,brand:'INNISFREE',name:'미네랄 블러쉬',nameEn:'Mineral Blusher',price:'₩14,000',desc:'미네랄 성분으로 피부 결 살리며 자연스러운 혈색.',descEn:'Mineral formula refines texture for a natural flush.',q:'INNISFREE blusher'},
+    {rank:6,brand:'3CE',name:'무드 레시피 블러쉬',nameEn:'Mood Recipe Blush',price:'₩24,000',desc:'3가지 컬러로 다양한 혈색 표현 가능.',descEn:'3 shades for varied flush expression.',q:'3CE blush'},
+    {rank:7,brand:'AMUSE',name:'글로우 블러쉬',nameEn:'Glow Blush',price:'₩19,000',desc:'트렌디한 컬러 구성. 글로우 + 매트 믹스.',descEn:'Trendy shades. Glow and matte mix.',q:'AMUSE blush'},
+    {rank:8,brand:'ESPOIR',name:'노 필터 블러쉬',nameEn:'No Filter Blush',price:'₩18,000',desc:'발색 선명하고 자연스러운 마무리.',descEn:'Vivid pigment, natural finish.',q:'ESPOIR blush'},
+    {rank:9,brand:'PERIPERA',name:'잉크 블러쉬',nameEn:'Ink Blusher',price:'₩12,000',desc:'가볍고 선명한 발색. 쉽게 블렌딩돼요.',descEn:'Lightweight, vivid pigment. Blends easily.',q:'PERIPERA blush'},
+    {rank:10,brand:'HOLIKA HOLIKA',name:'글로우 블러셔',nameEn:'Glow Blusher',price:'₩10,000',desc:'글로우 피니시. 화사한 혈색과 은은한 광택.',descEn:'Glow finish. Radiant flush with subtle sheen.',q:'HOLIKA HOLIKA blusher'},
+  ]},
+];
+
+let _activeTab = 0;
+let _kitPicks = null;
+
+function renderKitProducts(areaIdx) {
+  const db = PRODUCT_DB[areaIdx];
+  const colorRec = _kitPicks?.[areaIdx]?.[1];
+  const colorLabel = lang === 'en' ? 'Rec. colour' : '어울리는 색';
+  $('kitProducts').innerHTML = `<div class="prod-grid">${
+    db.items.map(p => `
+      <a class="prod-card" href="${getOY()}${encodeURIComponent(p.q)}" target="_blank" rel="noopener">
+        <div class="prod-img" style="background:${db.grad}">
+          <span class="prod-rank"># ${p.rank}</span>${db.icon}
+        </div>
+        <div class="prod-body">
+          <div class="prod-brand">${p.brand}</div>
+          <div class="prod-name">${lang === 'en' && p.nameEn ? p.nameEn : p.name}</div>
+          <div class="prod-desc">${lang === 'en' && p.descEn ? p.descEn : p.desc}</div>
+          ${colorRec ? `<div class="prod-color"><span class="prod-color-label">${colorLabel}</span>${colorRec}</div>` : ''}
+          <div class="prod-foot">
+            <span class="prod-price">${p.price}</span>
+            <span class="prod-go">${getOYLabel()}</span>
+          </div>
+        </div>
+      </a>`).join('')
+  }</div>`;
+}
+
+function selectKitTab(idx) {
+  _activeTab = idx;
+  document.querySelectorAll('.kit-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  renderKitProducts(idx);
+}
+
+function buildShareURL(muse, score) {
+  return `${location.origin}${location.pathname}?muse=${encodeURIComponent(muse.name)}&group=${encodeURIComponent(muse.group)}&score=${score}&g=${muse.g}`;
+}
+
+function showShareToast(msg) {
+  const t = $('shareToast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function renderSharePanel(muse, score) {
+  const url = buildShareURL(muse, score);
+  const txt = lang === 'ko'
+    ? `나는 ${muse.name}(${muse.group})와 ${score}% 닮았대요! Mirror Muse에서 내 K-pop 뮤즈를 찾아보세요.`
+    : `I'm ${score}% similar to ${nameEn(muse.name, muse.group)} of ${displayGroup(muse.group)}! Find your K-pop muse on Mirror Muse.`;
+
+  history.replaceState({}, '', url);
+
+  $('shrX').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`;
+  $('shrFb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
+  $('shrCopy').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      showShareToast(lang === 'ko' ? '링크 복사됨 ✓' : 'Link copied ✓');
+    } catch { prompt(lang === 'ko' ? '링크를 복사하세요:' : 'Copy this link:', url); }
+  };
+
+  $('shrIg').onclick = () => {
+    if (navigator.share) {
+      navigator.share({ title: 'Mirror Muse', text: txt, url }).catch(() => downloadShareCard(muse, score));
+    } else {
+      downloadShareCard(muse, score);
+    }
+  };
+}
+
+function downloadShareCard(muse, score) {
+  const c = document.createElement('canvas');
+  c.width = 1080; c.height = 1080;
+  const ctx = c.getContext('2d');
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 1080, 1080);
+  bg.addColorStop(0, '#f4ebe3'); bg.addColorStop(0.6, '#f0dfd4'); bg.addColorStop(1, '#e8c4b8');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, 1080, 1080);
+
+  // Decorative blobs
+  ctx.beginPath(); ctx.arc(980, 100, 340, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(200,127,115,.14)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(100, 1000, 260, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(176,138,94,.11)'; ctx.fill();
+
+  ctx.textAlign = 'center';
+
+  // Brand
+  ctx.font = 'italic 600 42px Georgia, serif';
+  ctx.fillStyle = '#8c3a4f';
+  ctx.fillText('MIRROR MUSE', 540, 180);
+
+  // Gold rule
+  ctx.beginPath(); ctx.moveTo(420, 215); ctx.lineTo(660, 215);
+  ctx.strokeStyle = '#b08a5e'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Label
+  ctx.font = 'italic 38px Georgia, serif';
+  ctx.fillStyle = '#7a6a60';
+  ctx.fillText(lang === 'ko' ? '가장 닮은 K-pop 뮤즈' : 'your closest K-pop muse', 540, 360);
+
+  // Muse name
+  ctx.font = 'bold 128px "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
+  ctx.fillStyle = '#2c211d';
+  ctx.fillText(nameEn(muse.name, muse.group), 540, 540);
+
+  // Group
+  ctx.font = '40px "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
+  ctx.fillStyle = '#7a6a60';
+  ctx.fillText(displayGroup(muse.group), 540, 630);
+
+  // Score
+  ctx.font = 'italic bold 100px Georgia, serif';
+  ctx.fillStyle = '#8c3a4f';
+  ctx.fillText(score + '%', 540, 790);
+  ctx.font = '32px "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
+  ctx.fillStyle = '#7a6a60';
+  ctx.fillText(lang === 'ko' ? '닮음 지수' : 'resemblance', 540, 855);
+
+  // URL hint
+  ctx.font = '26px Georgia, serif';
+  ctx.fillStyle = '#c0a898';
+  ctx.fillText('mirror-muse.web.app', 540, 990);
+
+  const link = document.createElement('a');
+  link.download = `mirror-muse-${muse.name}.png`;
+  link.href = c.toDataURL('image/png');
+  link.click();
+  showShareToast(lang === 'ko' ? '이미지 저장 완료! 인스타그램에 올려보세요 📷' : 'Image saved! Post it on Instagram 📷');
+}
+
+function checkShareParams() {
+  const p = new URLSearchParams(location.search);
+  if (!p.has('muse')) return;
+  const name = p.get('muse'), group = p.get('group') || '';
+  const score = Math.max(50, Math.min(99, parseInt(p.get('score')) || 85));
+  const g = p.get('g') || 'F';
+  const muse = MUSES.find(m => m.name === name && m.group === group) || MUSES.find(m => m.name === name);
+  if (!muse) return;
+  lastResult = {
+    muse,
+    runners: MUSES.filter(m => m.g === muse.g && m !== muse).slice(0, 3),
+    features: { ...ARCH_T[muse.arch] },
+    detections: { expressions: { neutral: 1 } },
+    overrideScore: score
+  };
+  const canvas = $('resultCanvas');
+  canvas.width = 300; canvas.height = 375;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#efe3da';
+  ctx.fillRect(0, 0, 300, 375);
+  ctx.fillStyle = 'rgba(140,58,79,.2)';
+  ctx.font = '88px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('✦', 150, 215);
+  updateResultUI();
+  ['resultSection','cosmeticSection','tutorialSection'].forEach(id => $( id).style.display = 'block');
+  setTimeout(() => $('resultSection').scrollIntoView({ behavior: 'smooth' }), 400);
+}
+
+const LANG_NAMES = {en:'English',ko:'한국어',ja:'日本語',zh:'中文',es:'Español',pt:'Português'};
+const I18N = {
+  en:{
+    t:{
+      docTitle:"MIRROR MUSE — Your K-pop Face Muse", tagline:"K-Beauty Resemblance Studio",
+      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>The face in the mirror,</span>meet your closest<br><em>K-pop muse</em>.",
+      heroLede:"We read your facial proportions and features to find your closest match among today's most popular K-pop stars — with the cosmetics and area-by-area tutorials to channel that look.",
+      cta1:"Start the analysis →", cta2:"How it works", scroll:"scroll to begin",
+      s01num:"01 — The Mirror", s01title:"Step up to the mirror", s01desc:"Face forward with your whole face visible, or upload a photo. Brighter light gives better results.",
+      chipAuto:"Auto-detect", chipF:"Female muse pool", chipM:"Male muse pool", placeholder:"Turn on the camera or upload a face photo — it will be analyzed right here.",
+      camBtn:"Turn on camera", shotBtn:"📸 Take photo", uploadBtn:"Upload photo", analyzeBtn:"✦ Find my muse",
+      howtoTitle:"How the analysis works", step1:"We locate 68 facial points and measure your contour, eyes, nose and lips.",
+      step2:"We compare them with the face-shape data of popular K-pop stars to score resemblance.",
+      step3:"We recommend cosmetics tuned to your closest muse's signature mood.",
+      step4:"We link you to 'most-viewed' YouTube tutorials, area by area.",
+      privacy:"<b>Your photo is never sent to a server.</b> All face analysis runs inside your own browser, and no image is kept beyond the result.",
+      s02num:"02 — Your Muse", s02title:"The muse you resemble most", matchwith:"your face muse is", simLabel:"resemblance", alsoResembling:"also resembling",
+      s03num:"03 — The Kit", cosTitle:"Cosmetics to channel {name}", cosTitleMuse:"your muse",
+      s04num:"04 — Watch & Learn", s04title:"Area-by-area makeup tutorials",
+      s04desc:"Each button opens YouTube results sorted by <b>most views</b> right now — so you always get the most popular tutorials of the moment.",
+      s04note:"※ Links open view-sorted search results, so the latest popular videos always appear.",
+      restart:"↺ Try another photo", loaderText:"Waking the muse…", ribbon:"analysed", scanLabel:"analysing facial geometry…",
+      ytSuffix:"· sorted by views", ytGo:"Watch on YouTube ↗", fullCoverTitle:"{name} — full cover makeup",
+      stModelFail:"Couldn't load face model. Check connection.", stModelLoading:"Loading model…", stNoPhoto:"Take/upload a photo first.",
+      stAnalyzing:"Analyzing proportions…", stNoFace:"No face found. Try again.", stDone:"Done! See below ↓",
+      stPhotoReady:"Photo ready.", stImgFail:"Image fail.", stCamOn:"Camera on.", stCamFail:"Camera fail.", stCamNotReady:"Not ready.",
+      partnerBtn:"Partnership",
+      prevBadge:"✦ Sample Result", prevMuseGrp:"IVE · slim V-line", prevDisclaimer:"* Results vary for each person",
+      shrCopyLbl:"Copy",
+      s03desc:"The key items that build your muse's face-shape mood.<br>Follow the textures and colour moods, area by area.",
+      decoChip1:"✦ Instant", decoChip2:"◠ No server storage", decoChip3:"❀ Product picks",
+      qrModalTitle:"Open on mobile", qrModalDesc:"Scan the QR code with your phone camera<br>to start analysing right away.",
+      partnerTitle:"Partnership Enquiry", partnerDesc:"Send us your brand collab, ad or sponsorship proposal and we'll reply promptly.",
+      cfName:"Name / Contact", cfNamePh:"Jane Doe", cfEmail:"Email", cfCompany:"Company / Brand", cfCompanyPh:"Enter your brand name",
+      cfMessage:"Message", cfMessagePh:"Tell us your idea or proposal.", cfSubmit:"Send enquiry →", cfDone:"Thank you! We'll be in touch soon.",
+      cfSending:"Sending…", cfErrRetry:"Send enquiry →", cfErrAlert:"Failed to send. Please try again.", cfNetAlert:"Network error. Please try again.",
+      footerLine:"<span class='foot-brand'>Mirror Muse</span> — Resemblance analysis is an entertainment estimate based on facial proportion data and is not a scientific or medical judgement. The muse roster consists of 200 popular K-pop artists as of 2026; facial measurements are archetype-based estimates, not values from real photos. This service has no affiliation with the artists or agencies mentioned. Cosmetic recommendations are texture and colour-mood guides and do not endorse specific brands. Uploaded photos are processed only in the browser and are not stored on any server. © 2026",
+      cookieTxt:"This site uses cookies for service operation and Google AdSense advertising. By continuing to use this site, you agree to the use of cookies.",
+      cookiePrivacyLbl:"Privacy Policy", cookieOkBtn:"Got it",
+      navGuide:"K-Beauty Guide",
+      aboutNum:"05 — About", guideNum:"06 — K-Beauty Guide", faqNum:"07 — FAQ",
+      prevMuseName:"Wonyoung",
+      prevRunner1:"Karina <em>89%</em>", prevRunner2:"Irene <em>87%</em>", prevRunner3:"Winter <em>85%</em>",
+      aboutTitle:"About Mirror Muse", aboutSub:"Browser-based AI facial analysis to find your closest K-pop muse.",
+      aboutH1:"About the Service", aboutP1:"Mirror Muse is a free service that uses cutting-edge browser AI technology to analyse your facial proportions and compare them against face-shape data from over 200 popular K-pop stars to find your closest muse. No sign-up or app installation required — just your browser. Photos are never sent to any server, so your privacy is fully protected.",
+      aboutH2:"Analysis Technology", aboutP2:"Based on an open-source face recognition library, we detect 68 landmark points on your face. We measure six key proportion metrics — eye spacing, nose width, lip fullness, height-to-width ratio, and jawline angle — then mathematically compare them against K-pop star face-shape archetype data. All processing happens in real time on your device; no image is ever stored on a server.",
+      aboutH3:"K-Beauty Curation", aboutP3:"Once your muse is identified, we curate K-beauty products matched to that muse's face-shape mood, area by area. Five categories — base, eye, brow, lip, and blush — each feature top-ranked products selected from Korea's most popular K-beauty lineup, all linked to the Olive Young Global store for international purchase.",
+      aboutH4:"YouTube Tutorial Links", aboutP4:"Beyond product recommendations, we link you directly to YouTube tutorials for each makeup area. Results are sorted by view count, so you always land on the most popular tutorials of the moment.",
+      stat1Label:"K-pop Muse Database", stat1Sub:"BTS · BLACKPINK · aespa and more top groups",
+      stat2Label:"Facial Landmark Points", stat2Sub:"Precision ratio analysis of eyes, nose, lips & jawline",
+      stat3Label:"Curated K-Beauty Products", stat3Sub:"Top 10 picks per category across 5 areas",
+      stat4Label:"Data Sent to Server", stat4Sub:"100% in-browser processing — complete privacy",
+      guideTitle:"K-Beauty Makeup Guide by Face Shape", guideSub:"The secret behind K-pop stars' makeup lies in techniques tailored to their face shape. Discover the K-beauty tips that suit yours.",
+      guide1Title:"V-Line (Slim Jawline)", guide1Desc:"Characteristic of Wonyoung and Karina — slim and delicate. Since the face already looks small, focus on eye makeup rather than shading. Define the eyes sharply, add blush above the cheekbones for a lively touch, and finish with a glossy tint for vivid lips to complete the muse look.", guide1Tips:"<span class='guide-tip'>💡 Under-eye shading</span><span class='guide-tip'>💡 Glossy lip</span><span class='guide-tip'>💡 Nose highlighter</span>",
+      guide2Title:"Oval (Golden Oval)", guide2Desc:"Considered the most ideal face shape in K-beauty — like Yoona and Taeyeon. Almost any makeup style suits this shape. Try a natural glow base for everyday wear, and switch to smoky or colour makeup for special occasions. Even changing the position of your blush creates a completely different mood.", guide2Tips:"<span class='guide-tip'>💡 Any style works</span><span class='guide-tip'>💡 Shift blush position for mood</span><span class='guide-tip'>💡 Glow skin as base</span>",
+      guide3Title:"Round (Cute & Lovable)", guide3Desc:"Adorable and lively — the charm of NewJeans and ILLIT members. Subtle shading along the lower lash line and pink blush swept up toward the nose for a doll-like look work beautifully. Finish lips with a clear, dewy glossy tint to capture that girlish vibe.", guide3Tips:"<span class='guide-tip'>💡 Lower lash line shading</span><span class='guide-tip'>💡 Pink over-blush</span><span class='guide-tip'>💡 Glossy lip essential</span>",
+      guide4Title:"Cat (Cat Face)", guide4Desc:"Striking and chic — like Jennie and Yeji. The key is a cat-eye liner extended toward the outer corners. A deep red or burgundy matte lip as the focal point completes an intense, confident K-pop mood. Keep brows straight to further sharpen the look.", guide4Tips:"<span class='guide-tip'>💡 Cat-eye liner</span><span class='guide-tip'>💡 Matte lip accent</span><span class='guide-tip'>💡 Straight brows</span>",
+      guide5Title:"Heart (Wide Forehead)", guide5Desc:"A wide forehead and slim chin like Hwasa and Wendy radiate strong, alluring energy. Light hairline shading visually narrows the forehead, while eye-enlarging techniques work well. Fuller lip expression accentuates the charming proportions typical of the heart shape.", guide5Tips:"<span class='guide-tip'>💡 Hairline shading</span><span class='guide-tip'>💡 Under-liner to enlarge eyes</span><span class='guide-tip'>💡 Lip overline</span>",
+      guide6Title:"The Core of K-Beauty Skin", guide6Desc:"Regardless of face shape, the universal key to K-beauty is skin expression. Apply cushion foundation in thin, even layers to create a 'second skin' base. Let a hydrating serum absorb fully before makeup, and your skin will stay dewy and natural all day. The secret to K-pop stars' flawless complexions lies in a solid skincare routine.", guide6Tips:"<span class='guide-tip'>💡 Cushion layering</span><span class='guide-tip'>💡 Skincare is the base</span><span class='guide-tip'>💡 Finish with setting spray</span>",
+      faqTitle:"Frequently Asked Questions", faqSub:"Questions about using Mirror Muse, answered.",
+      faq1Q:"Are my photos stored on a server?", faq1A:"No. All facial analysis on Mirror Muse happens entirely inside your browser (device). Photo data is never sent to any server, and no image remains after analysis — only the result. The service is designed with privacy as the top priority.",
+      faq2Q:"Do the results accurately reflect who I actually look like?", faq2A:"Mirror Muse's analysis is an entertainment-based estimate of facial geometry (face shape, eye size, spacing, nose, lip ratios, etc.) — not a scientific or medical judgement. Actual resemblance may differ. Think of it as a fun guide to enjoy!",
+      faq3Q:"What kind of photo gives the best results?", faq3A:"A front-facing photo with bright lighting and your full face visible gives the best accuracy. Masks, sunglasses, or extreme side angles may make face detection difficult. Selfie mode (front camera) typically gives the best results.",
+      faq4Q:"How are cosmetic recommendations made?", faq4A:"Products are curated based on the makeup texture and colour mood that suits your muse's face-shape archetype (doll, chic, natural, etc.). Popular K-beauty products are selected area by area — no specific brand endorsement is implied.",
+      faq5Q:"Is the service available in English?", faq5A:"Yes! Switch to English using the language selector at the top of the page. All analysis results, product descriptions, and tutorial search queries will be displayed in English — perfect for international K-beauty fans.",
+      faq6Q:"How do I enquire about partnership or advertising?", faq6A:"Click the 'Partnership' button at the top of the page to send a brand collaboration, advertising, or sponsorship proposal. We'll get back to you promptly.",
+      footPrivacy:"Privacy Policy", footTerms:"Terms of Service", footAbout:"About", footGuide:"K-Beauty Guide",
+      privacyTitle:"Privacy Policy",
+      privacyBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>Last updated: January 1, 2026</strong></p><h3 class='policy-h3'>1. Information We Collect</h3><p>Mirror Muse does not collect personal information in principle. Photos used for facial analysis are not sent to any server and are processed only within the browser. If you fill out the partnership enquiry form, your name, email, and message will be transmitted via Formspree.</p><h3 class='policy-h3'>2. Facial Data Processing</h3><p>Photos uploaded or captured by camera, and facial analysis data (landmark coordinates, ratio values), are processed only within the browser and are not transmitted to or stored on any external server. All data is immediately deleted when the page is refreshed or closed.</p><h3 class='policy-h3'>3. Third-Party Services Used</h3><ul><li><strong>face-api.js (jsDelivr CDN)</strong>: Used to load the open-source face recognition AI model.</li><li><strong>Google Fonts</strong>: Used to serve web fonts.</li><li><strong>Formspree</strong>: Used to submit the partnership enquiry form.</li><li><strong>QR Server API</strong>: Used to generate QR codes.</li><li><strong>Olive Young Global</strong>: Used to link to product pages.</li><li><strong>Google AdSense</strong>: Used to display ads for service operation. Google's advertising cookies may be used.</li></ul><h3 class='policy-h3'>4. Cookies &amp; Local Storage</h3><p>Mirror Muse does not use its own tracking cookies. Cookie consent status is stored only in browser local storage. When using ad services (Google AdSense), the relevant service's cookie policy may apply.</p><h3 class='policy-h3'>5. Children's Privacy</h3><p>This service is not intended for children under the age of 13. If you are under 13, please use this service with parental consent.</p><h3 class='policy-h3'>6. Contact</h3><p>For privacy-related enquiries, please use the 'Partnership' enquiry form at the top of the page.</p>",
+      termsTitle:"Terms of Service",
+      termsBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>Last updated: January 1, 2026</strong></p><h3 class='policy-h3'>1. Agreement to Terms</h3><p>By using Mirror Muse, you agree to these Terms of Service.</p><h3 class='policy-h3'>2. Purpose of Service</h3><p>Mirror Muse's facial analysis and K-pop resemblance results are entertainment-based estimates and are not scientific or medical judgements. We do not guarantee the accuracy of results.</p><h3 class='policy-h3'>3. Intellectual Property</h3><p>The design, content, and software of this service belong to Mirror Muse. K-pop artist names and group names mentioned are the property of their respective rights holders. Mirror Muse has no affiliation with those artists or agencies.</p><h3 class='policy-h3'>4. Disclaimer</h3><p>Mirror Muse is not liable for any direct or indirect damages arising from use of this service. Cosmetic recommendations are mood guides and do not guarantee the effectiveness of any specific product.</p><h3 class='policy-h3'>5. Advertising</h3><p>This service may display advertisements through Google AdSense. Ad content is displayed in accordance with Google's policies.</p><h3 class='policy-h3'>6. Changes to Terms</h3><p>These terms may be updated as the service evolves. Continued use after changes constitutes acceptance of the updated terms.</p>",
+    },
+    mood:{happy:"bright, smiling expression",neutral:"calm expression",surprised:"lively expression",sad:"quiet expression",angry:"sharp gaze",fearful:"delicate expression",disgusted:"distinctive expression"},
+    vtpl:"Your {mood} carries a hint of {name}'s {shape}. {vibe}",
+    tn:{face:"Face shape",jaw:"Jawline",eye:"Eyes",lip:"Lips",spacing:"Spacing"},
+    tv:{faceLong:"long",faceRound:"rounded",faceOval:"oval",jawV:"V-line",jawSquare:"angular",jawSoft:"soft",eyeBig:"large",eyeLong:"sleek",eyeBalanced:"balanced",lipFull:"full",lipThin:"thin",lipBalanced:"balanced",spacingWide:"wide",spacingClose:"close"},
+    al:{doll_long:"doll shape",vline_cat:"cat shape",soft_oval:"oval shape",cat_defined:"defined cat",round_cute:"lovable shape",clear_chic:"chic shape",petite_neat:"neat oval",heart_alluring:"heart shape",golden_oval:"balanced oval",strong_jaw:"defined jaw",long_sharp:"sharp shape",broad_soft:"gentle shape"},
+    ar:[["Base & Skin","base makeup skin"],["Eye Makeup","eye makeup"],["Brows","eyebrow tutorial"],["Lips","lip makeup"],["Blush & Contour","blush contour"]],
+    fk:"full cover makeup tutorial",
+    kits:{
+      doll:{v:"Clear dewy glow and big round eyes.",F:[["Glow cushion","Warm Peach · Ivory"],["Pearl shadow","Pale Pink · Champagne"],["Brow pencil","Soft Brown"],["Glossy tint","Coral Pink · Baby Pink"],["Cream blush","Baby Pink · Peach"]],M:[["Glow base","Warm Peach · Ivory"],["Shading","Soft Pink · Brown"],["Brow","Ash Brown"],["Lip balm","Coral Pink"],["Shading","Soft Gray · Beige"]]},
+      chic:{v:"Porcelain finish and long eye line.",F:[["Matte foundation","Cool Ivory · Porcelain"],["Matte shadow","Cool Brown · Smoky Gray"],["Brow","Cool Gray Brown"],["Matte lip","Deep Maroon · Mauve"],["Contour","Cool Gray · Ash Brown"]],M:[["Matte base","Cool Ivory · Porcelain"],["Line shadow","Deep Brown · Smoky Gray"],["Straight brow","Cool Gray Brown"],["Nude lip","Mauve · Nude Beige"],["Contour","Cool Gray · Deep Gray"]]},
+      natural:{v:"Subtle sheen and soft shading.",F:[["Satin cushion","Warm Beige · Peach"],["Daily shadow","Terracotta · Warm Brown"],["Natural brow","Olive Brown"],["Velvet tint","Rose · Coral Pink"],["Powder blush","Peach · Coral"]],M:[["Satin base","Natural Beige · Warm Ivory"],["Warm shading","Warm Brown · Terracotta"],["Natural brow","Olive Brown"],["Lip balm","Coral · Rose Beige"],["Light shading","Soft Brown · Warm Beige"]]},
+      defined:{v:"Healthy sheen and defined cat-eye.",F:[["Satin foundation","Warm Beige · Peach"],["Warm shadow","Terracotta · Bronze"],["Full brow","Dark Brown · Khaki"],["MLBB matte","Rosewood · Nude Pink"],["Matte blush","Coral · Terracotta"]],M:[["Satin base","Warm Beige · Peach Beige"],["Cat-line","Bronze · Deep Khaki"],["Full brow","Dark Brown · Khaki"],["Lip balm","Rosewood · MLBB Pink"],["Contour","Warm Taupe · Soft Gray"]]},
+      elegant:{v:"Radiant sheen and striking eye.",F:[["Glow foundation","Peach Gold · Warm Beige"],["Gold shadow","Champagne Gold · Burgundy"],["Arched brow","Dark Brown · Soft Black"],["Velvet lip","Deep Red · Burgundy"],["Contour blush","Rose Gold · Deep Coral"]],M:[["Glow base","Peach Gold · Warm Beige"],["Gold shading","Champagne Gold · Burgundy"],["Arched brow","Dark Brown · Soft Black"],["Lip balm","Rose Pink · Nude Peach"],["Contour","Rose Gray · Mauve"]]},
+      clean:{v:"Crisp finish and restrained shading.",F:[["Matte base","Cool Ivory · Porcelain"],["Neutral shadow","Neutral Beige · Greige"],["Slim brow","Ash Brown · Gray"],["Matte lip","Nude · Rose Nude"],["Neutral shading","Cool Beige · Gray Taupe"]],M:[["Matte base","Cool Ivory · Porcelain"],["Neutral shading","Neutral Beige · Gray"],["Slim brow","Ash Gray · Cool Brown"],["Lip balm","Nude Beige · Cool Pink"],["Neutral shading","Cool Beige · Gray"]]},
+    }
+  },
+  ko:{
+    t:{
+      docTitle:"MIRROR MUSE — 당신과 닮은 K-pop 뮤즈", tagline:"K-뷰티 닮은꼴 스튜디오",
+      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>거울 속 그 얼굴,</span>가장 닮은 <em>K-pop</em><br>뮤즈를 만나다.",
+      heroLede:"얼굴의 비율과 이목구비를 읽어 현시점 인기 K-pop 스타 중 당신과 가장 닮은 뮤즈를 찾고, 그 무드에 닿는 화장품과 부위별 튜토리얼까지 안내해요.",
+      cta1:"분석 시작하기 →", cta2:"어떻게 작동하나요", scroll:"scroll to begin",
+      s01num:"01 — The Mirror", s01title:"거울 앞에 서기", s01desc:"정면을 바라보고 얼굴 전체가 보이게 촬영하거나 사진을 올려주세요. 밝은 곳일수록 정확해요.",
+      chipAuto:"성별 자동 인식", chipF:"여성 뮤즈 풀", chipM:"남성 뮤즈 풀", placeholder:"카메라를 켜거나 얼굴 사진을 업로드하면 이 자리에서 분석돼요.",
+      camBtn:"카메라 켜기", shotBtn:"📸 촬영하기", uploadBtn:"사진 업로드", analyzeBtn:"✦ 닮은 뮤즈 찾기",
+      howtoTitle:"분석은 이렇게 진행돼요", step1:"얼굴 68개 포인트를 찾아 윤곽·눈·코·입의 비율을 측정해요.",
+      step2:"인기 K-pop 스타들의 얼굴형 데이터와 비교해 닮음 지수를 계산해요.",
+      step3:"가장 닮은 뮤즈의 시그니처 무드에 맞춘 화장품을 추천해요.",
+      step4:"부위별로 '조회수 순' 유튜브 튜토리얼로 바로 연결해 드려요.",
+      privacy:"<b>사진은 서버로 전송되지 않습니다.</b> 모든 얼굴 분석은 브라우저 안에서만 이루어집니다.",
+      s02num:"02 — Your Muse", s02title:"당신과 가장 닮은 뮤즈", matchwith:"your face muse is", simLabel:"resemblance", alsoResembling:"also resembling",
+      s03num:"03 — The Kit", cosTitle:"{name}에게 닿는 화장품", cosTitleMuse:"뮤즈",
+      s04num:"04 — Watch & Learn", s04title:"부위별 메이크업 튜토리얼",
+      s04desc:"조회수가 가장 높은 영상 순으로 연결됩니다.",
+      s04note:"※ 조회수 정렬 검색으로 연결됩니다.",
+      restart:"↺ 다시 하기", loaderText:"뮤즈를 깨우는 중…", ribbon:"analysed", scanLabel:"얼굴 분석 중…",
+      ytSuffix:"· 조회수 높은 순", ytGo:"YouTube ↗", fullCoverTitle:"{name} 풀 커버",
+      stModelFail:"모델 로드 실패", stModelLoading:"준비 중…", stNoPhoto:"사진 필요",
+      stAnalyzing:"분석 중…", stNoFace:"얼굴 없음", stDone:"완료 ↓",
+      stPhotoReady:"사진 준비됨", stImgFail:"이미지 오류", stCamOn:"카메라 켬", stCamFail:"카메라 오류", stCamNotReady:"준비 안 됨",
+      partnerBtn:"제휴 문의",
+      prevBadge:"✦ 분석 결과 예시", prevMuseGrp:"IVE · 갸름한 V라인형", prevDisclaimer:"* 실제 분석 결과는 개인마다 달라요",
+      shrCopyLbl:"복사",
+      s03desc:"닮은 뮤즈의 얼굴형 무드를 만드는 핵심 아이템이에요.<br>부위별로 텍스처와 컬러 무드를 따라가 보세요.",
+      decoChip1:"✦ 즉시 분석", decoChip2:"◠ 서버 저장 없음", decoChip3:"❀ 화장품 추천",
+      qrModalTitle:"모바일로 열기", qrModalDesc:"QR 코드를 스마트폰 카메라로 스캔하면<br>바로 분석을 시작할 수 있어요.",
+      partnerTitle:"제휴 문의", partnerDesc:"브랜드 협업·광고·콜라보 제안을 보내주시면 빠르게 답변드릴게요.",
+      cfName:"이름 / 담당자", cfNamePh:"홍길동", cfEmail:"이메일", cfCompany:"회사 / 브랜드명", cfCompanyPh:"브랜드명을 입력해주세요",
+      cfMessage:"문의 내용", cfMessagePh:"제안하실 내용을 자유롭게 작성해주세요.", cfSubmit:"문의 보내기 →", cfDone:"감사합니다! 빠른 시일 내 연락드릴게요.",
+      cfSending:"전송 중…", cfErrRetry:"문의 보내기 →", cfErrAlert:"전송에 실패했어요. 다시 시도해주세요.", cfNetAlert:"네트워크 오류가 발생했어요. 다시 시도해주세요.",
+      footerLine:"<span class='foot-brand'>Mirror Muse</span> — 닮음 분석은 얼굴 비율 데이터를 기반으로 한 엔터테인먼트용 추정이며 과학적·의학적 판단이 아닙니다. 뮤즈 명단은 2026년 기준 인기 K-pop 아티스트 200명으로 구성했으며, 얼굴형 수치는 아키타입 기반 추정값입니다. 언급된 아티스트 및 소속사와 제휴 관계가 없습니다. 화장품 추천은 무드 가이드이며 특정 브랜드를 보증하지 않습니다. 업로드한 사진은 브라우저에서만 처리되고 서버에 저장되지 않습니다. © 2026",
+      cookieTxt:"이 사이트는 서비스 운영 및 Google AdSense 광고를 위해 쿠키를 사용합니다. 계속 이용하시면 쿠키 사용에 동의하신 것으로 간주됩니다.",
+      cookiePrivacyLbl:"개인정보처리방침", cookieOkBtn:"확인",
+      navGuide:"K-뷰티 가이드",
+      aboutNum:"05 — 소개", guideNum:"06 — K-뷰티 가이드", faqNum:"07 — FAQ",
+      prevMuseName:"장원영",
+      prevRunner1:"카리나 <em>89%</em>", prevRunner2:"아이린 <em>87%</em>", prevRunner3:"윈터 <em>85%</em>",
+      aboutTitle:"Mirror Muse 소개", aboutSub:"브라우저 기반 AI 얼굴 분석으로 당신과 가장 닮은 K-pop 뮤즈를 찾아드립니다.",
+      aboutH1:"서비스 소개", aboutP1:"Mirror Muse는 최신 브라우저 AI 기술을 활용해 당신의 얼굴 비율을 분석하고, 현시점 인기 K-pop 스타 200명 이상의 얼굴형 데이터와 비교해 가장 닮은 뮤즈를 찾아드리는 무료 서비스입니다. 별도의 회원가입이나 앱 설치 없이 브라우저 하나로 이용 가능하며, 사진은 서버로 전송되지 않아 개인 프라이버시가 완전히 보호됩니다.",
+      aboutH2:"분석 기술", aboutP2:"오픈소스 얼굴 인식 라이브러리를 기반으로 얼굴의 68개 랜드마크 포인트를 감지합니다. 눈 간격, 코 너비, 입술 두께, 얼굴 너비 대비 높이 비율, 턱선의 각도 등 6가지 핵심 비율 지표를 측정해 K-pop 스타들의 얼굴형 아키타입 데이터와 수학적으로 비교합니다. 모든 연산은 당신의 기기에서 실시간으로 처리되어 서버에 어떤 이미지도 남지 않습니다.",
+      aboutH3:"K-뷰티 큐레이션", aboutP3:"닮은 뮤즈가 결정되면 그 뮤즈의 얼굴형 무드에 맞는 K-뷰티 화장품을 부위별로 큐레이션해 드립니다. 베이스·아이·눈썹·립·블러셔 총 5개 카테고리에서 국내 최고 인기 제품들을 선별했으며, 각 제품은 올리브영 글로벌 스토어와 연결돼 해외에서도 바로 구매하실 수 있습니다.",
+      aboutH4:"유튜브 튜토리얼 연결", aboutP4:"화장품 추천에 그치지 않고, 부위별 메이크업 방법을 배울 수 있는 유튜브 튜토리얼로 바로 연결해 드립니다. 조회수 순으로 정렬된 검색 결과로 연결되기 때문에 항상 가장 인기 있는 최신 튜토리얼을 확인할 수 있습니다.",
+      stat1Label:"K-pop 뮤즈 데이터베이스", stat1Sub:"BTS·BLACKPINK·aespa 등 최신 인기 그룹 총망라",
+      stat2Label:"얼굴 랜드마크 포인트", stat2Sub:"눈·코·입·턱·윤곽 정밀 비율 측정",
+      stat3Label:"큐레이션 K-뷰티 제품", stat3Sub:"5개 부위, 카테고리별 Top 10 엄선",
+      stat4Label:"서버 전송 데이터", stat4Sub:"100% 브라우저 내 처리, 완전한 프라이버시 보호",
+      guideTitle:"얼굴형별 K-뷰티 메이크업 가이드", guideSub:"K-pop 스타들의 메이크업 비밀은 얼굴형에 맞는 맞춤 테크닉에 있습니다. 당신의 얼굴형에 맞는 K-뷰티 포인트를 알아보세요.",
+      guide1Title:"V라인형 (갸름한 턱선)", guide1Desc:"장원영·카리나처럼 갸름하고 작은 느낌이 특징입니다. 이미 얼굴이 작아 보이므로 쉐딩보다 아이 메이크업에 집중합니다. 눈을 또렷하게 강조하고, 블러셔는 광대 위쪽에 살짝 올려 발랄함을 더합니다. 입술은 글로시 틴트로 선명하게 표현하면 뮤즈 무드를 완성할 수 있습니다.", guide1Tips:"<span class='guide-tip'>💡 눈 아래 애교살 음영</span><span class='guide-tip'>💡 글로시 립</span><span class='guide-tip'>💡 코 하이라이터 포인트</span>",
+      guide2Title:"타원형 (골든 오벌)", guide2Desc:"K-뷰티에서 가장 이상적으로 꼽히는 얼굴형입니다. 윤아·태연처럼 어떤 메이크업 스타일도 잘 어울립니다. 데일리에는 내추럴 글로우 피부 표현을, 특별한 날에는 스모키나 컬러 메이크업으로 다양한 분위기를 연출해 보세요. 블러셔 위치만 바꿔도 전혀 다른 무드가 만들어집니다.", guide2Tips:"<span class='guide-tip'>💡 어떤 스타일도 OK</span><span class='guide-tip'>💡 블러셔 위치로 무드 변환</span><span class='guide-tip'>💡 글로우 스킨 기본</span>",
+      guide3Title:"동글형 (귀여운 라운드)", guide3Desc:"뉴진스·ILLIT 멤버들처럼 사랑스럽고 발랄한 분위기가 매력입니다. 눈 아래 쌍꺼풀 라인에 살짝 음영을 주는 '애교살 메이크업'과 핑크 블러셔를 코 위까지 올리는 '인형 메이크업'이 잘 어울립니다. 립은 투명하고 촉촉한 글로시 틴트로 소녀감을 살려보세요.", guide3Tips:"<span class='guide-tip'>💡 애교살 음영 포인트</span><span class='guide-tip'>💡 핑크 오버블러셔</span><span class='guide-tip'>💡 글로시 립 필수</span>",
+      guide4Title:"고양이형 (캣 페이스)", guide4Desc:"제니·예지처럼 이목구비가 뚜렷하고 시크한 분위기입니다. 아이라이너를 눈꼬리 쪽으로 길게 빼는 캣아이 기법이 핵심입니다. 매트한 질감의 딥 레드나 버건디 립을 포인트로 주면 강렬하고 자신감 넘치는 K-pop 무드가 완성됩니다. 눈썹은 일자로 정돈해 더욱 또렷한 느낌을 줍니다.", guide4Tips:"<span class='guide-tip'>💡 캣아이 라이너</span><span class='guide-tip'>💡 매트 립 포인트</span><span class='guide-tip'>💡 일자 눈썹</span>",
+      guide5Title:"하트형 (이마 넓은 하트)", guide5Desc:"이마가 넓고 턱이 갸름한 하트형은 화사·웬디처럼 강렬하고 매력적인 무드를 자아냅니다. 헤어라인 쪽에 가벼운 쉐딩으로 이마를 좁혀 보이게 하고, 눈을 크게 키우는 메이크업이 효과적입니다. 입술은 도톰하게 표현해 하트형 특유의 매력적인 비율을 살려보세요.", guide5Tips:"<span class='guide-tip'>💡 헤어라인 쉐딩</span><span class='guide-tip'>💡 언더라이너로 눈 확대</span><span class='guide-tip'>💡 입술 오버라인</span>",
+      guide6Title:"K-뷰티 피부 표현의 핵심", guide6Desc:"얼굴형과 무관하게 K-뷰티의 공통 핵심은 '피부 표현'입니다. 쿠션 파운데이션을 얇고 고르게 펴 발라 '두 번째 피부' 같은 자연스러운 베이스를 만드세요. 메이크업 전 보습 세럼을 충분히 흡수시키면 하루 종일 촉촉하고 자연스러운 피부 표현이 유지됩니다. K-pop 스타들의 무결점 피부의 비밀은 탄탄한 스킨케어 루틴에 있습니다.", guide6Tips:"<span class='guide-tip'>💡 쿠션으로 얇게 레이어링</span><span class='guide-tip'>💡 스킨케어가 베이스</span><span class='guide-tip'>💡 세팅 스프레이로 마무리</span>",
+      faqTitle:"자주 묻는 질문", faqSub:"Mirror Muse 이용에 대해 궁금한 점을 모았습니다.",
+      faq1Q:"사진이 서버에 저장되나요?", faq1A:"아니요. Mirror Muse의 모든 얼굴 분석은 당신의 브라우저(기기) 안에서만 이루어집니다. 사진 데이터는 어떤 서버로도 전송되지 않으며, 분석이 끝난 후 결과 외에는 어떤 이미지도 남지 않습니다. 개인정보 보호를 최우선으로 설계된 서비스입니다.",
+      faq2Q:"분석 결과가 실제 닮은꼴을 정확히 반영하나요?", faq2A:"Mirror Muse의 분석은 얼굴의 기하학적 비율(얼굴형·눈 크기·간격·코·입술 비율 등)을 기반으로 한 엔터테인먼트용 추정입니다. 과학적·의학적 판단이 아니며 실제 닮음의 정도와 다를 수 있습니다. 재미있는 경험을 위한 가이드로 즐겨주세요.",
+      faq3Q:"어떤 사진이 가장 잘 분석되나요?", faq3A:"정면을 바라보는 사진, 밝은 조명, 얼굴 전체가 화면에 보이는 사진일수록 정확도가 높습니다. 마스크·선글라스 착용이나 극단적인 측면 각도의 사진은 얼굴 감지가 어려울 수 있습니다. 셀카 모드(전면 카메라)가 가장 좋은 결과를 줍니다.",
+      faq4Q:"화장품 추천은 어떤 기준으로 이루어지나요?", faq4A:"닮은 뮤즈의 얼굴형 아키타입(인형형·시크형·내추럴형 등)에 따라 어울리는 메이크업 텍스처와 컬러 무드를 분류했습니다. 각 무드에 맞는 국내 인기 K-뷰티 제품들을 부위별로 큐레이션해 드리며, 특정 브랜드를 보증하는 것은 아닙니다.",
+      faq5Q:"영어로도 이용 가능한가요?", faq5A:"네! 페이지 상단의 언어 선택(한국어 / English)으로 전환하면 모든 분석 결과, 제품 설명, 튜토리얼 검색어가 영어로 제공됩니다. 해외에서 K-뷰티에 관심 있는 분들도 편리하게 이용하실 수 있습니다.",
+      faq6Q:"제휴·광고 문의는 어떻게 하나요?", faq6A:"상단 '제휴 문의' 버튼을 클릭하시면 양식을 통해 브랜드 협업, 광고, 콜라보 제안을 보내실 수 있습니다. 내용 확인 후 빠르게 회신 드립니다.",
+      footPrivacy:"개인정보처리방침", footTerms:"이용약관", footAbout:"서비스 소개", footGuide:"K-뷰티 가이드",
+      privacyTitle:"개인정보처리방침",
+      privacyBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>최종 업데이트: 2026년 1월 1일</strong></p><h3 class='policy-h3'>1. 수집하는 정보</h3><p>Mirror Muse는 원칙적으로 개인정보를 수집하지 않습니다. 얼굴 분석에 사용되는 사진은 서버로 전송되지 않으며 브라우저 내에서만 처리됩니다. 제휴 문의 양식을 작성하실 경우 이름, 이메일, 메시지가 Formspree를 통해 전송됩니다.</p><h3 class='policy-h3'>2. 얼굴 데이터 처리</h3><p>업로드하거나 카메라로 촬영한 사진 및 얼굴 분석 데이터(랜드마크 좌표, 비율값)는 브라우저 내에서만 처리되며 외부 서버로 전송되거나 저장되지 않습니다. 페이지를 새로고침하거나 닫으면 모든 데이터가 즉시 삭제됩니다.</p><h3 class='policy-h3'>3. 이용하는 외부 서비스</h3><ul><li><strong>face-api.js (jsDelivr CDN)</strong>: 오픈소스 얼굴 인식 AI 모델 로드에 이용됩니다.</li><li><strong>Google Fonts</strong>: 웹폰트 제공에 이용됩니다.</li><li><strong>Formspree</strong>: 제휴 문의 양식 전송 시 이용됩니다.</li><li><strong>QR Server API</strong>: QR 코드 생성에 이용됩니다.</li><li><strong>Olive Young Global</strong>: 제품 링크 연결에 이용됩니다.</li><li><strong>Google AdSense</strong>: 서비스 운영을 위한 광고 표시에 이용되며, Google의 광고 쿠키가 사용될 수 있습니다.</li></ul><h3 class='policy-h3'>4. 쿠키 및 로컬 스토리지</h3><p>Mirror Muse는 자체적인 트래킹 쿠키를 사용하지 않습니다. 쿠키 동의 여부는 브라우저 로컬 스토리지에만 저장됩니다. 광고 서비스(Google AdSense) 이용 시 해당 서비스의 쿠키 정책이 적용될 수 있습니다.</p><h3 class='policy-h3'>5. 어린이 개인정보보호</h3><p>본 서비스는 만 14세 미만 어린이를 대상으로 하지 않습니다. 만 14세 미만의 경우 보호자의 동의 하에 이용해 주세요.</p><h3 class='policy-h3'>6. 문의</h3><p>개인정보 관련 문의는 페이지 상단 '제휴 문의' 양식을 통해 보내주세요.</p>",
+      termsTitle:"이용약관",
+      termsBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>최종 업데이트: 2026년 1월 1일</strong></p><h3 class='policy-h3'>1. 서비스 이용 동의</h3><p>Mirror Muse를 이용하시면 본 약관에 동의하시는 것으로 간주됩니다.</p><h3 class='policy-h3'>2. 서비스 목적</h3><p>Mirror Muse의 얼굴형 분석 및 K-pop 닮은꼴 결과는 엔터테인먼트 목적의 추정값이며 과학적·의학적 판단이 아닙니다. 결과의 정확성을 보증하지 않습니다.</p><h3 class='policy-h3'>3. 지식재산권</h3><p>본 서비스의 디자인, 콘텐츠, 소프트웨어는 Mirror Muse에 귀속됩니다. 언급된 K-pop 아티스트 이름·그룹명은 각 권리자에게 귀속되며, Mirror Muse는 해당 아티스트 또는 소속사와 제휴 관계가 없습니다.</p><h3 class='policy-h3'>4. 면책조항</h3><p>서비스 이용으로 인한 직·간접적 손해에 대해 Mirror Muse는 책임을 지지 않습니다. 화장품 추천은 무드 가이드이며 특정 제품의 효과를 보증하지 않습니다.</p><h3 class='policy-h3'>5. 광고</h3><p>본 서비스는 Google AdSense를 통해 광고를 게재할 수 있습니다. 광고 콘텐츠는 Google의 정책에 따라 표시됩니다.</p><h3 class='policy-h3'>6. 약관 변경</h3><p>서비스 운영에 따라 본 약관은 변경될 수 있으며, 변경 후 계속 이용 시 변경된 약관에 동의하는 것으로 간주됩니다.</p>",
+    },
+    mood:{happy:"웃는 표정에서",neutral:"정제된 표정에서",surprised:"생기 있는 표정에서",sad:"잔잔한 표정에서",angry:"또렷한 눈빛에서",fearful:"섬세한 표정에서",disgusted:"개성 있는 표정에서"},
+    vtpl:"{mood} {name}의 {shape} 무드가 묻어나요. {vibe}",
+    tn:{face:"얼굴형",jaw:"턱선",eye:"눈",lip:"입술",spacing:"간격"},
+    tv:{faceLong:"길고 갸름",faceRound:"동그란",faceOval:"타원형",jawV:"V라인",jawSquare:"각진",jawSoft:"부드러운",eyeBig:"큼직",eyeLong:"시원한",eyeBalanced:"균형",lipFull:"도톰",lipThin:"얇은",lipBalanced:"균형",spacingWide:"시원",spacingClose:"또렷"},
+    al:{doll_long:"인형형",vline_cat:"고양이형",soft_oval:"타원형",cat_defined:"고양이형",round_cute:"사랑스러운형",clear_chic:"시크형",petite_neat:"타원형",heart_alluring:"하트형",golden_oval:"타원형",strong_jaw:"턱선형",long_sharp:"윤곽형",broad_soft:"윤곽형"},
+    ar:[["베이스","베이스 메이크업"],["아이","아이 메이크업"],["눈썹","눈썹 그리는 법"],["립","립 메이크업"],["블러셔","블러셔 쉐딩"]],
+    fk:"커버 메이크업",
+    kits:{
+      doll:{v:"물광 피부와 동그랗고 큰 눈.",F:[["쿠션","웜 피치 · 아이보리"],["펄 섀도우","페일 핑크 · 샴페인"],["브로우","소프트 브라운"],["틴트","코랄 핑크 · 베이비 핑크"],["블러셔","베이비 핑크 · 피치"]],M:[["베이스","웜 피치 · 아이보리"],["섀도우","소프트 핑크 · 브라운"],["브로우","애쉬 브라운"],["립밤","코랄 핑크"],["쉐딩","소프트 그레이 · 베이지"]]},
+      chic:{v:"도자기 피부와 시크한 무드.",F:[["파운데이션","쿨 아이보리 · 포슬린"],["섀도우","쿨 브라운 · 스모키 그레이"],["브로우","쿨 그레이 브라운"],["립","딥 마룬 · 뮤브"],["쉐딩","쿨 그레이 · 애쉬 브라운"]],M:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","딥 브라운 · 스모키 그레이"],["브로우","쿨 그레이 브라운"],["립","뮤브 · 누드 베이지"],["쉐딩","쿨 그레이 · 딥 그레이"]]},
+      natural:{v:"은은한 윤기와 따뜻한 무드.",F:[["쿠션","웜 베이지 · 피치"],["섀도우","테라코타 · 웜 브라운"],["브로우","올리브 브라운"],["틴트","로즈 · 코랄 핑크"],["블러셔","피치 · 코랄"]],M:[["베이스","내추럴 베이지 · 웜 아이보리"],["섀도우","웜 브라운 · 테라코타"],["브로우","올리브 브라운"],["립밤","코랄 · 로즈 베이지"],["쉐딩","소프트 브라운 · 웜 베이지"]]},
+      defined:{v:"건강한 윤기와 또렷한 무드.",F:[["파운데이션","웜 베이지 · 피치"],["섀도우","테라코타 · 브론즈"],["브로우","다크 브라운 · 카키"],["립","로즈우드 · 누드 핑크"],["블러셔","코랄 · 테라코타"]],M:[["베이스","웜 베이지 · 피치 베이지"],["섀도우","브론즈 · 딥 카키"],["브로우","다크 브라운 · 카키"],["립밤","로즈우드 · MLBB 핑크"],["컨투어","웜 타우프 · 소프트 그레이"]]},
+      elegant:{v:"화사한 윤기와 우아한 무드.",F:[["파운데이션","피치 골드 · 웜 베이지"],["섀도우","샴페인 골드 · 버건디"],["브로우","다크 브라운 · 소프트 블랙"],["립","딥 레드 · 버건디"],["블러셔","로즈 골드 · 딥 코랄"]],M:[["베이스","피치 골드 · 웜 베이지"],["섀도우","샴페인 골드 · 버건디"],["브로우","다크 브라운 · 소프트 블랙"],["립밤","로즈 핑크 · 누드 피치"],["쉐딩","로즈 그레이 · 뮤브"]]},
+      clean:{v:"매끈한 피부와 단아한 무드.",F:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","뉴트럴 베이지 · 그레이지"],["브로우","애쉬 브라운 · 그레이"],["립","누드 · 로즈 누드"],["쉐딩","쿨 베이지 · 그레이 타우프"]],M:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","뉴트럴 베이지 · 그레이"],["브로우","애쉬 그레이 · 쿨 브라운"],["립밤","누드 베이지 · 쿨 핑크"],["쉐딩","쿨 베이지 · 그레이"]]},
+    }
+  }
+};
+
+let lang = 'en', modelsReady = false, stream = null, analysisImage = null, genderMode = 'auto', lastResult = null;
+const $ = (id) => document.getElementById(id);
+
+function setLanguage(l){
+  lang = I18N[l] ? l : 'en';
+  const d = I18N[lang];
+  document.title = d.t.docTitle;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if(d.t[k]) el.textContent = d.t[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const k = el.getAttribute('data-i18n-html');
+    if(d.t[k]) el.innerHTML = d.t[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.getAttribute('data-i18n-ph');
+    if(d.t[k]) el.placeholder = d.t[k];
+  });
+  $('langSelect').value = lang;
+  if(lastResult) updateResultUI();
+  else if($('kitProducts').innerHTML) renderKitProducts(_activeTab);
+}
+
+async function loadModels(){
+  const ldr = $('loader');
+  setTimeout(() => { if(ldr) ldr.classList.add('hide'); }, 1500);
+  try {
+    await Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+      faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+      faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+      faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
+    ]);
+    modelsReady = true;
+  } catch(e) {
+    console.error(e);
+    setStatus(I18N[lang].t.stModelFail, 'err');
+  } finally {
+    if(ldr) ldr.classList.add('hide');
+  }
+}
+
+function setStatus(msg, type=''){
+  const s = $('status');
+  if(s){ s.textContent = msg; s.className = 'status' + (type?' '+type:''); }
+}
+
+const dist = (a,b) => Math.hypot(a.x-b.x, a.y-b.y);
+const mid = (a,b) => ({x:(a.x+b.x)/2, y:(a.y+b.y)/2});
+
+function extractFeatures(landmarks){
+  const p = landmarks.positions;
+  const faceWidth = dist(p[1], p[15]) || 1;
+  const faceHeight = dist(mid(p[19],p[24]), p[8]) * 1.35;
+  const eyeW = (dist(p[36],p[39]) + dist(p[42],p[45])) / 2;
+  return {
+    faceRatio: faceHeight/faceWidth,
+    jawRatio: dist(p[4],p[12])/faceWidth,
+    eyeSize: eyeW/faceWidth,
+    eyeSpacing: dist(p[39],p[42])/faceWidth,
+    noseWidth: dist(p[31],p[35])/faceWidth,
+    lipFull: dist(p[51],p[57])/faceWidth,
+  };
+}
+
+function getScore(user, muse){
+  const spread = {faceRatio:.16,jawRatio:.085,eyeSize:.045,eyeSpacing:.055,noseWidth:.05,lipFull:.045};
+  const weight = {faceRatio:1.0,jawRatio:1.1,eyeSize:1.2,eyeSpacing:.9,noseWidth:.8,lipFull:1.0};
+  let s=0, w=0;
+  for(const k in spread){
+    const d = (user[k]-muse.t[k])/spread[k];
+    s += d*d*weight[k];
+    w += weight[k];
+  }
+  return Math.max(78, Math.min(98, Math.round(97 - Math.sqrt(s/w)*8.5)));
+}
+
+const AREA_ICONS = ['✦','◠','⌒','❀','❍'];
+
+function updateResultUI(){
+  if(!lastResult) return;
+  const d = I18N[lang];
+  const { muse, runners, features, detections } = lastResult;
+
+  const scoreVal = lastResult.overrideScore !== undefined ? lastResult.overrideScore : getScore(features, muse);
+  $('rStarName').textContent = displayMuseName(muse.name, muse.group);
+  $('rStarGroup').textContent = displayGroup(muse.group);
+  $('rSim').textContent = scoreVal;
+  $('rSimBar').style.width = scoreVal + '%';
+
+  // 모바일 사진 오버레이
+  $('rPhotoStarName').textContent = displayMuseName(muse.name, muse.group);
+  $('rPhotoGroup').textContent = displayGroup(muse.group);
+  $('rPhotoSim').textContent = scoreVal;
+  $('rPhotoName').style.display = 'block';
+
+  const exp = detections.expressions;
+  const topExp = Object.keys(exp).reduce((a,b)=>exp[a]>exp[b]?a:b);
+  const moodStr = d.mood[topExp] || d.mood.neutral;
+  $('rVibe').textContent = d.vtpl
+    .replace('{mood}', moodStr)
+    .replace('{name}', displayMuseName(muse.name, muse.group))
+    .replace('{shape}', d.al[muse.arch])
+    .replace('{vibe}', d.kits[muse.kit].v);
+
+  const t = d.tn; const v = d.tv;
+  const traitData = [
+    [t.face, features.faceRatio>1.50?v.faceLong:features.faceRatio<1.36?v.faceRound:v.faceOval],
+    [t.jaw, features.jawRatio<0.77?v.jawV:features.jawRatio>0.84?v.jawSquare:v.jawSoft],
+    [t.eye, features.eyeSize>0.275?v.eyeBig:features.eyeSize<0.245?v.eyeLong:v.eyeBalanced],
+    [t.lip, features.lipFull>0.185?v.lipFull:features.lipFull<0.155?v.lipThin:v.lipBalanced],
+    [t.spacing, features.eyeSpacing>0.31?v.spacingWide:v.spacingClose],
+  ];
+  $('rTraits').innerHTML = traitData.map(tr=>`<span class="trait">${tr[0]}: <b>${tr[1]}</b></span>`).join('');
+  $('rRunners').innerHTML = runners.map(r=>`<span class="runner"><em>${displayMuseName(r.name, r.group)}</em> (${displayGroup(r.group)})</span>`).join('');
+
+  $('s03title').textContent = d.t.cosTitle.replace('{name}', displayMuseName(muse.name, muse.group));
+  const kitPicks = d.kits[muse.kit][muse.g];
+  _kitPicks = kitPicks;
+  _activeTab = 0;
+  $('kitTabs').innerHTML = PRODUCT_DB.map((db, i) => `
+    <button class="kit-tab ${i === 0 ? 'active' : ''}" onclick="selectKitTab(${i})">
+      <span class="tab-num">0${i+1}</span>
+      <span class="tab-area">${kitPicks[i][0]}</span>
+      <span class="tab-pick">${kitPicks[i][1]}</span>
+    </button>`).join('');
+  renderKitProducts(0);
+
+  const museName4search = nameEn(muse.name, muse.group);
+  const tuts = d.ar.map(a => ({ label:a[0], q: museName4search + ' ' + a[1] }));
+  const fullCover = { label: d.t.fullCoverTitle.replace('{name}', displayMuseName(muse.name, muse.group)), q: museName4search + ' ' + d.fk };
+  const allTuts = [fullCover, ...tuts];
+  $('tutList').innerHTML = allTuts.map((t,i)=>`
+    <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(t.q)}&sp=CAMSAhAB" target="_blank" class="tut-row">
+      <div class="tut-icon">${AREA_ICONS[i-1] || '✦'}</div>
+      <div class="tut-main">
+        <div class="t1">${t.label}</div>
+        <div class="t2">${t.q} ${d.t.ytSuffix}</div>
+      </div>
+      <div class="tut-go">${d.t.ytGo}</div>
+    </a>
+  `).join('');
+
+  renderSharePanel(muse, scoreVal);
+}
+
+async function runAnalysis(){
+  if(!modelsReady) { setStatus(I18N[lang].t.stModelLoading, 'err'); return; }
+  if(!analysisImage) { setStatus(I18N[lang].t.stNoPhoto, 'err'); return; }
+
+  $('analyzeBtn').disabled = true;
+  $('scan').classList.add('on');
+
+  const steps = lang === 'ko'
+    ? ['얼굴 68개 포인트 감지 중…', '눈·코·입 비율 측정 중…', 'K-pop 스타 데이터와 비교 중…', '뮤즈를 찾는 중…']
+    : ['Detecting 68 facial points…', 'Measuring eye, nose & lip ratios…', 'Comparing with K-pop star data…', 'Finding your muse…'];
+
+  let si = 0;
+  setStatus(steps[0]);
+  const ticker = setInterval(() => {
+    si = Math.min(si + 1, steps.length - 1);
+    setStatus(steps[si]);
+  }, 800);
+
+  const [det] = await Promise.all([
+    faceapi.detectSingleFace(analysisImage,
+      new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.5 }))
+      .withFaceLandmarks().withFaceExpressions().withAgeAndGender(),
+    new Promise(r => setTimeout(r, 3000)),
+  ]);
+
+  clearInterval(ticker);
+  $('scan').classList.remove('on');
+
+  if(!det){
+    setStatus(I18N[lang].t.stNoFace, 'err');
+    $('analyzeBtn').disabled = false;
+    return;
+  }
+
+  const features = extractFeatures(det.landmarks);
+  const gTarget = genderMode === 'auto' ? (det.gender === 'female' ? 'F' : 'M') : genderMode;
+  const scored = MUSES.filter(m => m.g === gTarget)
+    .map(m => ({ muse: m, score: getScore(features, m) }))
+    .sort((a,b) => b.score - a.score);
+
+  lastResult = { muse: scored[0].muse, runners: scored.slice(1, 4).map(s => s.muse), features, detections: det };
+
+  const canvas = $('resultCanvas');
+  const ctx = canvas.getContext('2d');
+  const ratio = analysisImage.naturalHeight / analysisImage.naturalWidth;
+  canvas.width = 600; canvas.height = 600 * ratio;
+  ctx.drawImage(analysisImage, 0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'rgba(255,247,242,.85)';
+  const sx = canvas.width / analysisImage.naturalWidth, sy = canvas.height / analysisImage.naturalHeight;
+  det.landmarks.positions.forEach(p => {
+    ctx.beginPath(); ctx.arc(p.x*sx, p.y*sy, 1.8, 0, Math.PI*2); ctx.fill();
+  });
+
+  updateResultUI();
+  $('resultSection').style.display = 'block';
+  $('cosmeticSection').style.display = 'block';
+  $('tutorialSection').style.display = 'block';
+  setStatus(I18N[lang].t.stDone, 'ok');
+  window.scrollTo({ top: $('resultSection').offsetTop - 20, behavior: 'smooth' });
+}
+
+$('langSelect').onchange = (e) => setLanguage(e.target.value);
+$('camBtn').onclick = async () => {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+    $('liveVideo').srcObject = stream;
+    $('liveVideo').style.display = 'block';
+    $('placeholder').style.display = 'none';
+    $('camBtn').style.display = 'none';
+    $('shotBtn').style.display = 'inline-flex';
+    setStatus(I18N[lang].t.stCamOn);
+  } catch(e) { setStatus(I18N[lang].t.stCamFail, 'err'); }
+};
+$('shotBtn').onclick = () => {
+  const video = $('liveVideo');
+  const canvas = $('previewCanvas');
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  canvas.getContext('2d').translate(canvas.width, 0);
+  canvas.getContext('2d').scale(-1, 1);
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  analysisImage = new Image();
+  analysisImage.src = canvas.toDataURL('image/jpeg');
+  analysisImage.onload = () => {
+    $('liveVideo').style.display = 'none';
+    canvas.style.display = 'block';
+    $('shotBtn').style.display = 'none';
+    $('analyzeBtn').style.display = 'inline-flex';
+    setStatus(I18N[lang].t.stPhotoReady, 'ok');
+    if(stream) stream.getTracks().forEach(t => t.stop());
+  };
+};
+$('uploadBtn').onclick = () => $('fileInput').click();
+$('fileInput').onchange = (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    analysisImage = new Image();
+    analysisImage.src = ev.target.result;
+    analysisImage.onload = () => {
+      $('placeholder').style.display = 'none';
+      $('liveVideo').style.display = 'none';
+      const canvas = $('previewCanvas');
+      const ratio = analysisImage.naturalHeight / analysisImage.naturalWidth;
+      canvas.width = 800; canvas.height = 800 * ratio;
+      canvas.getContext('2d').drawImage(analysisImage, 0, 0, canvas.width, canvas.height);
+      canvas.style.display = 'block';
+      $('camBtn').style.display = 'inline-flex';
+      $('shotBtn').style.display = 'none';
+      $('analyzeBtn').style.display = 'inline-flex';
+      setStatus(I18N[lang].t.stPhotoReady, 'ok');
+    };
+  };
+  reader.readAsDataURL(file);
+};
+$('analyzeBtn').onclick = runAnalysis;
+$('restartBtn').onclick = () => location.reload();
+document.querySelectorAll('.chip').forEach(ch => {
+  ch.onclick = () => {
+    document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+    ch.setAttribute('aria-pressed', 'true');
+    genderMode = ch.getAttribute('data-gender');
+  };
+});
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ---- QR modal ---- */
+const qrModal = $('qrModal');
+$('qrBtn').addEventListener('click', () => {
+  const url = location.origin + location.pathname;
+  $('qrModalImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=2c211d&margin=8&qzone=1`;
+  $('qrModalUrl').textContent = url;
+  qrModal.classList.add('open');
+});
+$('qrModalClose').addEventListener('click', () => qrModal.classList.remove('open'));
+qrModal.addEventListener('click', e => { if(e.target === qrModal) qrModal.classList.remove('open'); });
+/* ---- partner modal ---- */
+const modal = $('partnerModal');
+$('partnerBtn').addEventListener('click', () => modal.classList.add('open'));
+$('modalClose').addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', e => { if(e.target === modal) modal.classList.remove('open'); });
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') {
+    modal.classList.remove('open');
+    qrModal.classList.remove('open');
+    privacyModal.classList.remove('open');
+    termsModal.classList.remove('open');
+  }
+});
+
+/* ── Privacy modal ── */
+const privacyModal = $('privacyModal');
+$('privacyBtn').addEventListener('click', () => privacyModal.classList.add('open'));
+$('privacyModalClose').addEventListener('click', () => privacyModal.classList.remove('open'));
+privacyModal.addEventListener('click', e => { if(e.target === privacyModal) privacyModal.classList.remove('open'); });
+
+/* ── Terms modal ── */
+const termsModal = $('termsModal');
+$('termsBtn').addEventListener('click', () => termsModal.classList.add('open'));
+$('termsModalClose').addEventListener('click', () => termsModal.classList.remove('open'));
+termsModal.addEventListener('click', e => { if(e.target === termsModal) termsModal.classList.remove('open'); });
+
+/* ── Cookie consent ── */
+const cookieBanner = $('cookieConsent');
+if(!localStorage.getItem('mm_cookie_ok')) cookieBanner.style.display = 'block';
+$('cookieOk').addEventListener('click', () => {
+  localStorage.setItem('mm_cookie_ok', '1');
+  cookieBanner.style.display = 'none';
+});
+$('cookiePrivacyBtn').addEventListener('click', () => {
+  privacyModal.classList.add('open');
+});
+$('contactForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('cfSubmit');
+  btn.disabled = true; btn.textContent = I18N[lang].t.cfSending;
+  try {
+    const res = await fetch(e.target.action, {
+      method:'POST', body: new FormData(e.target), headers:{ Accept:'application/json' }
+    });
+    if(res.ok){
+      e.target.reset();
+      $('cfDone').style.display = 'block';
+      btn.style.display = 'none';
+    } else {
+      btn.disabled = false; btn.textContent = I18N[lang].t.cfErrRetry;
+      alert(I18N[lang].t.cfErrAlert);
+    }
+  } catch {
+    btn.disabled = false; btn.textContent = I18N[lang].t.cfErrRetry;
+    alert(I18N[lang].t.cfNetAlert);
+  }
+});
+
+/* ── FAQ accordion ── */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const open = item.classList.toggle('open');
+    item.querySelector('.faq-q').setAttribute('aria-expanded', open);
+  });
+});
+
+const userLang = navigator.language.split('-')[0];
+setLanguage(LANG_NAMES[userLang] ? userLang : 'en');
+loadModels();
+checkShareParams();
+
+</script>
 </body>
 </html>
