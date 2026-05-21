@@ -10,6 +10,27 @@
 <meta name="author" content="Mirror Muse" />
 <link rel="canonical" href="https://mirror-muse.web.app/" />
 
+<!-- Favicon & App Icons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+<link rel="manifest" href="/manifest.json" />
+
+<!-- Hreflang: 한국어·영어 다국어 -->
+<link rel="alternate" hreflang="ko" href="https://mirror-muse.web.app/" />
+<link rel="alternate" hreflang="en" href="https://mirror-muse.web.app/" />
+<link rel="alternate" hreflang="x-default" href="https://mirror-muse.web.app/" />
+
+<!-- Mobile / PWA Meta -->
+<meta name="theme-color" content="#c87f73" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Mirror Muse" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="application-name" content="Mirror Muse" />
+
+<!-- Naver Search Advisor 인증 (searchadvisor.naver.com 에서 발급받은 코드로 교체) -->
+<meta name="naver-site-verification" content="YOUR_NAVER_VERIFICATION_CODE" />
+
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://mirror-muse.web.app/" />
@@ -17,26 +38,126 @@
 <meta property="og:description" content="AI로 얼굴을 분석해 가장 닮은 K-pop 스타를 찾고, 맞춤 K-뷰티 화장품을 추천받으세요. 무료 · 서버 저장 없음." />
 <meta property="og:site_name" content="Mirror Muse" />
 <meta property="og:locale" content="ko_KR" />
+<meta property="og:image" content="https://mirror-muse.web.app/og-image.svg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Mirror Muse — AI로 찾는 K-pop 닮은꼴 뮤즈 & K-뷰티 화장품 추천" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="MIRROR MUSE — 당신과 닮은 K-pop 뮤즈 찾기" />
 <meta name="twitter:description" content="AI로 얼굴을 분석해 가장 닮은 K-pop 스타를 찾고, 맞춤 K-뷰티 화장품을 추천받으세요." />
+<meta name="twitter:image" content="https://mirror-muse.web.app/og-image.svg" />
+<meta name="twitter:image:alt" content="Mirror Muse — K-pop 닮은꼴 분석 서비스" />
 
-<!-- JSON-LD Structured Data -->
+<!-- JSON-LD: WebApplication -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Mirror Muse",
+  "alternateName": "미러뮤즈",
   "url": "https://mirror-muse.web.app/",
-  "description": "AI 기반 K-pop 얼굴형 닮은꼴 분석 및 K-뷰티 화장품 추천 서비스",
+  "description": "AI 기반 K-pop 얼굴형 닮은꼴 분석 및 K-뷰티 화장품 추천 서비스. 무료 · 브라우저 처리 · 서버 저장 없음.",
   "applicationCategory": "EntertainmentApplication",
   "operatingSystem": "Web Browser",
+  "browserRequirements": "Requires JavaScript. Requires HTML5.",
   "inLanguage": ["ko", "en"],
   "isAccessibleForFree": true,
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
-  "creator": { "@type": "Organization", "name": "Mirror Muse" }
+  "image": "https://mirror-muse.web.app/og-image.svg",
+  "screenshot": "https://mirror-muse.web.app/og-image.svg",
+  "creator": { "@type": "Organization", "name": "Mirror Muse", "url": "https://mirror-muse.web.app/" }
+}
+</script>
+
+<!-- JSON-LD: WebSite -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Mirror Muse",
+  "alternateName": "미러뮤즈",
+  "url": "https://mirror-muse.web.app/",
+  "description": "AI로 찾는 K-pop 닮은꼴 뮤즈 & K-뷰티 화장품 추천",
+  "inLanguage": ["ko", "en"]
+}
+</script>
+
+<!-- JSON-LD: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Mirror Muse",
+  "alternateName": "미러뮤즈",
+  "url": "https://mirror-muse.web.app/",
+  "logo": "https://mirror-muse.web.app/favicon.svg",
+  "description": "K-pop 닮은꼴 분석 및 K-뷰티 화장품 추천 서비스",
+  "foundingDate": "2026",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "availableLanguage": ["Korean", "English"]
+  }
+}
+</script>
+
+<!-- JSON-LD: FAQPage (구글 리치 스니펫 — FAQ 항목이 검색결과에 직접 노출) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "사진이 서버에 저장되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "아니요. 모든 얼굴 분석은 당신의 브라우저 안에서만 이루어집니다. 업로드한 사진이나 카메라 영상은 서버로 전송되지 않으며 외부에 저장되지 않습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "분석 결과가 실제 닮은꼴을 정확히 반영하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mirror Muse의 분석은 얼굴 비율 데이터를 기반으로 한 엔터테인먼트용 추정입니다. 과학적·의학적 판단이 아니며 재미있는 가이드로 즐겨주세요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "어떤 사진이 가장 잘 분석되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "정면을 바라보는 사진, 밝은 조명, 얼굴 전체가 화면에 보이는 사진이 가장 정확한 분석 결과를 제공합니다. 측면 사진이나 어두운 사진은 정확도가 낮을 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "화장품 추천은 어떤 기준으로 이루어지나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "닮은 뮤즈의 얼굴형 아키타입(V라인형, 타원형, 동글형, 고양이형, 하트형 등)에 따라 어울리는 K-뷰티 제품을 부위별로 큐레이션해 드립니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "영어로도 이용 가능한가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "네! 페이지 상단의 언어 선택(한국어/English)으로 영어로 전환하실 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "제휴·광고 문의는 어떻게 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "페이지 상단의 '제휴 문의' 버튼을 통해 문의하시면 빠르게 회신 드립니다. 브랜드 협업, 광고, 콜라보 제안을 환영합니다."
+      }
+    }
+  ]
 }
 </script>
 
@@ -668,8 +789,8 @@
   <div class="lb">Mirror&nbsp;Muse</div>
 </div>
 
-<header class="wrap">
-  <div class="nav">
+<header class="wrap" role="banner">
+  <nav class="nav" aria-label="주요 메뉴">
     <div class="brand">Mirror <b>Muse</b></div>
     <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap">
       <div class="tag" data-i18n="tagline">K-Beauty Resemblance Studio</div>
@@ -683,7 +804,7 @@
       <button class="partner-btn" id="qrBtn" title="모바일로 열기">&#9641; QR</button>
       <button class="partner-btn" id="partnerBtn" data-i18n="partnerBtn">제휴 문의</button>
     </div>
-  </div>
+  </nav>
 </header>
 
 <main>
@@ -727,7 +848,7 @@
   <!-- AdSense: 히어로 아래 -->
   <div style="text-align:center;padding:8px 0;max-width:1180px;margin:0 auto;">
     <ins class="adsbygoogle"
-         style="display:block"
+         style="display:block;min-height:90px"
          data-ad-client="ca-pub-1047513078675164"
          data-ad-slot="auto"
          data-ad-format="auto"
@@ -865,7 +986,7 @@
   <!-- AdSense: 결과 섹션 아래 -->
   <div style="text-align:center;padding:8px 0;max-width:1180px;margin:0 auto;">
     <ins class="adsbygoogle"
-         style="display:block"
+         style="display:block;min-height:90px"
          data-ad-client="ca-pub-1047513078675164"
          data-ad-slot="auto"
          data-ad-format="auto"
@@ -1022,7 +1143,7 @@
   <!-- AdSense: FAQ 아래 -->
   <div style="text-align:center;padding:8px 0;max-width:1180px;margin:0 auto;">
     <ins class="adsbygoogle"
-         style="display:block"
+         style="display:block;min-height:90px"
          data-ad-client="ca-pub-1047513078675164"
          data-ad-slot="auto"
          data-ad-format="auto"

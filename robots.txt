@@ -1,4 +1,16 @@
 User-agent: *
 Allow: /
+Disallow: /.firebase/
+Disallow: /.git/
+Disallow: /.idx/
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: NaverBot
+Allow: /
 
 Sitemap: https://mirror-muse.web.app/sitemap.xml
