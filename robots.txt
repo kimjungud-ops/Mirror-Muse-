@@ -13,4 +13,4 @@ Allow: /
 User-agent: NaverBot
 Allow: /
 
-Sitemap: https://mirror-muse.web.app/sitemap.xml
+Sitemap: https://k-pop-muse.com/sitemap.xml

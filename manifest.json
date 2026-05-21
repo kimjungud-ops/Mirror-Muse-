@@ -1,8 +1,10 @@
 {
+  "id": "/",
+  "scope": "/",
   "name": "Mirror Muse — K-pop 닮은꼴 분석",
   "short_name": "Mirror Muse",
   "description": "AI로 찾는 나의 K-pop 닮은꼴 뮤즈 & K-뷰티 화장품 추천. 무료 · 브라우저 처리 · 서버 저장 없음.",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#f4ebe3",
   "theme_color": "#c87f73",
@@ -10,7 +12,13 @@
   "dir": "ltr",
   "orientation": "any",
   "categories": ["entertainment", "lifestyle", "beauty"],
+  "prefer_related_applications": false,
   "icons": [
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "48x48"
+    },
     {
       "src": "/favicon.svg",
       "type": "image/svg+xml",
@@ -23,6 +31,7 @@
       "src": "/og-image.svg",
       "type": "image/svg+xml",
       "sizes": "1200x630",
+      "form_factor": "wide",
       "label": "Mirror Muse — K-pop 닮은꼴 분석 화면"
     }
   ]
