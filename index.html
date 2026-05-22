@@ -180,10 +180,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="dns-prefetch" href="https://api.qrserver.com" />
 <link rel="dns-prefetch" href="https://formspree.io" />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Gothic+A1:wght@300;400;500;700;900&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Gothic+A1:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Gothic+A1:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" /></noscript>
 <style>
   :root{
     --bg:#f4ebe3;--bg-2:#fbf6f1;--ink:#2c211d;--ink-soft:#7a6a60;
@@ -828,7 +829,7 @@
     <div class="hero-grid">
       <div class="hero-left">
         <div class="eyebrow reveal" data-i18n="heroEyebrow">Find your face muse</div>
-        <h1 class="reveal" data-i18n-html="heroTitle"><span class="h1-pre">거울 속 그 얼굴,</span>가장 닮은 <em>K-pop</em><br>뮤즈를 만나다.</h1>
+        <h1 class="reveal" data-i18n-html="heroTitle"><span class="h1-pre">AI 얼굴형 분석 · K-pop 닮은꼴 찾기</span>당신과 닮은 <em>K-pop</em> 뮤즈를<br>만나다.</h1>
         <p class="lede reveal" data-i18n="heroLede">얼굴의 비율과 이목구비를 읽어 현시점 인기 K-pop 스타 중 당신과 가장 닮은 뮤즈를 찾고, 그 무드에 닿는 화장품과 부위별 튜토리얼까지 안내해요.</p>
         <div class="hero-cta reveal">
           <a href="#studio" style="text-decoration:none;display:inline-flex"><button class="btn btn-solid" data-i18n="cta1">분석 시작하기 →</button></a>
@@ -1672,7 +1673,7 @@ const I18N = {
   en:{
     t:{
       docTitle:"MIRROR MUSE — Your K-pop Face Muse", tagline:"K-Beauty Resemblance Studio",
-      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>The face in the mirror,</span>meet your closest<br><em>K-pop muse</em>.",
+      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>Free AI Face Analysis · K-pop Look-alike Finder</span>Meet your closest<br><em>K-pop muse</em>.",
       heroLede:"We read your facial proportions and features to find your closest match among today's most popular K-pop stars — with the cosmetics and area-by-area tutorials to channel that look.",
       cta1:"Start the analysis →", cta2:"How it works", scroll:"scroll to begin",
       s01num:"01 — The Mirror", s01title:"Step up to the mirror", s01desc:"Face forward with your whole face visible, or upload a photo. Brighter light gives better results.",
@@ -1758,7 +1759,7 @@ const I18N = {
   ko:{
     t:{
       docTitle:"MIRROR MUSE — 당신과 닮은 K-pop 뮤즈", tagline:"K-뷰티 닮은꼴 스튜디오",
-      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>거울 속 그 얼굴,</span>가장 닮은 <em>K-pop</em><br>뮤즈를 만나다.",
+      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>AI 얼굴형 분석 · K-pop 닮은꼴 찾기</span>당신과 닮은 <em>K-pop</em> 뮤즈를<br>만나다.",
       heroLede:"얼굴의 비율과 이목구비를 읽어 현시점 인기 K-pop 스타 중 당신과 가장 닮은 뮤즈를 찾고, 그 무드에 닿는 화장품과 부위별 튜토리얼까지 안내해요.",
       cta1:"분석 시작하기 →", cta2:"어떻게 작동하나요", scroll:"scroll to begin",
       s01num:"01 — The Mirror", s01title:"거울 앞에 서기", s01desc:"정면을 바라보고 얼굴 전체가 보이게 촬영하거나 사진을 올려주세요. 밝은 곳일수록 정확해요.",
