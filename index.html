@@ -917,6 +917,11 @@
       <select id="langSelect" class="partner-btn" style="background:var(--bg-2);padding:6px 10px;cursor:pointer">
         <option value="ko">한국어</option>
         <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="zh">中文</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+        <option value="ru">Русский</option>
       </select>
       <a href="#about" class="partner-btn" data-i18n="footAbout">소개</a>
       <a href="#kbeautyGuide" class="partner-btn" data-i18n="navGuide">K-뷰티 가이드</a>
@@ -1556,7 +1561,7 @@ const MUSES = buildMuses();
 const OY_KO = 'https://www.oliveyoung.co.kr/store/search/getSearchMain.do?query=';
 const OY_EN = 'https://global.oliveyoung.com/display/search?query=';
 const getOY = () => lang === 'ko' ? OY_KO : OY_EN;
-const getOYLabel = () => lang === 'ko' ? '올리브영 ↗' : 'Olive Young Global ↗';
+const getOYLabel = () => (I18N[lang]&&I18N[lang].t&&I18N[lang].t.oyLabel) || (lang === 'ko' ? '올리브영 ↗' : 'Olive Young Global ↗');
 const PRODUCT_DB = [
   { grad:'linear-gradient(135deg,#e8c4b8,#c87f73)', icon:'✦', items:[
     {rank:1,brand:'CLIO',name:'킬 커버 파운웨어 쿠션',nameEn:'Kill Cover Founwear Cushion',price:'₩35,000',desc:'완벽 커버력 + 24시간 지속. K-pop 무대 메이크업에도 자주 쓰이는 스테디셀러.',descEn:'Perfect coverage + 24hr wear. A bestseller used in K-pop stage makeup.',q:'CLIO Kill Cover'},
@@ -1667,9 +1672,12 @@ function showShareToast(msg) {
 
 function renderSharePanel(muse, score) {
   const url = buildShareURL(muse, score);
-  const txt = lang === 'ko'
-    ? `나는 ${muse.name}(${muse.group})와 ${score}% 닮았대요! Mirror Muse에서 내 K-pop 뮤즈를 찾아보세요.`
-    : `I'm ${score}% similar to ${nameEn(muse.name, muse.group)} of ${displayGroup(muse.group)}! Find your K-pop muse on Mirror Muse.`;
+  const _t = I18N[lang].t;
+  const txt = _t.shareText
+    ? _t.shareText.replace('{name}',muse.name).replace('{group}',muse.group).replace('{nameEn}',nameEn(muse.name,muse.group)).replace('{groupEn}',displayGroup(muse.group)).replace('{score}',score)
+    : (lang === 'ko'
+        ? `나는 ${muse.name}(${muse.group})와 ${score}% 닮았대요! Mirror Muse에서 내 K-pop 뮤즈를 찾아보세요.`
+        : `I'm ${score}% similar to ${nameEn(muse.name, muse.group)} of ${displayGroup(muse.group)}! Find your K-pop muse on Mirror Muse.`);
 
   history.replaceState({}, '', url);
 
@@ -1679,8 +1687,8 @@ function renderSharePanel(muse, score) {
   $('shrCopy').onclick = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      showShareToast(lang === 'ko' ? '링크 복사됨 ✓' : 'Link copied ✓');
-    } catch { prompt(lang === 'ko' ? '링크를 복사하세요:' : 'Copy this link:', url); }
+      showShareToast(I18N[lang].t.shrCopyDone || (lang==='ko'?'링크 복사됨 ✓':'Link copied ✓'));
+    } catch { prompt(I18N[lang].t.shrCopyPrompt || (lang==='ko'?'링크를 복사하세요:':'Copy this link:'), url); }
   };
 
   $('shrIg').onclick = () => {
@@ -1722,7 +1730,7 @@ function downloadShareCard(muse, score) {
   // Label
   ctx.font = 'italic 38px Georgia, serif';
   ctx.fillStyle = '#7a6a60';
-  ctx.fillText(lang === 'ko' ? '가장 닮은 K-pop 뮤즈' : 'your closest K-pop muse', 540, 360);
+  ctx.fillText(I18N[lang].t.shareCardLabel || (lang==='ko'?'가장 닮은 K-pop 뮤즈':'your closest K-pop muse'), 540, 360);
 
   // Muse name
   ctx.font = 'bold 128px "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
@@ -1740,7 +1748,7 @@ function downloadShareCard(muse, score) {
   ctx.fillText(score + '%', 540, 790);
   ctx.font = '32px "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
   ctx.fillStyle = '#7a6a60';
-  ctx.fillText(lang === 'ko' ? '닮음 지수' : 'resemblance', 540, 855);
+  ctx.fillText(I18N[lang].t.shareCardScore || (lang==='ko'?'닮음 지수':'resemblance'), 540, 855);
 
   // URL hint
   ctx.font = '26px Georgia, serif';
@@ -1751,7 +1759,7 @@ function downloadShareCard(muse, score) {
   link.download = `mirror-muse-${muse.name}.png`;
   link.href = c.toDataURL('image/png');
   link.click();
-  showShareToast(lang === 'ko' ? '이미지 저장 완료! 인스타그램에 올려보세요 📷' : 'Image saved! Post it on Instagram 📷');
+  showShareToast(I18N[lang].t.shrImgDone || (lang==='ko'?'이미지 저장 완료! 인스타그램에 올려보세요 📷':'Image saved! Post it on Instagram 📷'));
 }
 
 function checkShareParams() {
@@ -1783,7 +1791,7 @@ function checkShareParams() {
   setTimeout(() => $('resultSection').scrollIntoView({ behavior: 'smooth' }), 400);
 }
 
-const LANG_NAMES = {en:'English',ko:'한국어',ja:'日本語',zh:'中文',es:'Español',pt:'Português'};
+const LANG_NAMES = {en:'English',ko:'한국어',ja:'日本語',zh:'中文',es:'Español',pt:'Português',ru:'Русский'};
 const I18N = {
   en:{
     t:{
@@ -2032,7 +2040,7 @@ function extractFeatures(landmarks){
 }
 
 function getScore(user, muse){
-  const spread = {faceRatio:.16,jawRatio:.085,eyeSize:.045,eyeSpacing:.055,noseWidth:.05,lipFull:.045};
+  const spread = {faceRatio:.09,jawRatio:.05,eyeSize:.025,eyeSpacing:.03,noseWidth:.028,lipFull:.025};
   const weight = {faceRatio:1.0,jawRatio:1.1,eyeSize:1.2,eyeSpacing:.9,noseWidth:.8,lipFull:1.0};
   let s=0, w=0;
   for(const k in spread){
@@ -2040,14 +2048,15 @@ function getScore(user, muse){
     s += d*d*weight[k];
     w += weight[k];
   }
-  return Math.max(78, Math.min(98, Math.round(97 - Math.sqrt(s/w)*8.5)));
+  return Math.max(50, Math.min(99, Math.round(99 - Math.sqrt(s/w)*11)));
 }
 
 const AREA_ICONS = ['✦','◠','⌒','❀','❍'];
 
 function updateResultUI(){
   if(!lastResult) return;
-  const d = I18N[lang];
+  const _base = I18N[lang];
+  const d = {..._base, kits: _base.kits || I18N.en.kits};
   const { muse, runners, features, detections } = lastResult;
 
   const scoreVal = lastResult.overrideScore !== undefined ? lastResult.overrideScore : getScore(features, muse);
@@ -2152,7 +2161,27 @@ async function runAnalysis(){
     .map(m => ({ muse: m, score: getScore(features, m) }))
     .sort((a,b) => b.score - a.score);
 
-  lastResult = { muse: scored[0].muse, runners: scored.slice(1, 4).map(s => s.muse), features, detections: det };
+  // 얼굴 특징값 기반 시드로 재현 가능한 랜덤 선택 — 다른 사진마다 다른 결과
+  const fSeed = (
+    Math.round(features.faceRatio * 1e4) * 17 +
+    Math.round(features.jawRatio * 1e4) * 31 +
+    Math.round(features.eyeSize * 1e5) * 37 +
+    Math.round(features.eyeSpacing * 1e5) * 41 +
+    Math.round(features.noseWidth * 1e5) * 43 +
+    Math.round(features.lipFull * 1e5) * 47
+  ) & 0x7FFFFFFF;
+  let _rh = fSeed;
+  const _srand = () => { _rh = (Math.imul(_rh, 1664525) + 1013904223) >>> 0; return _rh / 4294967295; };
+
+  const bestScore = scored[0].score;
+  const candidates = scored.filter(s => s.score >= bestScore - 10);
+  const rankW = candidates.map((_, i) => Math.pow(candidates.length - i, 2.5));
+  const totalW = rankW.reduce((a, b) => a + b, 0);
+  let rv = _srand() * totalW;
+  let winner = candidates[0];
+  for (let i = 0; i < candidates.length; i++) { rv -= rankW[i]; if (rv <= 0) { winner = candidates[i]; break; } }
+
+  lastResult = { muse: winner.muse, runners: scored.filter(s => s.muse !== winner.muse).slice(0, 3).map(s => s.muse), features, detections: det };
 
   const canvas = $('resultCanvas');
   const ctx = canvas.getContext('2d');

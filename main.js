@@ -643,7 +643,7 @@ function extractFeatures(landmarks){
 }
 
 function getScore(user, muse){
-  const spread = {faceRatio:.16,jawRatio:.085,eyeSize:.045,eyeSpacing:.055,noseWidth:.05,lipFull:.045};
+  const spread = {faceRatio:.09,jawRatio:.05,eyeSize:.025,eyeSpacing:.03,noseWidth:.028,lipFull:.025};
   const weight = {faceRatio:1.0,jawRatio:1.1,eyeSize:1.2,eyeSpacing:.9,noseWidth:.8,lipFull:1.0};
   let s=0, w=0;
   for(const k in spread){
@@ -651,7 +651,7 @@ function getScore(user, muse){
     s += d*d*weight[k];
     w += weight[k];
   }
-  return Math.max(78, Math.min(98, Math.round(97 - Math.sqrt(s/w)*8.5)));
+  return Math.max(50, Math.min(99, Math.round(99 - Math.sqrt(s/w)*11)));
 }
 
 const AREA_ICONS = ['✦','◠','⌒','❀','❍'];
@@ -763,7 +763,26 @@ async function runAnalysis(){
     .map(m => ({ muse: m, score: getScore(features, m) }))
     .sort((a,b) => b.score - a.score);
 
-  lastResult = { muse: scored[0].muse, runners: scored.slice(1, 4).map(s => s.muse), features, detections: det };
+  const fSeed = (
+    Math.round(features.faceRatio * 1e4) * 17 +
+    Math.round(features.jawRatio * 1e4) * 31 +
+    Math.round(features.eyeSize * 1e5) * 37 +
+    Math.round(features.eyeSpacing * 1e5) * 41 +
+    Math.round(features.noseWidth * 1e5) * 43 +
+    Math.round(features.lipFull * 1e5) * 47
+  ) & 0x7FFFFFFF;
+  let _rh = fSeed;
+  const _srand = () => { _rh = (Math.imul(_rh, 1664525) + 1013904223) >>> 0; return _rh / 4294967295; };
+
+  const bestScore = scored[0].score;
+  const candidates = scored.filter(s => s.score >= bestScore - 10);
+  const rankW = candidates.map((_, i) => Math.pow(candidates.length - i, 2.5));
+  const totalW = rankW.reduce((a, b) => a + b, 0);
+  let rv = _srand() * totalW;
+  let winner = candidates[0];
+  for (let i = 0; i < candidates.length; i++) { rv -= rankW[i]; if (rv <= 0) { winner = candidates[i]; break; } }
+
+  lastResult = { muse: winner.muse, runners: scored.filter(s => s.muse !== winner.muse).slice(0, 3).map(s => s.muse), features, detections: det };
 
   const canvas = $('resultCanvas');
   const ctx = canvas.getContext('2d');
