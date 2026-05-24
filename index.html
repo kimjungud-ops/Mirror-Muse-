@@ -850,18 +850,57 @@
   .shr-ig{background:linear-gradient(45deg,#f58529,#dd2a7b,#515bd4);color:#fff}
   .share-toast{font-size:12px;color:#4f8a68;font-weight:500;margin-top:10px;
     display:none;padding-left:2px}
-  /* QR modal */
-  .qr-modal-box{background:var(--bg-2);border:1px solid var(--line);border-radius:22px;
-    padding:40px 36px 36px;width:100%;max-width:360px;position:relative;
-    box-shadow:var(--shadow);text-align:center}
-  .qr-code-wrap{display:inline-flex;padding:16px;background:#fff;border-radius:16px;
-    border:1px solid var(--line);margin:20px 0 14px}
-  .qr-code-wrap img{width:200px;height:200px;display:block;border-radius:4px}
-  .qr-url{font-size:11px;color:var(--ink-soft);word-break:break-all;
-    font-family:'Cormorant Garamond',serif;letter-spacing:.04em;margin-top:6px}
+  /* QR modal — redesigned */
+  .qr-modal-box{
+    background:var(--bg-2);border:none;border-radius:28px;
+    width:100%;max-width:360px;position:relative;overflow:hidden;text-align:center;
+    box-shadow:0 32px 80px rgba(140,58,79,.22),0 0 0 1px rgba(140,58,79,.08)}
+  .modal-backdrop.open .qr-modal-box{animation:qrEnter .38s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes qrEnter{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+  .qr-header{
+    background:linear-gradient(145deg,#6b2439 0%,#8c3a4f 40%,#b8755a 80%,#c5a46e 100%);
+    padding:34px 30px 26px;position:relative;overflow:hidden}
+  .qr-header::before{content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 75% 15%,rgba(255,255,255,.18) 0%,transparent 60%)}
+  .qr-header::after{content:'✦';position:absolute;right:24px;bottom:-14px;
+    font-size:100px;color:rgba(255,255,255,.05);line-height:1;pointer-events:none}
+  .qr-close-btn{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.18);
+    border:none;cursor:pointer;font-size:13px;color:rgba(255,255,255,.85);
+    width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    transition:.2s;z-index:2}
+  .qr-close-btn:hover{background:rgba(255,255,255,.32);color:#fff}
+  .qr-brand-lbl{font-family:'Cormorant Garamond',serif;font-size:11px;
+    letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:10px}
+  .qr-header-title{font-family:'Gowun Batang',serif;font-size:1.65rem;font-weight:700;
+    color:#fff;line-height:1.25;position:relative;z-index:1}
+  .qr-body{padding:26px 28px 28px}
+  .qr-hint{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.75;margin-bottom:22px}
+  .qr-frame{position:relative;display:inline-block;margin-bottom:4px}
+  .qr-c{position:absolute;width:22px;height:22px;border-style:solid;
+    border-color:var(--berry);animation:qrPulse 2.6s ease-in-out infinite}
+  .qr-tl{top:-7px;left:-7px;border-width:3px 0 0 3px;border-radius:5px 0 0 0}
+  .qr-tr{top:-7px;right:-7px;border-width:3px 3px 0 0;border-radius:0 5px 0 0;animation-delay:.3s}
+  .qr-bl{bottom:-7px;left:-7px;border-width:0 0 3px 3px;border-radius:0 0 0 5px;animation-delay:.6s}
+  .qr-br{bottom:-7px;right:-7px;border-width:0 3px 3px 0;border-radius:0 0 5px 0;animation-delay:.9s}
+  @keyframes qrPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+  .qr-code-wrap{display:inline-flex;padding:14px;background:#fff;border-radius:16px;
+    box-shadow:0 6px 24px rgba(140,58,79,.12),0 0 0 1px rgba(140,58,79,.06)}
+  .qr-code-wrap img{width:188px;height:188px;display:block;border-radius:6px}
+  .qr-divider{display:flex;align-items:center;gap:10px;color:var(--ink-soft);
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin:18px 0 14px}
+  .qr-divider::before,.qr-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+  .qr-copy-btn{width:100%;padding:13px 18px;background:rgba(140,58,79,.07);
+    border:1px solid rgba(140,58,79,.14);border-radius:12px;cursor:pointer;
+    font-family:'Gothic A1',sans-serif;font-size:12.5px;font-weight:600;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s ease}
+  .qr-copy-btn:hover{background:rgba(140,58,79,.13);color:var(--berry);border-color:rgba(140,58,79,.3)}
+  .qr-copy-btn.copied{background:rgba(140,58,79,.13);color:var(--berry)}
+  .qr-url-small{font-size:10.5px;color:var(--ink-soft);opacity:.6;margin-top:10px;
+    word-break:break-all;font-family:'Cormorant Garamond',serif;letter-spacing:.04em}
   @media(max-width:420px){
-    .qr-code-wrap img{width:170px;height:170px}
-    .qr-modal-box{padding:32px 22px 28px}
+    .qr-code-wrap img{width:164px;height:164px}
+    .qr-header{padding:28px 22px 22px}
+    .qr-body{padding:22px 20px 24px}
   }
   /* ── About / Guide / FAQ / Ad sections ── */
   .ad-wrap{padding:0 28px 10px}
@@ -1310,16 +1349,29 @@
 
 <div class="modal-backdrop" id="qrModal">
   <div class="qr-modal-box">
-    <button class="modal-close" id="qrModalClose">✕</button>
-    <div class="secnum" style="margin-bottom:4px">Mobile</div>
-    <h2 class="sectitle" style="font-size:1.5rem;margin-bottom:8px" data-i18n="qrModalTitle">모바일로 열기</h2>
-    <p style="font-size:13px;font-weight:300;color:var(--ink-soft);line-height:1.7" data-i18n-html="qrModalDesc">
-      QR 코드를 스마트폰 카메라로 스캔하면<br>바로 분석을 시작할 수 있어요.
-    </p>
-    <div class="qr-code-wrap">
-      <img id="qrModalImg" src="" alt="QR Code" />
+    <div class="qr-header">
+      <button class="qr-close-btn" id="qrModalClose">✕</button>
+      <div class="qr-brand-lbl">✦ Mirror Muse</div>
+      <div class="qr-header-title" data-i18n="qrModalTitle">모바일로 열기</div>
     </div>
-    <div class="qr-url" id="qrModalUrl"></div>
+    <div class="qr-body">
+      <p class="qr-hint" data-i18n-html="qrModalDesc">
+        QR 코드를 스마트폰 카메라로 스캔하면<br>바로 분석을 시작할 수 있어요.
+      </p>
+      <div class="qr-frame">
+        <i class="qr-c qr-tl"></i><i class="qr-c qr-tr"></i>
+        <i class="qr-c qr-bl"></i><i class="qr-c qr-br"></i>
+        <div class="qr-code-wrap">
+          <img id="qrModalImg" src="" alt="QR Code" />
+        </div>
+      </div>
+      <div class="qr-divider">or</div>
+      <button class="qr-copy-btn" id="qrCopyBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span id="qrCopyLbl" data-i18n="shrCopyLbl">Copy</span>&nbsp;URL
+      </button>
+      <div class="qr-url-small" id="qrModalUrl"></div>
+    </div>
   </div>
 </div>
 
@@ -2494,12 +2546,23 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 const qrModal = $('qrModal');
 $('qrBtn').addEventListener('click', () => {
   const url = location.origin + location.pathname;
-  $('qrModalImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=2c211d&margin=8&qzone=1`;
+  $('qrModalImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=2c211d&margin=10&qzone=1`;
   $('qrModalUrl').textContent = url;
   qrModal.classList.add('open');
 });
 $('qrModalClose').addEventListener('click', () => qrModal.classList.remove('open'));
 qrModal.addEventListener('click', e => { if(e.target === qrModal) qrModal.classList.remove('open'); });
+$('qrCopyBtn').addEventListener('click', () => {
+  const url = $('qrModalUrl').textContent;
+  if(!url) return;
+  navigator.clipboard.writeText(url).catch(() => {});
+  const btn = $('qrCopyBtn');
+  const lbl = $('qrCopyLbl');
+  const prev = lbl.textContent;
+  btn.classList.add('copied');
+  lbl.textContent = '✓';
+  setTimeout(() => { btn.classList.remove('copied'); lbl.textContent = prev; }, 1800);
+});
 /* ---- partner modal ---- */
 const modal = $('partnerModal');
 $('partnerBtn').addEventListener('click', () => modal.classList.add('open'));
