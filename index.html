@@ -19,6 +19,8 @@
 <!-- Hreflang: 한국어·영어 다국어 -->
 <link rel="alternate" hreflang="ko" href="https://k-pop-muse.com/" />
 <link rel="alternate" hreflang="en" href="https://k-pop-muse.com/" />
+<link rel="alternate" hreflang="ja" href="https://k-pop-muse.com/" />
+<link rel="alternate" hreflang="zh" href="https://k-pop-muse.com/" />
 <link rel="alternate" hreflang="x-default" href="https://k-pop-muse.com/" />
 
 <!-- Mobile / PWA Meta -->
@@ -40,6 +42,8 @@
 <meta property="og:site_name" content="Mirror Muse" />
 <meta property="og:locale" content="ko_KR" />
 <meta property="og:locale:alternate" content="en_US" />
+<meta property="og:locale:alternate" content="ja_JP" />
+<meta property="og:locale:alternate" content="zh_CN" />
 <meta property="og:image" content="https://k-pop-muse.com/og-image.svg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -65,7 +69,7 @@
   "applicationCategory": "EntertainmentApplication",
   "operatingSystem": "Web Browser",
   "browserRequirements": "Requires JavaScript. Requires HTML5.",
-  "inLanguage": ["ko", "en"],
+  "inLanguage": ["ko", "en", "ja", "zh"],
   "isAccessibleForFree": true,
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
   "image": "https://k-pop-muse.com/og-image.svg",
@@ -896,6 +900,20 @@
     .faq-q{font-size:13px;padding:15px 16px}
     .faq-a{padding:0 16px 14px;font-size:13px}
   }
+  /* ── CJK (Japanese / Chinese) typography corrections ── */
+  html[lang="ja"],html[lang="zh"]{word-break:break-all;overflow-wrap:anywhere}
+  html[lang="ja"] .secnum,html[lang="zh"] .secnum{letter-spacing:.05em;font-family:serif}
+  html[lang="ja"] .tag,html[lang="zh"] .tag{letter-spacing:.04em;text-transform:none}
+  html[lang="ja"] .brand,html[lang="zh"] .brand{letter-spacing:.06em}
+  html[lang="ja"] .runners .rlabel,html[lang="zh"] .runners .rlabel,
+  html[lang="ja"] .simtop .lab,html[lang="zh"] .simtop .lab{letter-spacing:.04em;text-transform:none}
+  html[lang="ja"] .stargroup,html[lang="zh"] .stargroup{letter-spacing:.06em;text-transform:none}
+  html[lang="ja"] .sectitle,html[lang="zh"] .sectitle,
+  html[lang="ja"] .hero h1,html[lang="zh"] .hero h1,
+  html[lang="ja"] .starname,html[lang="zh"] .starname,
+  html[lang="ja"] .howto h3,html[lang="zh"] .howto h3{font-family:'Gothic A1','Hiragino Sans','Noto Sans JP','PingFang SC','Microsoft YaHei',sans-serif;letter-spacing:0;line-height:1.4}
+  html[lang="ja"] .secdesc,html[lang="zh"] .secdesc{line-height:2}
+  html[lang="ja"] .hero p.lede,html[lang="zh"] .hero p.lede{max-width:34ch}
 </style>
 </head>
 <body>
@@ -950,12 +968,12 @@
           <div class="prev-badge" data-i18n="prevBadge">✦ 분석 결과 예시</div>
           <div class="prev-card">
             <div class="prev-face">✺</div>
-            <div class="prev-muse-lbl">your face muse is</div>
+            <div class="prev-muse-lbl" data-i18n="matchwith">your face muse is</div>
             <div class="prev-muse-name" data-i18n="prevMuseName">장원영</div>
             <div class="prev-muse-grp" data-i18n="prevMuseGrp">IVE · 갸름한 V라인형</div>
             <div class="prev-pct-row">
               <span class="prev-pct">91<small>%</small></span>
-              <span class="prev-pct-lbl">resemblance</span>
+              <span class="prev-pct-lbl" data-i18n="simLabel">resemblance</span>
             </div>
             <div class="prev-bar"><i></i></div>
             <div class="prev-runners">
@@ -1532,12 +1550,13 @@ function nameEn(name, group) {
   return NAME_EN[name + '@' + group] || NAME_EN[name] || name;
 }
 function displayMuseName(name, group) {
-  if (lang !== 'en') return name;
+  if (lang === 'ko') return name;
   const en = nameEn(name, group);
-  return en === name ? name : `${en} (${name})`;
+  if (en === name) return name;
+  return lang === 'en' ? `${en} (${name})` : en;
 }
 function displayGroup(group) {
-  if (lang !== 'en') return group;
+  if (lang === 'ko') return group;
   return GROUP_EN[group] || group;
 }
 
@@ -1631,7 +1650,7 @@ let _kitPicks = null;
 function renderKitProducts(areaIdx) {
   const db = PRODUCT_DB[areaIdx];
   const colorRec = _kitPicks?.[areaIdx]?.[1];
-  const colorLabel = lang === 'en' ? 'Rec. colour' : '어울리는 색';
+  const colorLabel = lang === 'ko' ? '어울리는 색' : (I18N[lang]?.t?.colorLabel || 'Rec. colour');
   $('kitProducts').innerHTML = `<div class="prod-grid">${
     db.items.map(p => `
       <a class="prod-card" href="${getOY()}${encodeURIComponent(p.q)}" target="_blank" rel="noopener">
@@ -1640,8 +1659,8 @@ function renderKitProducts(areaIdx) {
         </div>
         <div class="prod-body">
           <div class="prod-brand">${p.brand}</div>
-          <div class="prod-name">${lang === 'en' && p.nameEn ? p.nameEn : p.name}</div>
-          <div class="prod-desc">${lang === 'en' && p.descEn ? p.descEn : p.desc}</div>
+          <div class="prod-name">${lang !== 'ko' && p.nameEn ? p.nameEn : p.name}</div>
+          <div class="prod-desc">${lang !== 'ko' && p.descEn ? p.descEn : p.desc}</div>
           ${colorRec ? `<div class="prod-color"><span class="prod-color-label">${colorLabel}</span>${colorRec}</div>` : ''}
           <div class="prod-foot">
             <span class="prod-price">${p.price}</span>
@@ -1971,6 +1990,194 @@ const I18N = {
       clean:{v:"매끈한 피부와 단아한 무드.",F:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","뉴트럴 베이지 · 그레이지"],["브로우","애쉬 브라운 · 그레이"],["립","누드 · 로즈 누드"],["쉐딩","쿨 베이지 · 그레이 타우프"]],M:[["베이스","쿨 아이보리 · 포슬린"],["섀도우","뉴트럴 베이지 · 그레이"],["브로우","애쉬 그레이 · 쿨 브라운"],["립밤","누드 베이지 · 쿨 핑크"],["쉐딩","쿨 베이지 · 그레이"]]},
     }
   }
+  ,ja:{
+    t:{
+      docTitle:"MIRROR MUSE — あなたに似たK-popミューズ発見", tagline:"K-ビューティー 顔マッチスタジオ",
+      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>AI顔型分析 · K-pop似顔絵ファインダー</span>最も近い<em>K-popミューズ</em>に出会う。",
+      heroLede:"顔の比率と特徴を分析し、今人気のK-popスターの中であなたに最も似たミューズを見つけ、そのムードに合ったコスメとパーツ別チュートリアルをご案内します。",
+      cta1:"分析を始める →", cta2:"仕組みを見る", scroll:"scroll to begin",
+      s01num:"01 — The Mirror", s01title:"鏡の前に立つ", s01desc:"正面を向いて顔全体が映るよう撮影するか、写真をアップロードしてください。明るい場所ほど精度が上がります。",
+      chipAuto:"性別自動判定", chipF:"女性ミューズ", chipM:"男性ミューズ", placeholder:"カメラをオンにするか、顔写真をアップロードしてください。ここで分析されます。",
+      camBtn:"カメラをオンにする", shotBtn:"📸 撮影する", uploadBtn:"写真をアップロード", analyzeBtn:"✦ ミューズを探す",
+      howtoTitle:"分析の仕組み", step1:"顔の68ポイントを検出し、輪郭・目・鼻・口の比率を計測します。",
+      step2:"人気K-popスターの顔型データと比較し、類似度を算出します。",
+      step3:"最も似たミューズのシグネチャームードに合わせたコスメを提案します。",
+      step4:"パーツ別に「再生数順」のYouTubeチュートリアルへ直接リンクします。",
+      privacy:"<b>写真はサーバーに送信されません。</b>すべての顔分析はブラウザ内で処理され、画像は保持されません。",
+      s02num:"02 — Your Muse", s02title:"あなたに最も似たミューズ", matchwith:"your face muse is", simLabel:"resemblance", alsoResembling:"also resembling",
+      s03num:"03 — The Kit", cosTitle:"{name}のムードを纏うコスメ", cosTitleMuse:"ミューズ",
+      s04num:"04 — Watch & Learn", s04title:"パーツ別メイクチュートリアル",
+      s04desc:"再生数の多い順に並んだYouTube検索結果へ繋がります。常に今最も人気の動画を確認できます。",
+      s04note:"※ 再生数順の検索結果へリンクします。",
+      restart:"↺ もう一度試す", loaderText:"ミューズを呼び覚ます中…", ribbon:"analysed", scanLabel:"顔を分析中…",
+      ytSuffix:"· 再生数順", ytGo:"YouTubeで見る ↗", fullCoverTitle:"{name} フルカバーメイク",
+      stModelFail:"モデルの読み込みに失敗しました。接続を確認してください。", stModelLoading:"モデルを読み込み中…", stNoPhoto:"写真を撮影またはアップロードしてください。",
+      stAnalyzing:"比率を分析中…", stNoFace:"顔が見つかりません。もう一度お試しください。", stDone:"完了！下をご確認ください ↓",
+      stPhotoReady:"写真の準備ができました。", stImgFail:"画像エラー。", stCamOn:"カメラオン。", stCamFail:"カメラエラー。", stCamNotReady:"準備未完了。",
+      partnerBtn:"パートナーシップ",
+      prevBadge:"✦ サンプル結果", prevMuseGrp:"IVE · スリムVライン", prevDisclaimer:"* 結果は人によって異なります",
+      shrCopyLbl:"コピー",
+      s03desc:"ミューズの顔型ムードを作るキーアイテムです。<br>パーツ別にテクスチャーとカラームードを参考にしてください。",
+      decoChip1:"✦ 即時分析", decoChip2:"◠ サーバー保存なし", decoChip3:"❀ コスメ提案",
+      qrModalTitle:"スマホで開く", qrModalDesc:"スマートフォンのカメラでQRコードをスキャンして<br>すぐに分析を始めましょう。",
+      partnerTitle:"パートナーシップのお問い合わせ", partnerDesc:"ブランドコラボ・広告・スポンサーのご提案をお送りください。迅速にご返答します。",
+      cfName:"お名前 / ご担当者", cfNamePh:"山田 太郎", cfEmail:"メールアドレス", cfCompany:"会社 / ブランド名", cfCompanyPh:"ブランド名を入力してください",
+      cfMessage:"お問い合わせ内容", cfMessagePh:"ご提案の内容をご記入ください。", cfSubmit:"お問い合わせを送信 →", cfDone:"ありがとうございます！近日中にご連絡いたします。",
+      cfSending:"送信中…", cfErrRetry:"お問い合わせを送信 →", cfErrAlert:"送信に失敗しました。もう一度お試しください。", cfNetAlert:"ネットワークエラーが発生しました。もう一度お試しください。",
+      footerLine:"<span class='foot-brand'>Mirror Muse</span> — 類似度分析は顔比率データに基づくエンターテインメント上の推定であり、科学的・医学的判断ではありません。ミューズのリストは2026年基準の人気K-popアーティスト200名で構成されており、顔型数値はアーキタイプに基づく推定値です。言及されたアーティスト及び事務所との提携関係はありません。コスメの推薦はムードガイドであり、特定ブランドを保証するものではありません。アップロードされた写真はブラウザ内でのみ処理され、サーバーには保存されません。© 2026",
+      cookieTxt:"このサイトはサービス運営とGoogle AdSense広告のためにCookieを使用しています。引き続きご利用いただくことで、Cookieの使用に同意したものとみなされます。",
+      cookiePrivacyLbl:"プライバシーポリシー", cookieOkBtn:"了解",
+      navGuide:"K-ビューティーガイド",
+      aboutNum:"05 — About", guideNum:"06 — K-ビューティーガイド", faqNum:"07 — FAQ",
+      prevMuseName:"Wonyoung",
+      prevRunner1:"Karina <em>89%</em>", prevRunner2:"Irene <em>87%</em>", prevRunner3:"Winter <em>85%</em>",
+      aboutTitle:"Mirror Museについて", aboutSub:"ブラウザ内AIで顔を分析し、最も似たK-popミューズを見つけます。",
+      aboutH1:"サービス紹介", aboutP1:"Mirror Museは最先端のブラウザAI技術で顔の比率を分析し、人気K-popスター200名以上の顔型データと比較して最も似たミューズを見つける無料サービスです。会員登録やアプリのインストールは不要で、ブラウザだけでご利用いただけます。写真はサーバーに送信されないため、プライバシーが完全に保護されます。",
+      aboutH2:"分析技術", aboutP2:"オープンソースの顔認識ライブラリをベースに、顔の68個のランドマークポイントを検出します。目の間隔、鼻の幅、唇の厚み、顔の縦横比、顎のライン角度など6つの主要な比率指標を計測し、K-popスターの顔型アーキタイプデータと数学的に比較します。すべての処理はデバイス上でリアルタイムに行われ、画像はサーバーに残りません。",
+      aboutH3:"K-ビューティーキュレーション", aboutP3:"ミューズが決まると、そのミューズの顔型ムードに合ったK-ビューティー製品をパーツ別にご紹介します。ベース・アイ・眉・リップ・チーク5カテゴリーで韓国の人気製品を厳選し、オリーブヤンググローバルストアへリンクしています。",
+      aboutH4:"YouTubeチュートリアルリンク", aboutP4:"製品の提案だけでなく、各メイクエリアのYouTubeチュートリアルへも直接リンクします。再生数順の検索結果に繋がるため、常に今最も人気のチュートリアルを確認できます。",
+      stat1Label:"K-popミューズデータベース", stat1Sub:"BTS · BLACKPINK · aespa など人気グループを網羅",
+      stat2Label:"顔ランドマークポイント", stat2Sub:"目・鼻・唇・顎の精密な比率分析",
+      stat3Label:"厳選K-ビューティー製品", stat3Sub:"5エリア × カテゴリーTop 10",
+      stat4Label:"サーバーへの送信データ", stat4Sub:"100%ブラウザ内処理 — 完全プライバシー保護",
+      guideTitle:"顔型別K-ビューティーメイクガイド", guideSub:"K-popスターのメイクの秘密は顔型に合わせたテクニックにあります。あなたの顔型に合ったK-ビューティーのポイントを見つけましょう。",
+      guide1Title:"Vライン型（シャープな顎）", guide1Desc:"ウォニョン・カリナのようにシャープで繊細な印象が特徴です。顔が小さく見えるのでシェーディングよりアイメイクに集中しましょう。目を鮮やかに強調し、チークを頬骨の上にさっとのせて明るさをプラス。リップはグロッシーティントで仕上げるとミューズムードが完成します。", guide1Tips:"<span class='guide-tip'>💡 目の下のシェーディング</span><span class='guide-tip'>💡 グロッシーリップ</span><span class='guide-tip'>💡 鼻ハイライター</span>",
+      guide2Title:"オーバル型（黄金の卵形）", guide2Desc:"K-ビューティーで最も理想とされる顔型です。ユナ・テヨンのようにどんなメイクスタイルも似合います。デイリーにはナチュラルグロー仕上げを、特別な日にはスモーキーやカラーメイクを。チークの位置を変えるだけで全く異なる雰囲気が生まれます。", guide2Tips:"<span class='guide-tip'>💡 どんなスタイルも似合う</span><span class='guide-tip'>💡 チーク位置でムード変換</span><span class='guide-tip'>💡 グロースキンが基本</span>",
+      guide3Title:"ラウンド型（キュートで愛らしい）", guide3Desc:"NewJeans・ILLITメンバーのような可愛らしく活発な魅力が特徴です。下まつげラインに軽くシェーディングを入れるドール風メイクと、鼻の上まで広げるピンクチークがよく似合います。リップは透明感のあるグロッシーティントで少女らしさを演出してください。", guide3Tips:"<span class='guide-tip'>💡 下まつげシェーディング</span><span class='guide-tip'>💡 ピンクオーバーチーク</span><span class='guide-tip'>💡 グロッシーリップ必須</span>",
+      guide4Title:"キャット型（猫顔）", guide4Desc:"ジェニー・イェジのように目鼻立ちがくっきりしてシックな雰囲気が魅力です。アイライナーを目尻に向けて長く引くキャットアイが鍵となります。ディープレッドやバーガンディーのマットリップをポイントにすると、強くて自信に満ちたK-popムードが完成します。眉はストレートに整えてさらにシャープな印象に。", guide4Tips:"<span class='guide-tip'>💡 キャットアイライナー</span><span class='guide-tip'>💡 マットリップアクセント</span><span class='guide-tip'>💡 ストレート眉</span>",
+      guide5Title:"ハート型（広めの額）", guide5Desc:"ファサ・ウェンディのように額が広く顎が細いハート型は、強くて魅力的なムードを持っています。ヘアライン部分に軽くシェーディングして額を小さく見せ、目を大きく強調するメイクが効果的です。リップはふっくら表現してハート型特有の魅力的な比率を際立たせましょう。", guide5Tips:"<span class='guide-tip'>💡 ヘアラインシェーディング</span><span class='guide-tip'>💡 下ライナーで目を拡大</span><span class='guide-tip'>💡 オーバーライナーリップ</span>",
+      guide6Title:"K-ビューティースキンの極意", guide6Desc:"顔型に関わらず、K-ビューティーの共通の核心は「スキン表現」です。クッションファンデを薄く均一に広げて「第二の肌」のような自然なベースを作りましょう。メイク前に保湿セラムをしっかり浸透させると一日中潤って自然な肌表現が保てます。K-popスターの完璧な肌の秘密はしっかりとしたスキンケアルーティンにあります。", guide6Tips:"<span class='guide-tip'>💡 クッションで薄くレイヤリング</span><span class='guide-tip'>💡 スキンケアがベース</span><span class='guide-tip'>💡 セッティングスプレーで仕上げ</span>",
+      faqTitle:"よくある質問", faqSub:"Mirror Museのご利用についてよくある疑問をまとめました。",
+      faq1Q:"写真はサーバーに保存されますか？", faq1A:"いいえ。Mirror Museのすべての顔分析はお使いのブラウザ（デバイス）内でのみ行われます。写真データはいかなるサーバーにも送信されず、分析後は結果以外の画像は残りません。プライバシー保護を最優先に設計されたサービスです。",
+      faq2Q:"分析結果は実際の似ている顔を正確に反映していますか？", faq2A:"Mirror Museの分析は、顔の幾何学的な比率（顔型・目の大きさ・間隔・鼻・唇の比率など）に基づくエンターテインメント上の推定です。科学的・医学的判断ではなく、実際の類似度とは異なる場合があります。楽しいガイドとしてお楽しみください。",
+      faq3Q:"どのような写真が最も良い結果を出しますか？", faq3A:"正面向きで明るい照明、顔全体が画面に映っている写真が最も精度が高いです。マスクやサングラスの着用、極端な角度の写真は顔検出が難しい場合があります。セルフィーモード（前面カメラ）が最も良い結果を出します。",
+      faq4Q:"コスメの提案はどのような基準で行われますか？", faq4A:"似たミューズの顔型アーキタイプ（ドール型・シック型・ナチュラル型など）に応じて、似合うメイクのテクスチャーとカラームードを分類しました。各ムードに合った韓国人気K-ビューティー製品をパーツ別にご紹介しており、特定のブランドを保証するものではありません。",
+      faq5Q:"日本語でも使えますか？", faq5A:"はい！ページ上部の言語セレクターで日本語に切り替えると、すべての分析結果、製品説明、チュートリアル検索語が日本語で表示されます。",
+      faq6Q:"パートナーシップや広告のお問い合わせはどうすればいいですか？", faq6A:"ページ上部の「パートナーシップ」ボタンをクリックし、フォームからブランドコラボ、広告、スポンサーのご提案をお送りください。内容確認後、迅速にご返答いたします。",
+      faq7Q:"K-popの似顔絵を無料で見つけるサイトはありますか？", faq7A:"Mirror Muse（k-pop-muse.com）は完全無料です。アプリのインストールや会員登録不要で、ブラウザから直接ご利用いただけます。BTS、BLACKPINK、aespa、IVE、NewJeans、LE SERAFIMなど200名以上のK-popスターとAIで顔の類似度を比較します。",
+      faq8Q:"自分の顔型に合ったK-ビューティー製品のおすすめを得るにはどうすればいいですか？", faq8A:"Mirror Museは顔型アーキタイプ（Vライン、オーバル、ラウンド、キャット、ハート）を分析し、リップ・アイ・スキン・眉・チークのパーツ別にK-ビューティー製品をおすすめします。各製品はミューズのカラーとテクスチャームードに合わせ、オリーブヤンググローバルへの直接リンク付きです。",
+      faq9Q:"アイドルの似顔絵テストはどこで受けられますか？", faq9A:"Mirror Muse（k-pop-muse.com）で無料のAIアイドル似顔絵テストをお試しください。写真1枚でK-popスターとの類似度をランキングで確認できます。女性・男性スタープールを選択でき、結果をSNSでシェアすることも可能です。",
+      footPrivacy:"プライバシーポリシー", footTerms:"利用規約", footAbout:"サービス紹介", footGuide:"K-ビューティーガイド",
+      colorLabel:"おすすめカラー",
+      shareText:"私は{nameEn}({groupEn})に{score}%似ているそうです！Mirror Museであなたのムーズを探してみてください。",
+      shareCardLabel:"最も似たK-popミューズ", shareCardScore:"類似度",
+      shrCopyDone:"リンクをコピーしました ✓", shrCopyPrompt:"リンクをコピーしてください：",
+      shrImgDone:"画像を保存しました！インスタグラムに投稿してください 📷",
+      privacyTitle:"プライバシーポリシー",
+      privacyBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>最終更新日：2026年1月1日</strong></p><h3 class='policy-h3'>1. 収集する情報</h3><p>Mirror Museは原則として個人情報を収集しません。顔分析に使用する写真はサーバーに送信されず、ブラウザ内でのみ処理されます。パートナーシップのお問い合わせフォームにご記入いただいた場合、お名前・メールアドレス・メッセージがFormspreeを通じて送信されます。</p><h3 class='policy-h3'>2. 顔データの処理</h3><p>アップロードされた写真やカメラで撮影した写真、顔分析データ（ランドマーク座標、比率値）はブラウザ内でのみ処理され、外部サーバーには送信・保存されません。ページを更新または閉じるとすべてのデータが即座に削除されます。</p><h3 class='policy-h3'>3. 利用する外部サービス</h3><ul><li><strong>face-api.js (jsDelivr CDN)</strong>：オープンソース顔認識AIモデルの読み込みに使用します。</li><li><strong>Google Fonts</strong>：ウェブフォントの提供に使用します。</li><li><strong>Formspree</strong>：お問い合わせフォームの送信に使用します。</li><li><strong>QR Server API</strong>：QRコードの生成に使用します。</li><li><strong>Olive Young Global</strong>：製品ページへのリンクに使用します。</li><li><strong>Google AdSense</strong>：サービス運営のための広告表示に使用します。Googleの広告Cookieが使用される場合があります。</li></ul><h3 class='policy-h3'>4. Cookieおよびローカルストレージ</h3><p>Mirror Museは独自のトラッキングCookieを使用しません。Cookie同意状況はブラウザのローカルストレージにのみ保存されます。広告サービス（Google AdSense）利用時には当該サービスのCookieポリシーが適用される場合があります。</p><h3 class='policy-h3'>5. 子どものプライバシー</h3><p>本サービスは13歳未満の子どもを対象としていません。13歳未満の方は保護者の同意のもとでご利用ください。</p><h3 class='policy-h3'>6. お問い合わせ</h3><p>プライバシーに関するお問い合わせは、ページ上部の「パートナーシップ」フォームよりお送りください。</p>",
+      termsTitle:"利用規約",
+      termsBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>最終更新日：2026年1月1日</strong></p><h3 class='policy-h3'>1. 利用規約への同意</h3><p>Mirror Museをご利用いただくことで、本利用規約に同意したものとみなされます。</p><h3 class='policy-h3'>2. サービスの目的</h3><p>Mirror Museの顔型分析およびK-pop類似度結果はエンターテインメント目的の推定値であり、科学的・医学的判断ではありません。結果の正確性を保証するものではありません。</p><h3 class='policy-h3'>3. 知的財産権</h3><p>本サービスのデザイン・コンテンツ・ソフトウェアはMirror Museに帰属します。言及されたK-popアーティスト名・グループ名は各権利者に帰属し、Mirror Museは当該アーティストまたは事務所と提携関係にありません。</p><h3 class='policy-h3'>4. 免責事項</h3><p>サービスのご利用によって生じた直接的・間接的損害についてMirror Museは責任を負いません。コスメの推薦はムードガイドであり、特定製品の効果を保証するものではありません。</p><h3 class='policy-h3'>5. 広告</h3><p>本サービスはGoogle AdSenseを通じて広告を掲載する場合があります。広告コンテンツはGoogleのポリシーに従って表示されます。</p><h3 class='policy-h3'>6. 規約の変更</h3><p>サービスの運営に伴い本規約は変更される場合があります。変更後も引き続きご利用いただくことで、変更後の規約に同意したものとみなされます。</p>",
+    },
+    mood:{happy:"明るく笑った表情から",neutral:"穏やかな表情から",surprised:"生き生きとした表情から",sad:"静かな表情から",angry:"鋭い眼差しから",fearful:"繊細な表情から",disgusted:"個性的な表情から"},
+    vtpl:"{mood}{name}の{shape}ムードが漂います。{vibe}",
+    tn:{face:"顔型",jaw:"顎ライン",eye:"目",lip:"唇",spacing:"目の間隔"},
+    tv:{faceLong:"縦長",faceRound:"丸みがある",faceOval:"卵形",jawV:"Vライン",jawSquare:"角ばった",jawSoft:"柔らかい",eyeBig:"大きい",eyeLong:"切れ長",eyeBalanced:"バランス良い",lipFull:"ふっくら",lipThin:"薄め",lipBalanced:"バランス良い",spacingWide:"広め",spacingClose:"シャープ"},
+    al:{doll_long:"ドール型",vline_cat:"キャット型",soft_oval:"オーバル型",cat_defined:"ディファインドキャット",round_cute:"キュート型",clear_chic:"シック型",petite_neat:"プチオーバル",heart_alluring:"ハート型",golden_oval:"ゴールデンオーバル",strong_jaw:"ジョーライン型",long_sharp:"シャープ型",broad_soft:"ソフト型"},
+    ar:[["ベース","ベースメイク スキン"],["アイメイク","アイメイク"],["眉メイク","眉メイク チュートリアル"],["リップ","リップメイク"],["チーク","チーク コントゥア"]],
+    fk:"フルカバーメイクチュートリアル",
+    kits:{
+      doll:{v:"クリアな水光肌と大きくて丸い目。",F:[["グロークッション","ウォームピーチ · アイボリー"],["パールシャドウ","ペールピンク · シャンパン"],["アイブロウ","ソフトブラウン"],["グロッシーティント","コーラルピンク · ベビーピンク"],["クリームチーク","ベビーピンク · ピーチ"]],M:[["グローベース","ウォームピーチ · アイボリー"],["シェーディング","ソフトピンク · ブラウン"],["アイブロウ","アッシュブラウン"],["リップバーム","コーラルピンク"],["シェーディング","ソフトグレー · ベージュ"]]},
+      chic:{v:"磁器のような肌とシックなロングアイライン。",F:[["マットファンデ","クールアイボリー · ポーセリン"],["マットシャドウ","クールブラウン · スモーキーグレー"],["アイブロウ","クールグレーブラウン"],["マットリップ","ディープマルーン · モーブ"],["コントゥア","クールグレー · アッシュブラウン"]],M:[["マットベース","クールアイボリー · ポーセリン"],["ラインシャドウ","ディープブラウン · スモーキーグレー"],["ストレート眉","クールグレーブラウン"],["ヌードリップ","モーブ · ヌードベージュ"],["コントゥア","クールグレー · ディープグレー"]]},
+      natural:{v:"繊細なツヤと柔らかなシェーディング。",F:[["サテンクッション","ウォームベージュ · ピーチ"],["デイリーシャドウ","テラコッタ · ウォームブラウン"],["ナチュラル眉","オリーブブラウン"],["ベルベットティント","ローズ · コーラルピンク"],["パウダーチーク","ピーチ · コーラル"]],M:[["サテンベース","ナチュラルベージュ · ウォームアイボリー"],["ウォームシェーディング","ウォームブラウン · テラコッタ"],["ナチュラル眉","オリーブブラウン"],["リップバーム","コーラル · ローズベージュ"],["ライトシェーディング","ソフトブラウン · ウォームベージュ"]]},
+      defined:{v:"健康的なツヤとくっきりしたキャットアイ。",F:[["サテンファンデ","ウォームベージュ · ピーチ"],["ウォームシャドウ","テラコッタ · ブロンズ"],["フル眉","ダークブラウン · カーキ"],["MLBBマット","ローズウッド · ヌードピンク"],["マットチーク","コーラル · テラコッタ"]],M:[["サテンベース","ウォームベージュ · ピーチベージュ"],["キャットライン","ブロンズ · ディープカーキ"],["フル眉","ダークブラウン · カーキ"],["リップバーム","ローズウッド · MLBBピンク"],["コントゥア","ウォームトープ · ソフトグレー"]]},
+      elegant:{v:"輝くツヤと印象的なアイメイク。",F:[["グローファンデ","ピーチゴールド · ウォームベージュ"],["ゴールドシャドウ","シャンパンゴールド · バーガンディー"],["アーチ眉","ダークブラウン · ソフトブラック"],["ベルベットリップ","ディープレッド · バーガンディー"],["コントゥアチーク","ローズゴールド · ディープコーラル"]],M:[["グローベース","ピーチゴールド · ウォームベージュ"],["ゴールドシェーディング","シャンパンゴールド · バーガンディー"],["アーチ眉","ダークブラウン · ソフトブラック"],["リップバーム","ローズピンク · ヌードピーチ"],["コントゥア","ローズグレー · モーブ"]]},
+      clean:{v:"クリーンな肌と控えめなシェーディング。",F:[["マットベース","クールアイボリー · ポーセリン"],["ニュートラルシャドウ","ニュートラルベージュ · グレージュ"],["細め眉","アッシュブラウン · グレー"],["マットリップ","ヌード · ローズヌード"],["ニュートラルシェーディング","クールベージュ · グレータウプ"]],M:[["マットベース","クールアイボリー · ポーセリン"],["ニュートラルシェーディング","ニュートラルベージュ · グレー"],["細め眉","アッシュグレー · クールブラウン"],["リップバーム","ヌードベージュ · クールピンク"],["ニュートラルシェーディング","クールベージュ · グレー"]]},
+    }
+  }
+  ,zh:{
+    t:{
+      docTitle:"MIRROR MUSE — 发现与你相似的K-pop缪斯", tagline:"K-美妆 容颜匹配工作室",
+      heroEyebrow:"Find your face muse", heroTitle:"<span class='h1-pre'>AI面型分析 · K-pop相似脸孔查找</span>遇见最相似的<em>K-pop缪斯</em>。",
+      heroLede:"通过分析您的面部比例和特征，在当今最受欢迎的K-pop明星中找到与您最相似的缪斯，并推荐对应妆容的美妆产品和分部位教程。",
+      cta1:"开始分析 →", cta2:"了解原理", scroll:"scroll to begin",
+      s01num:"01 — The Mirror", s01title:"站在镜子前", s01desc:"面朝正前方确保整张脸可见，或上传照片。光线越亮分析越准确。",
+      chipAuto:"自动识别性别", chipF:"女性缪斯库", chipM:"男性缪斯库", placeholder:"开启摄像头或上传面部照片，即可在此处进行分析。",
+      camBtn:"开启摄像头", shotBtn:"📸 拍照", uploadBtn:"上传照片", analyzeBtn:"✦ 寻找我的缪斯",
+      howtoTitle:"分析原理", step1:"检测面部68个特征点，测量轮廓、眼睛、鼻子和嘴唇的比例。",
+      step2:"与热门K-pop明星的面型数据进行比较，计算相似度。",
+      step3:"根据最相似缪斯的标志性风格推荐相应的美妆产品。",
+      step4:"按部位直接链接至YouTube「播放量最高」的妆容教程。",
+      privacy:"<b>您的照片不会上传至服务器。</b>所有面部分析均在您的浏览器中完成，不会保留任何图像。",
+      s02num:"02 — Your Muse", s02title:"与您最相似的缪斯", matchwith:"your face muse is", simLabel:"resemblance", alsoResembling:"also resembling",
+      s03num:"03 — The Kit", cosTitle:"打造{name}风格的美妆", cosTitleMuse:"缪斯",
+      s04num:"04 — Watch & Learn", s04title:"分部位妆容教程",
+      s04desc:"链接至按播放量排序的YouTube搜索结果，随时获取当下最受欢迎的教程。",
+      s04note:"※ 链接至按播放量排序的搜索结果。",
+      restart:"↺ 重新尝试", loaderText:"正在唤醒缪斯…", ribbon:"analysed", scanLabel:"正在分析面部…",
+      ytSuffix:"· 按播放量排序", ytGo:"在YouTube观看 ↗", fullCoverTitle:"{name} 全脸妆容",
+      stModelFail:"模型加载失败，请检查网络连接。", stModelLoading:"正在加载模型…", stNoPhoto:"请先拍照或上传照片。",
+      stAnalyzing:"正在分析比例…", stNoFace:"未检测到面部，请重试。", stDone:"完成！请查看下方结果 ↓",
+      stPhotoReady:"照片已就绪。", stImgFail:"图片错误。", stCamOn:"摄像头已开启。", stCamFail:"摄像头错误。", stCamNotReady:"尚未就绪。",
+      partnerBtn:"合作洽谈",
+      prevBadge:"✦ 示例结果", prevMuseGrp:"IVE · 纤细V形脸", prevDisclaimer:"* 每个人的实际结果不同",
+      shrCopyLbl:"复制",
+      s03desc:"打造缪斯面型风格的核心单品。<br>按部位参考质地和色调风格。",
+      decoChip1:"✦ 即时分析", decoChip2:"◠ 不保存至服务器", decoChip3:"❀ 美妆推荐",
+      qrModalTitle:"在手机上打开", qrModalDesc:"用手机摄像头扫描二维码，<br>立即开始分析。",
+      partnerTitle:"合作洽谈", partnerDesc:"请发送品牌合作、广告或赞助提案，我们将尽快回复。",
+      cfName:"姓名 / 负责人", cfNamePh:"张三", cfEmail:"电子邮件", cfCompany:"公司 / 品牌名", cfCompanyPh:"请输入品牌名称",
+      cfMessage:"咨询内容", cfMessagePh:"请自由填写您的提案内容。", cfSubmit:"发送咨询 →", cfDone:"感谢您！我们将尽快与您联系。",
+      cfSending:"发送中…", cfErrRetry:"发送咨询 →", cfErrAlert:"发送失败，请重试。", cfNetAlert:"网络错误，请重试。",
+      footerLine:"<span class='foot-brand'>Mirror Muse</span> — 相似度分析是基于面部比例数据的娱乐性估算，并非科学或医学判断。缪斯名单由2026年热门K-pop艺人200名构成，面型数值为基于原型的估算值。与所提及的艺人及所属公司无任何关联。美妆推荐仅为风格指南，不代表对特定品牌的背书。上传的照片仅在浏览器中处理，不会保存至服务器。© 2026",
+      cookieTxt:"本网站使用Cookie用于服务运营和Google AdSense广告。继续使用即表示您同意使用Cookie。",
+      cookiePrivacyLbl:"隐私政策", cookieOkBtn:"知道了",
+      navGuide:"K-美妆指南",
+      aboutNum:"05 — About", guideNum:"06 — K-美妆指南", faqNum:"07 — FAQ",
+      prevMuseName:"Wonyoung",
+      prevRunner1:"Karina <em>89%</em>", prevRunner2:"Irene <em>87%</em>", prevRunner3:"Winter <em>85%</em>",
+      aboutTitle:"关于Mirror Muse", aboutSub:"基于浏览器AI的面部分析，帮您找到最相似的K-pop缪斯。",
+      aboutH1:"服务介绍", aboutP1:"Mirror Muse是一款利用前沿浏览器AI技术分析面部比例、并与200余位热门K-pop明星的面型数据进行比较、找到最相似缪斯的免费服务。无需注册或安装应用，只需浏览器即可使用。照片不会上传至服务器，您的隐私得到完全保护。",
+      aboutH2:"分析技术", aboutP2:"基于开源面部识别库，检测面部68个特征点。测量眼距、鼻宽、唇厚、面部纵横比、下颌角度等6项核心比例指标，并与K-pop明星的面型原型数据进行数学比较。所有运算均在您的设备上实时完成，不会有任何图像保存至服务器。",
+      aboutH3:"K-美妆精选", aboutP3:"确定缪斯后，我们将按部位为您推荐与该缪斯面型风格相匹配的K-美妆产品。底妆、眼妆、眉妆、唇妆、腮红共5个类别均精选韩国最热门产品，并链接至Olive Young全球商店，方便海外购买。",
+      aboutH4:"YouTube教程链接", aboutP4:"不仅有产品推荐，还直接链接至各部位妆容的YouTube教程。按播放量排序的搜索结果确保您始终能看到最受欢迎的最新教程。",
+      stat1Label:"K-pop缪斯数据库", stat1Sub:"BTS · BLACKPINK · aespa等热门组合全收录",
+      stat2Label:"面部特征点", stat2Sub:"眼、鼻、唇、下颌精密比例分析",
+      stat3Label:"精选K-美妆产品", stat3Sub:"5个部位，每类Top 10严选",
+      stat4Label:"上传至服务器的数据", stat4Sub:"100%浏览器内处理 — 完全隐私保护",
+      guideTitle:"面型K-美妆指南", guideSub:"K-pop明星妆容的秘密在于针对面型量身定制的技巧。发现适合您面型的K-美妆要点。",
+      guide1Title:"V形脸（纤细下颌）", guide1Desc:"像Wonyoung、Karina那样纤细精致的特征。由于脸型已经很小，重点放在眼妆而非阴影。强调眼部轮廓，腮红轻扫颧骨上方增添活力，唇部用水润唇彩表现鲜艳色彩，完成缪斯风格。", guide1Tips:"<span class='guide-tip'>💡 卧蚕阴影</span><span class='guide-tip'>💡 水润唇彩</span><span class='guide-tip'>💡 鼻梁高光</span>",
+      guide2Title:"椭圆形脸（黄金鹅蛋脸）", guide2Desc:"K-美妆中最理想的面型，如Yoona、Taeyeon。几乎任何妆容风格都适合。日常可选自然光泽底妆，特殊场合可尝试烟熏或彩色妆。只需改变腮红位置，就能营造截然不同的氛围。", guide2Tips:"<span class='guide-tip'>💡 任何风格都适合</span><span class='guide-tip'>💡 腮红位置改变氛围</span><span class='guide-tip'>💡 光泽肌为基础</span>",
+      guide3Title:"圆形脸（可爱圆润）", guide3Desc:"像NewJeans、ILLIT成员那样可爱活泼的特征。卧蚕处轻描阴影的娃娃妆和粉色腮红扫至鼻梁的效果很棒。唇部用透明水润唇彩展现少女感。", guide3Tips:"<span class='guide-tip'>💡 卧蚕阴影重点</span><span class='guide-tip'>💡 粉色超大腮红</span><span class='guide-tip'>💡 水润唇彩必备</span>",
+      guide4Title:"猫形脸（猫脸）", guide4Desc:"像Jennie、Yeji那样轮廓分明、气质冷艳。将眼线向眼尾拉长的猫眼技法是关键。以深红或勃艮第哑光唇色作为点睛之笔，完成强烈自信的K-pop风格。眉毛修成一字形更显利落。", guide4Tips:"<span class='guide-tip'>💡 猫眼眼线</span><span class='guide-tip'>💡 哑光唇彩点缀</span><span class='guide-tip'>💡 一字眉</span>",
+      guide5Title:"心形脸（额头较宽）", guide5Desc:"额头宽、下巴尖的心形脸如Hwasa、Wendy，散发强烈魅力。发际线处轻描阴影使额头显小，放大眼睛的妆效很有效。唇部丰盈表现突出心形脸特有的迷人比例。", guide5Tips:"<span class='guide-tip'>💡 发际线阴影</span><span class='guide-tip'>💡 下眼线放大眼睛</span><span class='guide-tip'>💡 唇部overline</span>",
+      guide6Title:"K-美妆底妆精髓", guide6Desc:"无论何种面型，K-美妆的共同核心是「底妆表现」。将气垫粉底薄而均匀地涂抹，打造「第二层肌肤」般自然的底妆。妆前充分吸收保湿精华，全天保持水润自然的肌肤状态。K-pop明星无瑕肌肤的秘密在于扎实的护肤程序。", guide6Tips:"<span class='guide-tip'>💡 气垫薄层叠加</span><span class='guide-tip'>💡 护肤是底妆基础</span><span class='guide-tip'>💡 定妆喷雾收尾</span>",
+      faqTitle:"常见问题", faqSub:"关于Mirror Muse使用的常见疑问汇总。",
+      faq1Q:"照片会保存到服务器吗？", faq1A:"不会。Mirror Muse的所有面部分析均在您的浏览器（设备）内完成。照片数据不会发送至任何服务器，分析完成后除结果外不会保留任何图像。本服务以隐私保护为最高优先级进行设计。",
+      faq2Q:"分析结果能准确反映我的真实相似度吗？", faq2A:"Mirror Muse的分析是基于面部几何比例（面型、眼睛大小、间距、鼻子、嘴唇比例等）的娱乐性估算，并非科学或医学判断，可能与实际相似度有所不同。请将其作为有趣的参考享受即可！",
+      faq3Q:"什么样的照片效果最好？", faq3A:"正面朝向、光线充足、整张脸都在画面中的照片精度最高。佩戴口罩、墨镜或极端侧面角度可能导致面部检测困难。自拍模式（前置摄像头）通常能获得最佳效果。",
+      faq4Q:"美妆推荐基于什么标准？", faq4A:"根据相似缪斯的面型原型（娃娃型、冷艳型、自然型等）对适合的妆容质地和色调风格进行分类。按部位推荐与各风格匹配的韩国热门K-美妆产品，不代表对特定品牌的背书。",
+      faq5Q:"可以用中文使用吗？", faq5A:"可以！在页面顶部的语言选择器切换为中文，所有分析结果、产品说明和教程搜索词将以中文显示。",
+      faq6Q:"如何咨询合作或广告事宜？", faq6A:"点击页面顶部的「合作洽谈」按钮，通过表单发送品牌合作、广告或赞助提案。我们将确认后尽快回复。",
+      faq7Q:"有免费的网站可以找到我的K-pop相似脸吗？", faq7A:"Mirror Muse（k-pop-muse.com）完全免费。无需安装应用或注册，直接在浏览器中使用。AI将您的面部与BTS、BLACKPINK、aespa、IVE、NewJeans、LE SSERAFIM等200名以上K-pop明星进行相似度比较。",
+      faq8Q:"如何获得适合我面型的K-美妆产品推荐？", faq8A:"Mirror Muse分析您的面型原型（V形、椭圆、圆形、猫脸、心形），并按唇妆、眼妆、底妆、眉妆、腮红各部位推荐K-美妆产品。每款产品与缪斯的色调和质地风格匹配，并提供Olive Young全球商店的直接链接。",
+      faq9Q:"在哪里可以进行偶像相似脸测试？", faq9A:"在Mirror Muse（k-pop-muse.com）免费进行AI偶像相似脸测试。上传一张照片，获得与K-pop明星相似度的排名列表。可选择女性或男性明星库，并在社交媒体上分享结果。",
+      footPrivacy:"隐私政策", footTerms:"使用条款", footAbout:"服务介绍", footGuide:"K-美妆指南",
+      colorLabel:"推荐色调",
+      shareText:"我与{nameEn}({groupEn})相似度{score}%！快来Mirror Muse发现你的K-pop缪斯吧。",
+      shareCardLabel:"最相似的K-pop缪斯", shareCardScore:"相似度",
+      shrCopyDone:"链接已复制 ✓", shrCopyPrompt:"请复制此链接：",
+      shrImgDone:"图片已保存！快发到Instagram吧 📷",
+      privacyTitle:"隐私政策",
+      privacyBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>最后更新：2026年1月1日</strong></p><h3 class='policy-h3'>1. 收集的信息</h3><p>Mirror Muse原则上不收集个人信息。用于面部分析的照片不会上传至服务器，仅在浏览器内处理。如果您填写合作咨询表单，您的姓名、电子邮件和留言将通过Formspree发送。</p><h3 class='policy-h3'>2. 面部数据处理</h3><p>上传或通过摄像头拍摄的照片及面部分析数据（特征点坐标、比例值）仅在浏览器内处理，不会传输至或保存在任何外部服务器上。刷新或关闭页面后，所有数据将立即删除。</p><h3 class='policy-h3'>3. 使用的第三方服务</h3><ul><li><strong>face-api.js (jsDelivr CDN)</strong>：用于加载开源面部识别AI模型。</li><li><strong>Google Fonts</strong>：用于提供网页字体。</li><li><strong>Formspree</strong>：用于提交合作咨询表单。</li><li><strong>QR Server API</strong>：用于生成二维码。</li><li><strong>Olive Young Global</strong>：用于链接产品页面。</li><li><strong>Google AdSense</strong>：用于展示服务运营广告，可能使用Google广告Cookie。</li></ul><h3 class='policy-h3'>4. Cookie及本地存储</h3><p>Mirror Muse不使用自有追踪Cookie。Cookie同意状态仅保存在浏览器本地存储中。使用广告服务（Google AdSense）时，相关服务的Cookie政策可能适用。</p><h3 class='policy-h3'>5. 儿童隐私</h3><p>本服务不面向13岁以下儿童。如您未满13岁，请在监护人同意下使用本服务。</p><h3 class='policy-h3'>6. 联系方式</h3><p>隐私相关问题，请通过页面顶部的「合作洽谈」表单联系我们。</p>",
+      termsTitle:"使用条款",
+      termsBody:"<p style='margin-bottom:14px'><strong style='color:var(--ink)'>最后更新：2026年1月1日</strong></p><h3 class='policy-h3'>1. 同意条款</h3><p>使用Mirror Muse即表示您同意本使用条款。</p><h3 class='policy-h3'>2. 服务目的</h3><p>Mirror Muse的面型分析及K-pop相似度结果为娱乐性估算值，并非科学或医学判断。我们不保证结果的准确性。</p><h3 class='policy-h3'>3. 知识产权</h3><p>本服务的设计、内容和软件归Mirror Muse所有。所提及的K-pop艺人名称和团体名称归各权利方所有，Mirror Muse与相关艺人及所属公司无任何关联。</p><h3 class='policy-h3'>4. 免责声明</h3><p>Mirror Muse不对因使用本服务而产生的直接或间接损害承担责任。美妆推荐仅为风格指南，不保证特定产品的效果。</p><h3 class='policy-h3'>5. 广告</h3><p>本服务可能通过Google AdSense展示广告。广告内容依照Google政策显示。</p><h3 class='policy-h3'>6. 条款变更</h3><p>本条款可能随服务运营而更新。变更后继续使用即视为同意更新后的条款。</p>",
+    },
+    mood:{happy:"明亮的笑容中",neutral:"沉静的表情中",surprised:"生动的表情中",sad:"宁静的表情中",angry:"锐利的眼神中",fearful:"细腻的表情中",disgusted:"个性的表情中"},
+    vtpl:"从{mood}，流露出{name}的{shape}风格。{vibe}",
+    tn:{face:"脸型",jaw:"下颌线",eye:"眼睛",lip:"嘴唇",spacing:"眼距"},
+    tv:{faceLong:"纵长型",faceRound:"圆润型",faceOval:"椭圆型",jawV:"V形线",jawSquare:"有棱角",jawSoft:"柔和",eyeBig:"大眼",eyeLong:"细长",eyeBalanced:"均衡",lipFull:"丰润",lipThin:"薄唇",lipBalanced:"均衡",spacingWide:"宽",spacingClose:"紧凑"},
+    al:{doll_long:"娃娃型",vline_cat:"猫脸型",soft_oval:"椭圆型",cat_defined:"轮廓猫脸",round_cute:"可爱圆脸",clear_chic:"冷艳型",petite_neat:"小巧椭圆",heart_alluring:"心形脸",golden_oval:"黄金椭圆",strong_jaw:"下颌线型",long_sharp:"轮廓型",broad_soft:"柔和型"},
+    ar:[["底妆","底妆 教程"],["眼妆","眼妆 教程"],["眉妆","眉毛 画法"],["唇妆","唇妆 教程"],["腮红","腮红 修容"]],
+    fk:"全脸妆容教程",
+    kits:{
+      doll:{v:"清透水光肌和大圆眼。",F:[["光泽气垫","暖桃色 · 象牙白"],["珠光眼影","淡粉色 · 香槟"],["眉笔","柔和棕色"],["水润唇彩","珊瑚粉 · 婴儿粉"],["奶油腮红","婴儿粉 · 桃色"]],M:[["光泽底妆","暖桃色 · 象牙白"],["修容","柔粉 · 棕色"],["眉笔","灰棕色"],["润唇膏","珊瑚粉"],["修容","柔灰 · 米色"]]},
+      chic:{v:"如瓷器般的肌肤和修长眼线。",F:[["哑光粉底","冷象牙 · 瓷白"],["哑光眼影","冷棕 · 烟熏灰"],["眉笔","冷灰棕"],["哑光唇膏","深枣红 · 莫夫"],["修容","冷灰 · 灰棕"]],M:[["哑光底妆","冷象牙 · 瓷白"],["线条眼影","深棕 · 烟熏灰"],["直线眉","冷灰棕"],["裸色唇膏","莫夫 · 裸米"],["修容","冷灰 · 深灰"]]},
+      natural:{v:"自然光泽与柔和阴影。",F:[["缎光气垫","暖米色 · 桃色"],["日常眼影","赤陶 · 暖棕"],["自然眉","橄榄棕"],["丝绒唇彩","玫瑰 · 珊瑚粉"],["粉状腮红","桃色 · 珊瑚"]],M:[["缎光底妆","自然米 · 暖象牙"],["暖修容","暖棕 · 赤陶"],["自然眉","橄榄棕"],["润唇膏","珊瑚 · 玫瑰米"],["轻修容","柔棕 · 暖米"]]},
+      defined:{v:"健康光泽与明艳猫眼。",F:[["缎光粉底","暖米色 · 桃色"],["暖色眼影","赤陶 · 古铜"],["浓眉","深棕 · 卡其"],["MLBB哑光唇","玫瑰木 · 裸粉"],["哑光腮红","珊瑚 · 赤陶"]],M:[["缎光底妆","暖米 · 桃米"],["猫眼线","古铜 · 深卡其"],["浓眉","深棕 · 卡其"],["润唇膏","玫瑰木 · MLBB粉"],["修容","暖灰褐 · 柔灰"]]},
+      elegant:{v:"璀璨光泽与印象深刻的眼妆。",F:[["光泽粉底","桃金 · 暖米"],["金色眼影","香槟金 · 酒红"],["拱形眉","深棕 · 柔黑"],["丝绒唇膏","深红 · 酒红"],["修容腮红","玫瑰金 · 深珊瑚"]],M:[["光泽底妆","桃金 · 暖米"],["金色修容","香槟金 · 酒红"],["拱形眉","深棕 · 柔黑"],["润唇膏","玫瑰粉 · 裸桃"],["修容","玫瑰灰 · 莫夫"]]},
+      clean:{v:"干净肌肤与低调阴影。",F:[["哑光底妆","冷象牙 · 瓷白"],["中性眼影","中性米 · 灰褐"],["细眉","灰棕 · 灰色"],["哑光唇膏","裸色 · 玫瑰裸"],["中性修容","冷米 · 灰褐"]],M:[["哑光底妆","冷象牙 · 瓷白"],["中性修容","中性米 · 灰色"],["细眉","灰色 · 冷棕"],["润唇膏","裸米 · 冷粉"],["中性修容","冷米 · 灰色"]]},
+    }
+  }
 };
 
 let lang = 'en', modelsReady = false, stream = null, analysisImage = null, genderMode = 'auto', lastResult = null;
@@ -1978,6 +2185,7 @@ const $ = (id) => document.getElementById(id);
 
 function setLanguage(l){
   lang = I18N[l] ? l : 'en';
+  document.documentElement.lang = lang;
   const d = I18N[lang];
   document.title = d.t.docTitle;
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1992,6 +2200,14 @@ function setLanguage(l){
     const k = el.getAttribute('data-i18n-ph');
     if(d.t[k]) el.placeholder = d.t[k];
   });
+  // Force-update preview card names (belt-and-suspenders in case generic scan misses them)
+  const _pmn = document.querySelector('.prev-muse-name');
+  if(_pmn && d.t.prevMuseName) _pmn.textContent = d.t.prevMuseName;
+  const _runners = document.querySelectorAll('.prev-runner');
+  const _rkeys = ['prevRunner1','prevRunner2','prevRunner3'];
+  _runners.forEach((el,i) => { if(_rkeys[i] && d.t[_rkeys[i]]) el.innerHTML = d.t[_rkeys[i]]; });
+  const _pmg = document.querySelector('.prev-muse-grp');
+  if(_pmg && d.t.prevMuseGrp) _pmg.textContent = d.t.prevMuseGrp;
   $('langSelect').value = lang;
   if(lastResult) updateResultUI();
   else if($('kitProducts').innerHTML) renderKitProducts(_activeTab);
@@ -2130,6 +2346,10 @@ async function runAnalysis(){
 
   const steps = lang === 'ko'
     ? ['얼굴 68개 포인트 감지 중…', '눈·코·입 비율 측정 중…', 'K-pop 스타 데이터와 비교 중…', '뮤즈를 찾는 중…']
+    : lang === 'ja'
+    ? ['顔の68ポイントを検出中…', '目・鼻・口の比率を測定中…', 'K-popスターのデータと比較中…', 'ミューズを探しています…']
+    : lang === 'zh'
+    ? ['正在检测面部68个特征点…', '正在测量眼、鼻、唇比例…', '正在与K-pop明星数据比对…', '正在寻找您的缪斯…']
     : ['Detecting 68 facial points…', 'Measuring eye, nose & lip ratios…', 'Comparing with K-pop star data…', 'Finding your muse…'];
 
   let si = 0;
